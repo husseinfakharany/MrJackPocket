@@ -6,15 +6,15 @@ Nom Personnage suspect
  */
 public class CarteAlibi {
 	
-		private AlibiName suspect;
+		private SuspectNom suspect;
 		private int sablier;
 
 		// Getters and Setters
-		public AlibiName getSuspect() {
+		public SuspectNom getSuspect() {
 			return suspect;
 		}
 
-		public void setSuspect(AlibiName suspect) {
+		public void setSuspect(SuspectNom suspect) {
 			this.suspect = suspect;
 		}
 

@@ -22,19 +22,28 @@ Attribuer le sablier du tour courant
  */
 
 public class Jeu extends Observable{
+
     Joueur jack;
     Joueur enqueteur;
     int numTour;
+
     List<JetonActions> jetonActions;
     List<CarteAlibi> carteAlibis;
+
     public CarteRue [][] grille;
+
     //TODO static may cause error?
     static List<Integer> orientationsRues;
     static List<Suspect> suspects;
 
+    static final int MUROUEST = 0B0111;
+    static final int MUREST = 0B1110;
+    static final int MURNORD = 0B0111;
+    static final int MURSUD = 0B1011;
+
     public Jeu(){
-        jack = new Joueur();
-        enqueteur = new Joueur();
+        jack = new Joueur(true, "Hussein", 0,false,false);
+        enqueteur = new Joueur(false, "Fabien", 0, false, false);
         numTour = 1;
         initialiseOrientationsRues();
         initialiseSuspects();
@@ -46,27 +55,21 @@ public class Jeu extends Observable{
 
     private void initialiseOrientationsRues(){
         orientationsRues = new ArrayList<>();
-        orientationsRues.add(14);
-        orientationsRues.add(13);
-        orientationsRues.add(11);
-        orientationsRues.add(7);
+        orientationsRues.add(MUREST);
+        orientationsRues.add(MUROUEST);
+        orientationsRues.add(MURSUD);
+        orientationsRues.add(MURNORD);
     }
 
     private void initialiseSuspects(){
         suspects = new ArrayList<>();
-        //On ajoute les 9 suspects en dur
-        suspects.add(new Suspect("Ronaldo",null));
-        suspects.add(new Suspect("Messi",null));
-        suspects.add(new Suspect("Salah",null));
-        suspects.add(new Suspect("Mbappe",null));
-        suspects.add(new Suspect("Neymar",null));
-        suspects.add(new Suspect("Trezeguet",null));
-        suspects.add(new Suspect("Zidan",null));
-        suspects.add(new Suspect("Giroud",null));
-        suspects.add(new Suspect("Mane",null));
+        for(SuspectNom e:SuspectNom.values()){
+            suspects.add(new Suspect(e,null));
+        }
     }
 
     void initialiserGrille(){
+
         for(int l=0; l<3; l++){
             for(int c=0; c<3; c++){
                 //TODO may cause error
@@ -74,12 +77,16 @@ public class Jeu extends Observable{
             }
         }
         //Orientations initiaux (enqueteurs face aux murs)
+        //TODO use getters and setters
         grille[0][0].orientation = 0b1110;
         grille[0][0].positionEnqueteur = 0b0001;
+        grille[0][0].enqueteur.nomPersonnage = EnqueteurNom.SHERLOCK;
         grille[0][2].orientation = 0b1101;
         grille[0][2].positionEnqueteur = 0b0010;
+        grille[0][2].enqueteur.nomPersonnage = EnqueteurNom.WATSON;
         grille[2][1].orientation = 0b1011;
         grille[2][1].positionEnqueteur = 0b0100;
+        grille[2][1].enqueteur.nomPersonnage = EnqueteurNom.TOBBY;
 
     }
 
