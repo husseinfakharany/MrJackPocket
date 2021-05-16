@@ -28,7 +28,7 @@ public class Joueur {
     //	name: nom du joueur soit jack soit dectective
 	//  isJack
 	//sablier
-	public Player(boolean isJack, String name, int sablier,boolean win,boolean turn) {
+	public Joueur(boolean isJack, String name, int sablier,boolean win,boolean turn) {
 		setJack(isJack);
 		setName(name);
 		setSablier(sablier);
@@ -51,8 +51,8 @@ public class Joueur {
 		return cardList;
 	}
 
-	public void setCardList(List<CarteAlibi> CardList) {
-		this.CardList = CardList;
+	public void setCardList(List<CarteAlibi> cardList) {
+		this.cardList = cardList;
 	}
 
 	public int getSablier() {

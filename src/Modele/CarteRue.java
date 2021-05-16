@@ -16,6 +16,7 @@ public class CarteRue {
     public int orientation; //4 bits de poids faible indiquent les orientations des rues (N,S,E,O) - 3/4 activés (si 1110 alors Mur|-)
     public Point position;
     public int positionEnqueteur;
+    public Enqueteur enqueteur;
     public Suspect suspect;
 
     /*
@@ -32,6 +33,7 @@ public class CarteRue {
         //On choisi une orientation des orientations possibles
         orientation = Jeu.orientationsRues().get(rand.nextInt(Jeu.orientationsRues().size()));
         positionEnqueteur = 0;
+        enqueteur = null;
         this.position = position;
         int suspectIndex;
         do{ //Si le suspect n'a pas encore une position, on lui attribue une position dans la grille
