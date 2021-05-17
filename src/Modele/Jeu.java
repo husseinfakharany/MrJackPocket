@@ -25,6 +25,7 @@ public class Jeu extends Observable{
 
     Joueur jack;
     Joueur enqueteur;
+    Joueur joueurCourant;
     int numTour;
 
     List<JetonActions> jetonActions;
@@ -67,7 +68,8 @@ public class Jeu extends Observable{
             suspects.add(new Suspect(e,null));
         }
     }
-
+    
+    
     void initialiserGrille(){
 
         for(int l=0; l<3; l++){
@@ -93,7 +95,17 @@ public class Jeu extends Observable{
     static List<Integer> orientationsRues(){
         return orientationsRues;
     }
-
+    
+    public  void changerJoueur() {
+		if(joueurCourant.isJack() ) {
+			joueurCourant = enqueteur;
+			
+		}else {
+			joueurCourant = jack;
+		}
+		
+	}
+    
     static List<Suspect> suspects() {
         return suspects;
     }
