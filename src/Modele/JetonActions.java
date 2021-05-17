@@ -37,7 +37,7 @@ public class JetonActions {
 	}
 
 	public boolean estRecto() {
-		return isRecto;
+		return estRecto;
 	}
 
 	public void setEstRecto(boolean estRecto) {
