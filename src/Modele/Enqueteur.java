@@ -17,4 +17,20 @@ public class Enqueteur {
     ArrayList<Suspect> Visible(CarteRue [][] grille){
         return null;
     }
+
+    public EnqueteurNom getNomPersonnage(){
+        return nomPersonnage;
+    }
+
+    public void setNomPersonnage(EnqueteurNom nom ) {
+        nomPersonnage = nom;
+    }
+
+    public Point getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point position) {
+        this.position = position;
+    }
 }
