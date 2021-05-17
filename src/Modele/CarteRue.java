@@ -39,8 +39,8 @@ public class CarteRue {
         do{ //Si le suspect n'a pas encore une position, on lui attribue une position dans la grille
             suspectIndex = rand.nextInt(Jeu.suspects().size());
             suspect = Jeu.suspects().get(suspectIndex);
-        } while (suspect.position != null);
-        suspect = new Suspect(suspect.nomPersonnage,this.position);
+        } while (suspect.getPosition() != null);
+        suspect = new Suspect(suspect.getNomPersonnage(),this.position);
         Jeu.suspects.set(suspectIndex, suspect);
     }
 }
