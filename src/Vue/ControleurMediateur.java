@@ -56,7 +56,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "commencer":
             case "Enquêteur":
             case "Meurtrier":
-                ig.menuPartie();
+                ig.changerMenu(ig.getBoiteMenu(),ig.getBoiteAvantPartie());
                 break;
             case "Ordi Vs Ordi":
                 System.out.println("Partie Ordi Vs Ordi");
@@ -64,17 +64,17 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "Facile":
             case "Moyenne":
             case "Difficile":
-                ig.lancerPartie();
+                ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
                 //fixerIA(c);
                 break;
             case "local":
-                ig.lancerPartie();
+                ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
                 break;
             case "reseau":
                 System.out.println("Attente d'une partie .");
                 System.out.println("Attente d'une partie ..");
                 System.out.println("Attente d'une partie ...");
-                ig.lancerPartie();
+                ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
                 break;
             case "undo":
                 undo();
@@ -82,11 +82,14 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "redo":
                 redo();
                 break;
-            case "menu":
-                ig.retourMenu();
+            case "menuJ":
+                ig.changerMenu(ig.getBoiteJeu(), ig.getBoiteMenu() );
+                break;
+            case "menuC":
+                ig.changerMenu(ig.getBoiteCharger(), ig.getBoiteMenu() );
                 break;
             case "menuCharger":
-                ig.chargerPartie();
+                ig.changerMenu(ig.getBoiteMenu(), ig.getBoiteCharger() );
                 break;
             case "charger":
                 System.out.println("Chargement de la partie...");

@@ -10,7 +10,7 @@ import java.util.Observer;
 public class InterfaceGraphique implements Observer, Runnable {
     Jeu jeu;
     JFrame frame;
-    Box boiteMenu = null,boiteTitre  = null,boiteBoutons = null, boiteInfo = null, boiteAvantPartie = null,
+    private Box boiteMenu = null,boiteTitre  = null,boiteBoutons = null, boiteJeu = null, boiteAvantPartie = null,
             boiteCharger = null;
     boolean ia;
     CollecteurEvenements controle;
@@ -38,7 +38,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         frame.add(getBoiteMenu());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1080,720);
-        //activerPleinEcran();
+        activerPleinEcran();
         frame.setVisible(true);
     }
 
@@ -46,32 +46,9 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     }
 
-    public void lancerPartie(){
-        frame.remove(getBoiteAvantPartie());
-        frame.add(getBoiteInfo(), BorderLayout.PAGE_START);
-        frame.revalidate();
-        frame.repaint();
-    }
-
-    public void menuPartie(){
-        frame.remove(getBoiteMenu());
-        frame.add(getBoiteAvantPartie());
-        frame.revalidate();
-        frame.repaint();
-
-    }
-
-    public void retourMenu(){
-        frame.remove(getBoiteInfo());
-        frame.remove(getBoiteCharger());
-        frame.add(getBoiteMenu());
-        frame.revalidate();
-        frame.repaint();
-    }
-
-    public void chargerPartie() {
-        frame.remove(getBoiteMenu());
-        frame.add(getBoiteCharger());
+    public void changerMenu(Box ancienne,Box nouvelle){
+        frame.remove(ancienne);
+        frame.add(nouvelle);
         frame.revalidate();
         frame.repaint();
     }
@@ -88,7 +65,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     }
 
     //Description des boites
-    private Box getBoiteMenu(){
+    public Box getBoiteMenu(){
         if (boiteMenu == null){
             boiteMenu = Box.createVerticalBox();
 
@@ -105,7 +82,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         return boiteMenu;
     }
 
-    private Box getBoiteTitre(){
+    public Box getBoiteTitre(){
         if (boiteTitre == null){
             boiteTitre = Box.createVerticalBox();
 
@@ -124,7 +101,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         return boiteTitre;
     }
 
-    private Box getBoiteBoutons(){
+    public Box getBoiteBoutons(){
         if (boiteBoutons == null){
             JButton charger,tuto,quitter;
 
@@ -175,10 +152,10 @@ public class InterfaceGraphique implements Observer, Runnable {
         return boiteBoutons;
     }
 
-    private Box getBoiteInfo(){
+    public Box getBoiteJeu(){
         JLabel info,tour;
-        if (boiteInfo == null){
-            boiteInfo = Box.createHorizontalBox();
+        if (boiteJeu == null){
+            Box boiteInfo = Box.createHorizontalBox();
 
             tour = new JLabel();
             tour.setText("Tour n°X");
@@ -187,7 +164,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             info.setText("Explications");
 
             JButton menu = new JButton("Retour au Menu");
-            menu.addActionListener(new AdaptateurCommande(controle,"menu"));
+            menu.addActionListener(new AdaptateurCommande(controle,"menuJ"));
 
             // JComponent plateauGraphique
             //frame.add(plateauGraphique);
@@ -199,11 +176,15 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteInfo.add(Box.createHorizontalGlue());
             boiteInfo.add(menu);
 
+            boiteJeu = Box.createVerticalBox();
+            boiteJeu.add(boiteInfo);
+            boiteJeu.add(Box.createVerticalGlue());
         }
-        return boiteInfo;
+
+        return boiteJeu;
     }
 
-    private Box getBoiteAvantPartie(){
+    public Box getBoiteAvantPartie(){
         if (boiteAvantPartie == null){
             boiteAvantPartie = Box.createHorizontalBox();
 
@@ -252,10 +233,11 @@ public class InterfaceGraphique implements Observer, Runnable {
         return boiteAvantPartie;
     }
 
-    private Box getBoiteCharger(){
+    public Box getBoiteCharger(){
         if (boiteCharger == null){
             boiteCharger = Box.createHorizontalBox();
 
+            //Recuperer la liste des parties (en attendant)
             String [] listPartie = {"Partie 1 - 28/02/21", "Partie 2 - 04/03/21", "Partie 3 - 05/05/21",
                     "Partie 4 - 18/05/21","Partie 1 - 28/02/21", "Partie 2 - 04/03/21","Partie 1 - 28/02/21",
                     "Partie 2 - 04/03/21","Partie 1 - 28/02/21", "Partie 2 - 04/03/21","Partie 1 - 28/02/21",
@@ -291,7 +273,7 @@ public class InterfaceGraphique implements Observer, Runnable {
 
             JButton menu = new JButton("Retour au Menu");
             menu.setMaximumSize(new Dimension(450, 25));
-            menu.addActionListener(new AdaptateurCommande(controle,"menu"));
+            menu.addActionListener(new AdaptateurCommande(controle,"menuC"));
 
             boiteBoutons.add(Box.createHorizontalGlue());
             boiteBoutons.add(charger);
