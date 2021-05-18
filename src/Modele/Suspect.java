@@ -16,8 +16,8 @@ public class Suspect {
     private Boolean pioche;
 
     //TODO implement getters and setters
-    Suspect(SuspectNom nomPersonnage, Point position){
-        this.nomPersonnage = nomPersonnage;
+    Suspect(SuspectNom nomPerso, Point position){
+        nomPersonnage = nomPerso;
         this.setPosition(position);
         setCarteCache(false);
         setPioche(false);

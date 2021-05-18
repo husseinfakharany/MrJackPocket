@@ -33,7 +33,7 @@ public class CarteRue {
         //On choisi une orientation des orientations possibles
         orientation = Jeu.orientationsRues().get(rand.nextInt(Jeu.orientationsRues().size()));
         positionEnqueteur = 0;
-        enqueteur = null;
+        enqueteur = new Enqueteur();
         this.position = position;
         int suspectIndex;
         do{ //Si le suspect n'a pas encore une position, on lui attribue une position dans la grille

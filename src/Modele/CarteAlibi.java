@@ -14,8 +14,8 @@ public class CarteAlibi {
 			return suspect;
 		}
 
-		public void setSuspect(SuspectNom suspect) {
-			this.suspect = suspect;
+		public void setSuspect(SuspectNom s) {
+			suspect = s;
 		}
 
 		public int getSablier() {
