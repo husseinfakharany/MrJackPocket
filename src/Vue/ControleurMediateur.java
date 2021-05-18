@@ -56,17 +56,25 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "commencer":
             case "Enquêteur":
             case "Meurtrier":
-            case "Ordi Vs Ordi":
                 ig.menuPartie();
                 break;
-
+            case "Ordi Vs Ordi":
+                System.out.println("Partie Ordi Vs Ordi");
+                break;
             case "Facile":
             case "Moyenne":
             case "Difficile":
-            case "local":
-            case "reseau":
                 ig.lancerPartie();
                 //fixerIA(c);
+                break;
+            case "local":
+                ig.lancerPartie();
+                break;
+            case "reseau":
+                System.out.println("Attente d'une partie .");
+                System.out.println("Attente d'une partie ..");
+                System.out.println("Attente d'une partie ...");
+                ig.lancerPartie();
                 break;
             case "undo":
                 undo();
