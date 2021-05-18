@@ -110,5 +110,10 @@ public class Jeu extends Observable{
         return suspects;
     }
 
+    //TODO jouerCoup
+    public void jouerCoup(Coup cp){}
+
+    //TODO reinitialiser : Remettre le plateau en configuration initiale
+    void reinitialiser(){}
 
 }

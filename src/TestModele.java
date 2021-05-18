@@ -1,6 +1,4 @@
-import Modele.CarteRue;
 import Modele.Jeu;
-import Modele.SuspectNom;
 
 
 public class TestModele {
