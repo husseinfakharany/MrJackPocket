@@ -85,8 +85,11 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "menu":
                 ig.retourMenu();
                 break;
-                //TODO
+            case "menuCharger":
+                ig.chargerPartie();
+                break;
             case "charger":
+                System.out.println("Chargement de la partie...");
                 break;
             default:
                 return false;

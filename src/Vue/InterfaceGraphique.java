@@ -10,7 +10,8 @@ import java.util.Observer;
 public class InterfaceGraphique implements Observer, Runnable {
     Jeu jeu;
     JFrame frame;
-    Box boiteMenu = null,boiteTitre  = null,boiteBoutons = null, boiteInfo = null, boiteAvantPartie = null;
+    Box boiteMenu = null,boiteTitre  = null,boiteBoutons = null, boiteInfo = null, boiteAvantPartie = null,
+            boiteCharger = null;
     boolean ia;
     CollecteurEvenements controle;
     JComboBox<String> commencer, boutonIA;
@@ -62,7 +63,15 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     public void retourMenu(){
         frame.remove(getBoiteInfo());
+        frame.remove(getBoiteCharger());
         frame.add(getBoiteMenu());
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    public void chargerPartie() {
+        frame.remove(getBoiteMenu());
+        frame.add(getBoiteCharger());
         frame.revalidate();
         frame.repaint();
     }
@@ -133,7 +142,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             //Charger partie
             charger = new JButton("Charger une partie");
             charger.setMaximumSize(new Dimension(450, 25));
-            charger.addActionListener(new AdaptateurCommande(controle,"charger"));
+            charger.addActionListener(new AdaptateurCommande(controle,"menuCharger"));
             charger.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             //Charger partie
@@ -241,5 +250,65 @@ public class InterfaceGraphique implements Observer, Runnable {
         boutonIA.setSelectedItem("Joueur contre une IA");
         boutonIA.setEditable(false);
         return boiteAvantPartie;
+    }
+
+    private Box getBoiteCharger(){
+        if (boiteCharger == null){
+            boiteCharger = Box.createHorizontalBox();
+
+            String [] listPartie = {"Partie 1 - 28/02/21", "Partie 2 - 04/03/21", "Partie 3 - 05/05/21",
+                    "Partie 4 - 18/05/21","Partie 1 - 28/02/21", "Partie 2 - 04/03/21","Partie 1 - 28/02/21",
+                    "Partie 2 - 04/03/21","Partie 1 - 28/02/21", "Partie 2 - 04/03/21","Partie 1 - 28/02/21",
+                    "Partie 2 - 04/03/21","Partie 1 - 28/02/21", "Partie 2 - 04/03/21","Partie 1 - 28/02/21",
+                    "Partie 2 - 04/03/21","Partie 1 - 28/02/21", "Partie 2 - 04/03/21","Partie 1 - 28/02/21",
+                    "Partie 2 - 04/03/21","Partie 1 - 28/02/21", "Partie 2 - 04/03/21","Partie 1 - 28/02/21" };
+
+            JList list = new JList(listPartie);
+            list.setAlignmentX(Component.CENTER_ALIGNMENT);
+            list.setLayoutOrientation(JList.VERTICAL);
+            JScrollPane listScroller = new JScrollPane(list);
+            listScroller.setPreferredSize(new Dimension(200, 350));
+            listScroller.setMaximumSize(new Dimension(200, 350));
+
+            Box boiteTitre = Box.createVerticalBox();
+
+            JLabel titre = new JLabel("Mr Jack Pocket");
+            titre.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 25));
+            titre.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JLabel astuces = new JLabel("Astuces : Cliquez sur une partie et finissez là !");
+            astuces.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            Box boiteList = Box.createHorizontalBox();
+            boiteList.add(Box.createHorizontalGlue());
+            boiteList.add(listScroller);
+            boiteList.add(Box.createHorizontalGlue());
+
+            Box boiteBoutons = Box.createHorizontalBox();
+
+            JButton charger = new JButton("Charger partie");
+            charger.setMaximumSize(new Dimension(450, 25));
+            charger.addActionListener(new AdaptateurCommande(controle,"charger"));
+
+            JButton menu = new JButton("Retour au Menu");
+            menu.setMaximumSize(new Dimension(450, 25));
+            menu.addActionListener(new AdaptateurCommande(controle,"menu"));
+
+            boiteBoutons.add(Box.createHorizontalGlue());
+            boiteBoutons.add(charger);
+            boiteBoutons.add(Box.createHorizontalGlue());
+            boiteBoutons.add(menu);
+            boiteBoutons.add(Box.createHorizontalGlue());
+
+            boiteTitre.add(Box.createVerticalGlue());
+            boiteTitre.add(titre);
+            boiteTitre.add(astuces);
+            boiteTitre.add(Box.createVerticalGlue());
+            boiteTitre.add(boiteBoutons);
+            boiteTitre.add(Box.createVerticalGlue());
+
+            boiteCharger.add(boiteList, BorderLayout.PAGE_START);
+            boiteCharger.add(boiteTitre);
+        }
+        return boiteCharger;
     }
 }
