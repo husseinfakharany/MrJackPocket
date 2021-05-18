@@ -16,7 +16,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     CollecteurEvenements controle;
     JComboBox<String> commencer, boutonIA;
 
-    //TODO Fonction charger boite + fonctions privés qui contruisent la boite si null (~ Confguration Sokoban) +
+    //DONE Fonction charger boite + fonctions privés qui contruisent la boite si null (~ Confguration Sokoban) +
     // une fonction qui renvoie la boite d'un String en parametre avec un switch Ex: afficherEcran("Menu")
     // TODO Implémentation Tutoriel
 
