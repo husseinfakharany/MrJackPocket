@@ -13,11 +13,11 @@ import java.awt.*;
 import java.util.Random;
 
 public class CarteRue {
-    public int orientation; //4 bits de poids faible indiquent les orientations des rues (N,S,E,O) - 3/4 activés (si 1110 alors Mur|-)
-    public Point position;
-    public int positionEnqueteur;
-    public Enqueteur enqueteur;
-    public Suspect suspect;
+    private int orientation; //4 bits de poids faible indiquent les orientations des rues (N,S,E,O) - 3/4 activés (si 1110 alors Mur|-)
+    private Point position;
+    private int positionEnqueteur;
+    private Enqueteur enqueteur;
+    private Suspect suspect;
 
     /*
     Orientations:
@@ -43,4 +43,46 @@ public class CarteRue {
         suspect = new Suspect(suspect.getNomPersonnage(),this.position);
         Jeu.suspects.set(suspectIndex, suspect);
     }
+    
+    
+
+	public int getOrientation() {
+		return orientation;
+	}
+
+	void setOrientation(int orientation) {
+		this.orientation = orientation;
+	}
+
+	public int getPositionEnqueteur() {
+		return positionEnqueteur;
+	}
+
+	void setPositionEnqueteur(int positionEnqueteur) {
+		this.positionEnqueteur = positionEnqueteur;
+	}
+
+	public Enqueteur getEnqueteur() {
+		return enqueteur;
+	}
+
+	public void setEnqueteur(Enqueteur enqueteur) {
+		this.enqueteur = enqueteur;
+	}
+	
+	public Point getPosition() {
+		return position;
+	}
+
+	public void setPosition(Point position) {
+		this.position = position;
+	}
+	
+	public Suspect getSuspect() {
+		return suspect;
+	}
+
+	public void setSuspect(Suspect suspect) {
+		this.suspect = suspect;
+	}
 }

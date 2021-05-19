@@ -79,16 +79,16 @@ public class Jeu extends Observable{
             }
         }
         //Orientations initiaux (enqueteurs face aux murs)
-        //TODO use getters and setters
-        grille[0][0].orientation = 0b1110;
-        grille[0][0].positionEnqueteur = 0b0001;
-        grille[0][0].enqueteur.setNomPersonnage(EnqueteurNom.SHERLOCK);
-        grille[0][2].orientation = 0b1101;
-        grille[0][2].positionEnqueteur = 0b0010;
-        grille[0][2].enqueteur.setNomPersonnage(EnqueteurNom.WATSON);
-        grille[2][1].orientation = 0b1011;
-        grille[2][1].positionEnqueteur = 0b0100;
-        grille[2][1].enqueteur.setNomPersonnage(EnqueteurNom.TOBBY);
+       
+        grille[0][0].setOrientation(0b1110);
+        grille[0][0].setPositionEnqueteur( 0b0001);
+        grille[0][0].getEnqueteur().setNomPersonnage(EnqueteurNom.SHERLOCK);
+        grille[0][2].setOrientation( 0b1101);
+        grille[0][2].setPositionEnqueteur(0b0010);
+        grille[0][2].getEnqueteur().setNomPersonnage(EnqueteurNom.WATSON);
+        grille[2][1].setOrientation(0b1011);
+        grille[2][1].setPositionEnqueteur(0b0100);
+        grille[2][1].getEnqueteur().setNomPersonnage(EnqueteurNom.TOBBY);
 
     }
 
