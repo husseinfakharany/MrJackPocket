@@ -35,6 +35,7 @@ public class Jeu extends Observable{
     List<CarteAlibi> carteAlibis;
 
     public CarteRue [][] grille;
+    public CarteRue [][] temponGrille;
 
     //TODO static may cause error?
     static List<Integer> orientationsRues;
@@ -52,6 +53,7 @@ public class Jeu extends Observable{
         initialiseOrientationsRues();
         initialiseSuspects();
         grille = new CarteRue[3][3];
+        temponGrille = new CarteRue[3][3];
         initialiserGrille(); //Initialise et mélange la grille du premier tour
         //melangeCartesAlibi(); //Melange les cartes alibi
         //melangeJetonsActions(); //Mélange ou inverse les cartes actions (depend du numéro du tour)
@@ -92,7 +94,7 @@ public class Jeu extends Observable{
         grille[2][1].setOrientation(0b1011);
         grille[2][1].setPositionEnqueteur(0b0100);
         grille[2][1].getEnqueteur().setNomPersonnage(EnqueteurNom.TOBBY);
-
+        temponGrille = Arrays.copyOf(grille,grille.length);
     }
 
     static List<Integer> orientationsRues(){
@@ -117,6 +119,9 @@ public class Jeu extends Observable{
     public void jouerCoup(Coup cp){}
 
     //TODO reinitialiser : Remettre le plateau en configuration initiale
-    void reinitialiser(){}
+    void reinitialiser(){
+    	
+    	grille= temponGrille;
+    }
 
 }
