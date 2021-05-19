@@ -138,7 +138,9 @@ public class Jeu extends Observable{
     
     public void echanger(int orientation1,int orientation2, Point position1,Point position2) {
     	CarteRue tmp = grille[position1.y][position1.x];
-    	this.grille[position1.y][position1.x] =this.grille[position2.y][position2.x]  ;
+    	this.grille[position1.y][position1.x] =this.grille[position2.y][position2.x];
+    	this.grille[position1.y][position1.x].setPositionEnqueteur(tmp.getPositionEnqueteur());
+    	tmp.setPositionEnqueteur(this.grille[position2.y][position2.x].getPositionEnqueteur());
     	this.grille[position1.y][position1.x].setOrientation(orientation2);
     	this.grille[position2.y][position2.x] = tmp;
     	this.grille[position2.y][position2.x].setOrientation(orientation1);
