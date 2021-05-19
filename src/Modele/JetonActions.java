@@ -3,7 +3,7 @@ package Modele;
 **Jetons Actions**:
 Action face 1
 Action face 2
-Boolean recto (True) ou verso (False)
+Boolean recto (True) = Action 1 ou verso (False) = Action 2
 Boolean dejaJoue
  */
 public class JetonActions {

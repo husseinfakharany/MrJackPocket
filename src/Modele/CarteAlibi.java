@@ -6,16 +6,21 @@ Nom Personnage suspect
  */
 public class CarteAlibi {
 	
-		private SuspectNom suspect;
+		private Suspect suspect;
 		private int sablier;
 
+		CarteAlibi(Suspect suspect){
+			this.suspect = suspect;
+
+		}
+
 		// Getters and Setters
-		public SuspectNom getSuspect() {
+		public Suspect getSuspect() {
 			return suspect;
 		}
 
-		public void setSuspect(SuspectNom s) {
-			suspect = s;
+		public void setSuspect(Suspect suspect) {
+			this.suspect = suspect;
 		}
 
 		public int getSablier() {
@@ -25,11 +30,5 @@ public class CarteAlibi {
 		public void setSablier(int sablier) {
 			this.sablier = sablier;
 		}
-
-		// tester toString
-		public String toString() {
-			return suspect.name();
-		}
-
 	
 }

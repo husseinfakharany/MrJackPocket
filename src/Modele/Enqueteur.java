@@ -13,7 +13,7 @@ public class Enqueteur {
     Point position;
     EnqueteurNom nomPersonnage;
 
-    //TODO implement getters and setters
+    //TODO implement Visible
     ArrayList<Suspect> Visible(CarteRue [][] grille){
         return null;
     }
