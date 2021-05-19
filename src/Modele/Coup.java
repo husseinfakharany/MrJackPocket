@@ -17,7 +17,7 @@ public class Coup {
    
     //entier : 1 ou 2
 	
-    //CAS Où ACTION EQUIVEAUT à ECHANGE OU ROTATION
+    //CAS OÃ¹ ACTION EQUIVEAUT Ã  ECHANGE OU ROTATION
 	public Coup(Actions action,Point position1,Point position2,int orientation1,int orientation2,int deplacement) {
 		
 		this.action = action;
@@ -81,6 +81,4 @@ public class Coup {
 	}
 
 
-	
-	
 }

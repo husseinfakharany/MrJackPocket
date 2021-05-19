@@ -31,8 +31,8 @@ public class Jeu extends Observable{
     //TODO identiteJack : Permet de connaitre l'identite de Jack
     Suspect idJack;
 
-    List<JetonActions> jetonActions;
-    List<CarteAlibi> carteAlibis;
+    List<JetonActions> jetonsActions;
+    List<CarteAlibi> cartesAlibis;
 
     public CarteRue [][] grille;
     public CarteRue [][] temponGrille;
@@ -41,22 +41,21 @@ public class Jeu extends Observable{
     static List<Integer> orientationsRues;
     static List<Suspect> suspects;
 
-    static final int MUROUEST = 0B0111;
-    static final int MUREST = 0B1110;
-    static final int MURNORD = 0B0111;
-    static final int MURSUD = 0B1011;
+    static final int MUROUEST = 0b1110;
+    static final int MUREST = 0b1101;
+    static final int MURNORD = 0b0111;
+    static final int MURSUD = 0b1011;
 
     public Jeu(){
         jack = new Joueur(true, "Hussein", 0,false,false);
-        enqueteur = new Joueur(false, "Fabien", 0, false, false);
+        enqueteur = new Joueur(false, "Fabien", 0, false, true);
         numTour = 1;
         initialiseOrientationsRues();
         initialiseSuspects();
         grille = new CarteRue[3][3];
         temponGrille = new CarteRue[3][3];
         initialiserGrille(); //Initialise et mélange la grille du premier tour
-        //melangeCartesAlibi(); //Melange les cartes alibi
-        //melangeJetonsActions(); //Mélange ou inverse les cartes actions (depend du numéro du tour)
+        initialiseJetonsActions();
     }
 
     private void initialiseOrientationsRues(){
@@ -73,28 +72,57 @@ public class Jeu extends Observable{
             suspects.add(new Suspect(e,null));
         }
     }
+
+    private void initialiseJetonsActions(){
+        jetonsActions = new ArrayList<>();
+        //Création des 4 jetons actions en dur
+        jetonsActions.add(new JetonActions(Actions.DEPLACER_WATSON,Actions.DEPLACER_TOBBY));
+        jetonsActions.add(new JetonActions(Actions.DEPLACER_JOKER,Actions.ROTATION_DISTRICT));
+        jetonsActions.add(new JetonActions(Actions.ECHANGER_DISTRICT,Actions.ROTATION_DISTRICT));
+        jetonsActions.add(new JetonActions(Actions.DEPLACER_SHERLOCK,Actions.INNOCENTER_CARD));
+    }
+
+    private void initialiseCarteAlibis(){
+
+    }
     
-    
-    void initialiserGrille(){
+    private void initialiserGrille(){
 
         for(int l=0; l<3; l++){
             for(int c=0; c<3; c++){
-                //TODO may cause error
                 grille[l][c] = new CarteRue(new Point(c,l));
             }
         }
+
         //Orientations initiaux (enqueteurs face aux murs)
-       
         grille[0][0].setOrientation(0b1110);
-        grille[0][0].setPositionEnqueteur( 0b0001);
+        grille[0][0].setPositionEnqueteur(0b0001);
         grille[0][0].getEnqueteur().setNomPersonnage(EnqueteurNom.SHERLOCK);
-        grille[0][2].setOrientation( 0b1101);
+        grille[0][2].setOrientation(0b1101);
         grille[0][2].setPositionEnqueteur(0b0010);
         grille[0][2].getEnqueteur().setNomPersonnage(EnqueteurNom.WATSON);
         grille[2][1].setOrientation(0b1011);
         grille[2][1].setPositionEnqueteur(0b0100);
         grille[2][1].getEnqueteur().setNomPersonnage(EnqueteurNom.TOBBY);
-        temponGrille = Arrays.copyOf(grille,grille.length);
+
+    }
+
+
+    //Mélange ou inverse les cartes actions (depend du numéro du tour)
+    void melangeJetonsActions(){
+        Random rd = new Random();
+        int act;
+        JetonActions current;
+        for(act=0; act<4; act++){
+            current = jetonsActions.get(act);
+            if (numTour%2 == 1){ //Mélange des jétons actions
+                current.setEstRecto(rd.nextBoolean()); //Lancement de chaque jeton
+            } else {
+               //Inversement de chaque jeton
+                current.setEstRecto(!current.estRecto());
+            }
+        }
+
     }
 
     static List<Integer> orientationsRues(){
@@ -136,8 +164,20 @@ public class Jeu extends Observable{
 
     //TODO reinitialiser : Remettre le plateau en configuration initiale
     void reinitialiser(){
-    	
-    	grille= temponGrille;
+      
+        jack.setSablier(0);
+        jack.setTurn(false);
+        jack.setWinner(false);
+        enqueteur.setSablier(0);
+        enqueteur.setTurn(true);
+        enqueteur.setWinner(false);
+        setNumTour(0);
+        initialiseSuspects();
+        initialiserGrille();
     }
 
+    //Getters and setters
+    void setNumTour(int numTour){
+        this.numTour = numTour;
+    }
 }

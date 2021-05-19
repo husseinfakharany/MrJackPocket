@@ -17,6 +17,7 @@ public class Suspect {
     private Point position; //position sur la grille
     private Boolean carteCache;
     private Boolean pioche;
+    private Boolean isJack;
 
     //TODO implement getters and setters
     Suspect(SuspectNom nomPerso, Point position){
@@ -55,6 +56,7 @@ public class Suspect {
 			default:
 				throw new IllegalStateException("Unexpected value: " + nomPersonnage);
 		}
+		isJack = false;
     }
     
    public SuspectNom getNomPersonnage(){
@@ -91,6 +93,14 @@ public class Suspect {
 
 	public SuspectCouleur getCouleur(){
     	return couleur;
+	}
+
+	public void setIsJack(Boolean isJack){
+    	this.isJack = isJack;
+    }
+
+	public Boolean getIsJack(){
+    	return isJack;
 	}
    
 }
