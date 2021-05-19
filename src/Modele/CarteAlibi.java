@@ -1,4 +1,7 @@
 package Modele;
+
+import static Modele.SuspectCouleur.*;
+
 /*
 **Carte Alibi**:
 Nombre de sabliers (0, 1, 2)

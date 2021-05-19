@@ -1,6 +1,5 @@
 package Vue;
 
-import Modele.CarteRue;
 import Modele.Jeu;
 
 import javax.imageio.ImageIO;
@@ -8,34 +7,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
 
-public class JetonsGraphique extends JComponent {
+public class JetonsGraphique extends JComponent implements ElementPlateauG {
     Graphics2D drawable;
-    int largeur,hauteur,tailleC;
+    int largeur,hauteur,tailleC,offsetX,offsetY;
     Jeu jeu;
-    Image quartier1, quartier2, quartier3, quartier4, quartierX, cible, suspectBla, suspectBle, suspectJau, suspectMar, suspectNoi,
-            suspectOra, suspectRos, suspectVer, suspectVio, suspectGri, sherlock, watson, chien;
+    Image jeton1A , jeton1B , jeton2A , jeton2B, jeton3A , jeton3B, jeton4A , jeton4B;
 
     JetonsGraphique(Jeu j){
         jeu=j;
-        quartier1 = chargeImage("QuartierVide-1");
-        quartier2 = chargeImage("QuartierVide-2");
-        quartier3 = chargeImage("QuartierVide-3");
-        quartier4 = chargeImage("QuartierVide-4");
-        quartierX = chargeImage("QuartierVideX");
-        cible = chargeImage("Cible");
-        suspectBla = chargeImage("Suspect-blancB");
-        suspectBle = chargeImage("Suspect-bleuB");
-        suspectJau = chargeImage("Suspect-jauneB");
-        suspectMar = chargeImage("Suspect-marronB");
-        suspectNoi = chargeImage("Suspect-noirB");
-        suspectOra = chargeImage("Suspect-orangeB");
-        suspectRos = chargeImage("Suspect-roseB");
-        suspectVer = chargeImage("Suspect-vertB");
-        suspectVio = chargeImage("Suspect-violetB");
-        //suspectGri = chargeImage("Suspect-grisB");
-        sherlock = chargeImage("Sherlock");
-        watson = chargeImage("Watson");
-        chien = chargeImage("Chien");;
+        jeton1A = chargeImage("Jeton-1-A");
+        jeton1B = chargeImage("Jeton-1-B");
+        jeton2A = chargeImage("Jeton-2-A");
+        jeton2B = chargeImage("Jeton-2-B");
+        jeton3A = chargeImage("Jeton-3-A");
+        jeton3B = chargeImage("Jeton-3-B");
+        jeton4A = chargeImage("Jeton-4-A");
+        jeton4B = chargeImage("Jeton-4-B");
+        offsetX = 20;
+        offsetY = 20;
     }
 
     private Image chargeImage ( String nom) {
@@ -51,74 +40,20 @@ public class JetonsGraphique extends JComponent {
         return img;
     }
 
-    public void dessinerCarte(int l, int c, CarteRue rue){
-        Image quartier,suspect;
-        switch (rue.orientation){
-            case CarteRue.NSE:
-                quartier = quartier4;
-                break;
-            case CarteRue.NSO:
-                quartier = quartier3;
-                break;
-            case CarteRue.NEO:
-                quartier = quartier2;
-                break;
-            case CarteRue.SEO:
-                quartier = quartier1;
-                break;
-            case CarteRue.NSEO:
-                quartier = quartierX;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + rue.orientation);
-        }
-        switch (rue.suspect.getCouleur()){
-            case BLEU:
-                suspect = suspectBle;
-                break;
-            case GRIS:
-                suspect = cible;
-                break;
-            case NOIR:
-                suspect = suspectNoi;
-                break;
-            case ROSE:
-                suspect = suspectRos;
-                break;
-            case VERT:
-                suspect = suspectVer;
-                break;
-            case BLANC:
-                suspect = suspectBla;
-                break;
-            case JAUNE:
-                suspect = suspectJau;
-                break;
-            case ORANGE:
-                suspect = suspectOra;
-                break;
-            case VIOLET:
-                suspect = suspectVio;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + rue.orientation);
-        }
-        //suspect.getScaledInstance(tailleC,tailleC,Image.SCALE_DEFAULT);
-        drawable.drawImage(quartier, l*tailleC, c*tailleC, tailleC, tailleC, null);
-        drawable.drawImage(suspect, l*tailleC, c*tailleC, tailleC, tailleC, null);
-    }
-
-    public void dessinerGrille(){
-        int i=0,j=0;
-        for(int l=0; l < 3; l++){
-            for(int c=0; c < 3; c++){
-                if(l==0) drawable.drawImage(cible, (c+1)*tailleC, 0, tailleC, tailleC, null);
-                if(l==3) drawable.drawImage(cible, (c+1)*tailleC, 4*tailleC, tailleC, tailleC, null);
-                if(c==0) drawable.drawImage(cible, 0, (l+1)*tailleC, tailleC, tailleC, null);
-                if(c==3) drawable.drawImage(cible, 4*tailleC, (l+1)*tailleC, tailleC, tailleC, null);
-                dessinerCarte(l+1,c+1,jeu.grille[l][c]);
-            }
-        }
+    //TODO charger la bonne face
+    public void dessinerJetons(){
+        Image jeton1, jeton2, jeton3, jeton4;
+        jeton1 = jeton1A;
+        jeton2 = jeton2A;
+        jeton3 = jeton3A;
+        jeton4 = jeton4B;
+        drawable.setFont(new Font("default", Font.BOLD, 16));
+        drawable.drawString("Jetons :",85,16);
+        drawable.setFont(new Font("default", Font.PLAIN, 12));
+        drawable.drawImage(jeton1, offsetX, offsetY, 2*tailleC, 2*tailleC, null);
+        drawable.drawImage(jeton2, 2*(tailleC+offsetX), offsetY, 2*tailleC, 2*tailleC, null);
+        drawable.drawImage(jeton3, offsetX, 2*(tailleC+offsetY), 2*tailleC, 2*tailleC, null);
+        drawable.drawImage(jeton4, 2*(tailleC+offsetX), 2*(tailleC+offsetY), 2*tailleC, 2*tailleC, null);
     }
 
     @Override
@@ -139,7 +74,28 @@ public class JetonsGraphique extends JComponent {
         int lCase=largeur/5; //3 rues + 2 inspecteurs qui l'entoure possiblement
         tailleC=Math.min(hCase,lCase);
 
-        dessinerGrille();
+        dessinerJetons();
 
+
+    }
+
+    @Override
+    public int getTailleCase() {
+        return tailleC;
+    }
+
+    @Override
+    public int getType() {
+        return 2; //2 : Jetons
+    }
+
+    @Override
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    @Override
+    public int getOffsetY() {
+        return offsetY;
     }
 }

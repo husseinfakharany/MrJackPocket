@@ -17,6 +17,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     JComboBox<String> commencer, boutonIA;
     GrilleGraphique district;
     PiocheGraphique pioche;
+    JetonsGraphique jetons;
 
     //DONE Fonction charger boite + fonctions privés qui contruisent la boite si null (~ Confguration Sokoban) +
     // une fonction qui renvoie la boite d'un String en parametre avec un switch Ex: afficherEcran("Menu")
@@ -29,6 +30,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         controle.fixerInterfaceUtilisateur(this);
         district = new GrilleGraphique(jeu);
         pioche = new PiocheGraphique(jeu);
+        jetons = new JetonsGraphique(jeu);
     }
 
     public static void demarrer(Jeu j, CollecteurEvenements c) {
@@ -181,8 +183,11 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteJeu = Box.createVerticalBox();
             boiteJeu.add(boiteInfo);
             district.addMouseListener(new AdaptateurSouris(district, controle));
+            jetons.addMouseListener(new AdaptateurSouris(jetons, controle));
             boiteJeu.add(district);
+            boiteJeu.add(jetons);
             boiteJeu.add(pioche);
+
         }
 
         return boiteJeu;

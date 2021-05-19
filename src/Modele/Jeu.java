@@ -35,6 +35,7 @@ public class Jeu extends Observable{
     List<CarteAlibi> cartesAlibis;
 
     public CarteRue [][] grille;
+    public CarteRue [][] temponGrille;
 
     //TODO static may cause error?
     static List<Integer> orientationsRues;
@@ -52,6 +53,7 @@ public class Jeu extends Observable{
         initialiseOrientationsRues();
         initialiseSuspects();
         grille = new CarteRue[3][3];
+        temponGrille = new CarteRue[3][3];
         initialiserGrille(); //Initialise et mélange la grille du premier tour
         initialiseJetonsActions();
     }
@@ -102,6 +104,7 @@ public class Jeu extends Observable{
         grille[2][1].setOrientation(0b1011);
         grille[2][1].setPositionEnqueteur(0b0100);
         grille[2][1].getEnqueteur().setNomPersonnage(EnqueteurNom.TOBBY);
+
     }
 
 
@@ -119,10 +122,27 @@ public class Jeu extends Observable{
                 current.setEstRecto(!current.estRecto());
             }
         }
+
     }
 
     static List<Integer> orientationsRues(){
         return orientationsRues;
+    }
+    
+    
+    public void rotation(int orientation,Point position) {
+    	
+    	this.grille[position.y][ position.x].setOrientation(orientation);
+    	
+    }
+    
+    public void echanger(int orientation1,int orientation2, Point position1,Point position2) {
+    	CarteRue tmp = grille[position1.y][position1.x];
+    	this.grille[position1.y][position1.x] =this.grille[position2.y][position2.x]  ;
+    	this.grille[position1.y][position1.x].setOrientation(orientation2);
+    	this.grille[position2.y][position2.x] = tmp;
+    	this.grille[position2.y][position2.x].setOrientation(orientation1);
+    	
     }
     
     public  void changerJoueur() {
@@ -144,6 +164,7 @@ public class Jeu extends Observable{
 
     //TODO reinitialiser : Remettre le plateau en configuration initiale
     void reinitialiser(){
+      
         jack.setSablier(0);
         jack.setTurn(false);
         jack.setWinner(false);
