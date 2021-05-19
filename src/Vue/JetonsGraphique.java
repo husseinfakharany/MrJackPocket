@@ -50,10 +50,10 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         drawable.setFont(new Font("default", Font.BOLD, 16));
         drawable.drawString("Jetons :",85,16);
         drawable.setFont(new Font("default", Font.PLAIN, 12));
-        drawable.drawImage(jeton1, offsetX, offsetY, 2*tailleC, 2*tailleC, null);
-        drawable.drawImage(jeton2, 2*(tailleC+offsetX), offsetY, 2*tailleC, 2*tailleC, null);
-        drawable.drawImage(jeton3, offsetX, 2*(tailleC+offsetY), 2*tailleC, 2*tailleC, null);
-        drawable.drawImage(jeton4, 2*(tailleC+offsetX), 2*(tailleC+offsetY), 2*tailleC, 2*tailleC, null);
+        drawable.drawImage(jeton1, offsetX, offsetY, tailleC, tailleC, null);
+        drawable.drawImage(jeton2, tailleC+2*offsetX, offsetY, tailleC, tailleC, null);
+        drawable.drawImage(jeton3, offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
+        drawable.drawImage(jeton4, tailleC+2*offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
     }
 
     @Override
@@ -70,12 +70,11 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         drawable.clearRect(0, 0, largeur, hauteur);
 
         //Calcul de la taille d'une case
-        int hCase=hauteur/5; //3 rues + 2 inspecteurs qui l'entoure possiblement
-        int lCase=largeur/5; //3 rues + 2 inspecteurs qui l'entoure possiblement
+        int hCase=(hauteur-3*offsetY)/2;
+        int lCase=(largeur-3*offsetX)/2;
         tailleC=Math.min(hCase,lCase);
 
         dessinerJetons();
-
 
     }
 

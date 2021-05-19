@@ -14,8 +14,8 @@ public class AdaptateurSouris extends MouseAdapter {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		int c = e.getX() / carre.getTailleCase();
-		int l = e.getY() / carre.getTailleCase();
+		int c = e.getX() / (carre.getTailleCase()+carre.getOffsetX());
+		int l = e.getY() / (carre.getTailleCase()+ carre.getOffsetY());
 		controle.clicSouris(l, c);
 	}
 }

@@ -23,13 +23,13 @@ Attribuer le sablier du tour courant
 
 public class Jeu extends Observable{
 
-    Joueur jack;
-    Joueur enqueteur;
-    Joueur joueurCourant;
+    public Joueur jack;
+    public Joueur enqueteur;
+    public Joueur joueurCourant;
     int numTour;
 
     //TODO identiteJack : Permet de connaitre l'identite de Jack
-    Suspect idJack;
+    public SuspectCouleur idJack;
 
     List<JetonActions> jetonsActions;
     List<CarteAlibi> cartesAlibis;
@@ -56,6 +56,8 @@ public class Jeu extends Observable{
         temponGrille = new CarteRue[3][3];
         initialiserGrille(); //Initialise et mélange la grille du premier tour
         initialiseJetonsActions();
+        joueurCourant = enqueteur;
+        idJack = SuspectCouleur.ROSE;
     }
 
     private void initialiseOrientationsRues(){

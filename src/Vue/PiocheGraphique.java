@@ -15,8 +15,8 @@ public class PiocheGraphique extends JComponent {
     boolean piocheActive;
     PiocheGraphique(Jeu j){
         jeu=j;
-        piocheD = chargeImage("Pioche");
-        piocheA = chargeImage("Pioche");
+        piocheD = chargeImage("PiocheD");
+        piocheA = chargeImage("PiocheA");
         piocheActive = false;
     }
 

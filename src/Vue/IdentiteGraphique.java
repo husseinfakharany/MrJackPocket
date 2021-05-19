@@ -1,7 +1,7 @@
 package Vue;
 
-import Modele.CarteRue;
 import Modele.Jeu;
+import Modele.Joueur;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,33 +12,46 @@ public class IdentiteGraphique extends JComponent {
     Graphics2D drawable;
     int largeur,hauteur,tailleC;
     Jeu jeu;
-    Image quartier1, quartier2, quartier3, quartier4, quartierX, cible, suspectBla, suspectBle, suspectJau, suspectMar, suspectNoi,
-            suspectOra, suspectRos, suspectVer, suspectVio, suspectGri, sherlock, watson, chien;
+    Image jack,sherlock, pioche;
 
     IdentiteGraphique(Jeu j){
         jeu=j;
-        quartier1 = chargeImage("QuartierVide-1");
-        quartier2 = chargeImage("QuartierVide-2");
-        quartier3 = chargeImage("QuartierVide-3");
-        quartier4 = chargeImage("QuartierVide-4");
-        quartierX = chargeImage("QuartierVideX");
-        cible = chargeImage("Cible");
-        suspectBla = chargeImage("Suspect-blancB");
-        suspectBle = chargeImage("Suspect-bleuB");
-        suspectJau = chargeImage("Suspect-jauneB");
-        suspectMar = chargeImage("Suspect-marronB");
-        suspectNoi = chargeImage("Suspect-noirB");
-        suspectOra = chargeImage("Suspect-orangeB");
-        suspectRos = chargeImage("Suspect-roseB");
-        suspectVer = chargeImage("Suspect-vertB");
-        suspectVio = chargeImage("Suspect-violetB");
-        //suspectGri = chargeImage("Suspect-grisB");
+        switch (jeu.idJack){
+            case BLEU:
+                jack = chargeImage("Suspect-bleuB");
+                break;
+            case GRIS:
+                jack = chargeImage("Suspect-grisB");
+                break;
+            case NOIR:
+                jack = chargeImage("Suspect-noirB");
+                break;
+            case ROSE:
+                jack = chargeImage("Suspect-roseB");
+                break;
+            case VERT:
+                jack = chargeImage("Suspect-vertB");;
+                break;
+            case BLANC:
+                jack = chargeImage("Suspect-blancB");
+                break;
+            case JAUNE:
+                jack = chargeImage("Suspect-jauneB");
+                break;
+            case ORANGE:
+                jack = chargeImage("Suspect-orangeB");
+                break;
+            case VIOLET:
+                jack = chargeImage("Suspect-violetB");
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + jeu.idJack);
+        }
         sherlock = chargeImage("Sherlock");
-        watson = chargeImage("Watson");
-        chien = chargeImage("Chien");;
+        pioche = chargeImage("PiocheA");
     }
 
-    private Image chargeImage ( String nom) {
+    private Image chargeImage(String nom) {
         Image img = null;
         InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream( "PNG/" + nom + ".png" );
         try {
@@ -51,74 +64,31 @@ public class IdentiteGraphique extends JComponent {
         return img;
     }
 
-    public void dessinerCarte(int l, int c, CarteRue rue){
-        Image quartier,suspect;
-        switch (rue.orientation){
-            case CarteRue.NSE:
-                quartier = quartier4;
-                break;
-            case CarteRue.NSO:
-                quartier = quartier3;
-                break;
-            case CarteRue.NEO:
-                quartier = quartier2;
-                break;
-            case CarteRue.SEO:
-                quartier = quartier1;
-                break;
-            case CarteRue.NSEO:
-                quartier = quartierX;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + rue.orientation);
+    public void dessinerIdentite(){
+        Image personnage;
+        Joueur personnageCourant = jeu.joueurCourant;
+        int taillePiocheAdv ;
+        boolean isJack = personnageCourant.isJack();
+        //isJack = !isJack;
+        if(isJack){
+            personnage = jack;
+            taillePiocheAdv = jeu.jack.getCardList().size();
+        } else {
+            personnage = sherlock;
+            taillePiocheAdv = jeu.enqueteur.getCardList().size();
         }
-        switch (rue.suspect.getCouleur()){
-            case BLEU:
-                suspect = suspectBle;
-                break;
-            case GRIS:
-                suspect = cible;
-                break;
-            case NOIR:
-                suspect = suspectNoi;
-                break;
-            case ROSE:
-                suspect = suspectRos;
-                break;
-            case VERT:
-                suspect = suspectVer;
-                break;
-            case BLANC:
-                suspect = suspectBla;
-                break;
-            case JAUNE:
-                suspect = suspectJau;
-                break;
-            case ORANGE:
-                suspect = suspectOra;
-                break;
-            case VIOLET:
-                suspect = suspectVio;
-                break;
-            default:
-                throw new IllegalStateException("Unexpected value: " + rue.orientation);
-        }
-        //suspect.getScaledInstance(tailleC,tailleC,Image.SCALE_DEFAULT);
-        drawable.drawImage(quartier, l*tailleC, c*tailleC, tailleC, tailleC, null);
-        drawable.drawImage(suspect, l*tailleC, c*tailleC, tailleC, tailleC, null);
-    }
 
-    public void dessinerGrille(){
-        int i=0,j=0;
-        for(int l=0; l < 3; l++){
-            for(int c=0; c < 3; c++){
-                if(l==0) drawable.drawImage(cible, (c+1)*tailleC, 0, tailleC, tailleC, null);
-                if(l==3) drawable.drawImage(cible, (c+1)*tailleC, 4*tailleC, tailleC, tailleC, null);
-                if(c==0) drawable.drawImage(cible, 0, (l+1)*tailleC, tailleC, tailleC, null);
-                if(c==3) drawable.drawImage(cible, 4*tailleC, (l+1)*tailleC, tailleC, tailleC, null);
-                dessinerCarte(l+1,c+1,jeu.grille[l][c]);
-            }
-        }
+        drawable.setFont(new Font("default", Font.BOLD, 16));
+        drawable.drawString("Vous Incarnez :",10,20);
+        drawable.setFont(new Font("default", Font.ITALIC, 14));
+        if(isJack) drawable.drawString("Meurtrier",10,40);
+        else drawable.drawString("Enquêteur",10,40);
+        drawable.drawImage(personnage, 10, 75, tailleC, tailleC, null);
+
+        drawable.setFont(new Font("default", Font.BOLD, 16));
+        drawable.drawString("Adversaire",10,(int) (2.6*tailleC-20));
+        drawable.drawImage(pioche,(int) (tailleC*0.05),(int) (2.6*tailleC), (int) (0.5*tailleC), (int) (0.5*tailleC), null);
+        drawable.drawString(": "+taillePiocheAdv+" / 8",(int) (tailleC*0.5)+25,(int) (2.9*tailleC) );
     }
 
     @Override
@@ -135,11 +105,11 @@ public class IdentiteGraphique extends JComponent {
         drawable.clearRect(0, 0, largeur, hauteur);
 
         //Calcul de la taille d'une case
-        int hCase=hauteur/5; //3 rues + 2 inspecteurs qui l'entoure possiblement
-        int lCase=largeur/5; //3 rues + 2 inspecteurs qui l'entoure possiblement
+        int hCase=hauteur/4; //texte + Photo + Blanc + Adversaire
+        int lCase=largeur;
         tailleC=Math.min(hCase,lCase);
 
-        dessinerGrille();
+        dessinerIdentite();
 
     }
 }

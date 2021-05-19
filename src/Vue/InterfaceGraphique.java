@@ -18,6 +18,8 @@ public class InterfaceGraphique implements Observer, Runnable {
     GrilleGraphique district;
     PiocheGraphique pioche;
     JetonsGraphique jetons;
+    IdentiteGraphique identite;
+    MainGraphique main;
 
     //DONE Fonction charger boite + fonctions privés qui contruisent la boite si null (~ Confguration Sokoban) +
     // une fonction qui renvoie la boite d'un String en parametre avec un switch Ex: afficherEcran("Menu")
@@ -31,6 +33,8 @@ public class InterfaceGraphique implements Observer, Runnable {
         district = new GrilleGraphique(jeu);
         pioche = new PiocheGraphique(jeu);
         jetons = new JetonsGraphique(jeu);
+        identite = new IdentiteGraphique(jeu);
+        main = new MainGraphique(jeu);
     }
 
     public static void demarrer(Jeu j, CollecteurEvenements c) {
@@ -184,9 +188,11 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteJeu.add(boiteInfo);
             district.addMouseListener(new AdaptateurSouris(district, controle));
             jetons.addMouseListener(new AdaptateurSouris(jetons, controle));
-            boiteJeu.add(district);
-            boiteJeu.add(jetons);
-            boiteJeu.add(pioche);
+            //boiteJeu.add(district);
+            //boiteJeu.add(jetons);
+            //boiteJeu.add(pioche);
+            //boiteJeu.add(identite);
+            //boiteJeu.add(main);
 
         }
 
