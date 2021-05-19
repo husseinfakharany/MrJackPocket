@@ -19,16 +19,25 @@ public class CarteRue {
     public Enqueteur enqueteur;
     public Suspect suspect;
 
-    /*
-    Orientations:
-    1110 = 14 (Nord, Sud, Est)
-    1101 = 13 (Nord, Sud, Ouest)
-    1011 = 11 (Nord, Est, Ouest)
-    0111 = 7  (Sud, Est, Ouest)
-    */
+    //Orientations:
+    //TODO NSEO existe c'est le verso de la carte suspect GRIS
+    public final static int NSEO = 15; //1111(Nord, Sud, Est,Ouest)
+
+    public final static int NSE = 14; //1110(Nord, Sud, Est)
+    public final static int NSO = 13; //1101 (Nord, Sud, Ouest)
+    public final static int NEO = 11; //1011 (Nord, Est, Ouest)
+    public final static int SEO = 7; //0111 (Sud, Est, Ouest)
+
+    //Integrable sur 4 bits dans orientations ?
+    //positionEnqueteur:
+    public final static int ABSENT = 0;
+    public final static int OUEST = 1;
+    public final static int EST = 2;
+    public final static int SUD = 4;
+    public final static int NORD = 8;
 
     public CarteRue(Point position){
-        //TODO improve code
+        //TODO improve code : Recevoir le suspect dans le constructeur et laisser le jeu distribuer les suspects
         Random rand = new Random();
         //On choisi une orientation des orientations possibles
         orientation = Jeu.orientationsRues().get(rand.nextInt(Jeu.orientationsRues().size()));
@@ -42,5 +51,14 @@ public class CarteRue {
         } while (suspect.getPosition() != null);
         suspect = new Suspect(suspect.getNomPersonnage(),this.position);
         Jeu.suspects.set(suspectIndex, suspect);
+    }
+
+    //TODO
+    public int getPosEnqueteur(){
+        return ABSENT;
+    }
+    //TODO
+    public int getOrientation(){
+        return NORD;
     }
 }

@@ -28,6 +28,9 @@ public class Jeu extends Observable{
     Joueur joueurCourant;
     int numTour;
 
+    //TODO identiteJack : Permet de connaitre l'identite de Jack
+    Suspect idJack;
+
     List<JetonActions> jetonActions;
     List<CarteAlibi> carteAlibis;
 
@@ -110,7 +113,7 @@ public class Jeu extends Observable{
         return suspects;
     }
 
-    //TODO jouerCoup
+    //TODO jouerCoup avec la méthode de l'objet Coup
     public void jouerCoup(Coup cp){}
 
     //TODO reinitialiser : Remettre le plateau en configuration initiale
