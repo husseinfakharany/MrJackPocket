@@ -2,6 +2,8 @@ package Modele;
 
 import java.awt.*;
 
+import static Modele.SuspectCouleur.*;
+
 /*
 **Suspect**:
 Nom Personnage
@@ -11,6 +13,7 @@ Boolean caché ou pas
 public class Suspect {
 	
     private SuspectNom nomPersonnage;
+    private SuspectCouleur couleur;
     private Point position; //position sur la grille
     private Boolean carteCache;
     private Boolean pioche;
@@ -21,6 +24,37 @@ public class Suspect {
         this.setPosition(position);
         setCarteCache(false);
         setPioche(false);
+		switch (nomPersonnage){
+			case MADAME:
+				couleur = ROSE;
+				break;
+			case JOHN_PIZER:
+				couleur = BLANC;
+				break;
+			case JOHN_SMITH:
+				couleur = JAUNE;
+				break;
+			case JEREMY_BERT:
+				couleur = ORANGE;
+				break;
+			case JOSEPH_LANE:
+				couleur = GRIS;
+				break;
+			case MISS_STEALTHY:
+				couleur = VERT;
+				break;
+			case WILLIAM_GULL:
+				couleur = VIOLET;
+				break;
+			case SERGENT_GOODLEY:
+				couleur = NOIR;
+				break;
+			case INSPECTOR_LESTRADE:
+				couleur = BLEU;
+				break;
+			default:
+				throw new IllegalStateException("Unexpected value: " + nomPersonnage);
+		}
     }
     
    public SuspectNom getNomPersonnage(){
@@ -54,6 +88,9 @@ public class Suspect {
 	public void setPioche(Boolean pioche) {
 		this.pioche = pioche;
 	}
-   
+
+	public SuspectCouleur getCouleur(){
+    	return couleur;
+	}
    
 }
