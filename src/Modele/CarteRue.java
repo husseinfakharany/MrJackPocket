@@ -52,13 +52,52 @@ public class CarteRue {
         suspect = new Suspect(suspect.getNomPersonnage(),this.position);
         Jeu.suspects.set(suspectIndex, suspect);
     }
+    
+    
+
+	public int getOrientation() {
+		return orientation;
+	}
+
+	void setOrientation(int orientation) {
+		this.orientation = orientation;
+	}
+
+	public int getPositionEnqueteur() {
+		return positionEnqueteur;
+	}
+
+	void setPositionEnqueteur(int positionEnqueteur) {
+		this.positionEnqueteur = positionEnqueteur;
+	}
+
+	public Enqueteur getEnqueteur() {
+		return enqueteur;
+	}
+
+	public void setEnqueteur(Enqueteur enqueteur) {
+		this.enqueteur = enqueteur;
+	}
+	
+	public Point getPosition() {
+		return position;
+	}
+
+	public void setPosition(Point position) {
+		this.position = position;
+	}
+	
+	public Suspect getSuspect() {
+		return suspect;
+	}
+
+	public void setSuspect(Suspect suspect) {
+		this.suspect = suspect;
+	}
 
     //TODO
     public int getPosEnqueteur(){
         return ABSENT;
     }
-    //TODO
-    public int getOrientation(){
-        return NORD;
-    }
+
 }
