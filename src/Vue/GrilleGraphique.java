@@ -14,6 +14,7 @@ public class GrilleGraphique extends JComponent implements  ElementPlateauG{
     Jeu jeu;
     Image quartier1, quartier2, quartier3, quartier4, quartierX, cible, suspectBla, suspectBle, suspectJau, suspectNoi,
             suspectOra, suspectRos, suspectVer, suspectVio, suspectGri, sherlock, watson, chien;
+    private int offsetX=0,offsetY=0;
 
     GrilleGraphique(Jeu j){
         jeu=j;
@@ -34,7 +35,7 @@ public class GrilleGraphique extends JComponent implements  ElementPlateauG{
         suspectVio = chargeImage("Suspect-violetB");
         sherlock = chargeImage("Sherlock");
         watson = chargeImage("Watson");
-        chien = chargeImage("Chien");;
+        chien = chargeImage("Chien");
     }
 
     private Image chargeImage ( String nom) {
@@ -151,5 +152,15 @@ public class GrilleGraphique extends JComponent implements  ElementPlateauG{
     @Override
     public int getType() {
         return 1; //1 grille
+    }
+
+    @Override
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    @Override
+    public int getOffsetY() {
+        return offsetY;
     }
 }

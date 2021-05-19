@@ -17,6 +17,7 @@ public class PiocheGraphique extends JComponent {
         jeu=j;
         piocheD = chargeImage("Pioche");
         piocheA = chargeImage("Pioche");
+        piocheActive = false;
     }
 
     private Image chargeImage ( String nom) {
@@ -50,8 +51,14 @@ public class PiocheGraphique extends JComponent {
         int hCase=hauteur/5; //3 rues + 2 inspecteurs qui l'entoure possiblement
         int lCase=largeur/5; //3 rues + 2 inspecteurs qui l'entoure possiblement
         tailleC=Math.min(hCase,lCase);
-        if(piocheActive) drawable.drawImage(piocheA,0,0,tailleC,tailleC,null);
-        else drawable.drawImage(piocheD,0,0,tailleC,tailleC,null);
+
+        int taillePioche = 8;
+        drawable.setFont(new Font("default", Font.BOLD, 16));
+        drawable.drawString("Pioche ( " + taillePioche + " / 8 ) :",10,20);
+        drawable.setFont(new Font("default", Font.PLAIN, 12));
+        if(piocheActive) drawable.drawImage(piocheA,25,30,tailleC,tailleC,null);
+        else drawable.drawImage(piocheD,25,30,tailleC,tailleC,null);
+
 
     }
 }
