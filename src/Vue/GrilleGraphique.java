@@ -116,7 +116,7 @@ public class GrilleGraphique extends JComponent implements  ElementPlateauG{
                 if(l==2) drawable.drawImage(cible, (c+1)*tailleC, 4*tailleC, tailleC, tailleC, null);
                 if(c==0) drawable.drawImage(cible, 0, (l+1)*tailleC, tailleC, tailleC, null);
                 if(c==2) drawable.drawImage(cible, 4*tailleC, (l+1)*tailleC, tailleC, tailleC, null);
-                dessinerCarte(l+1,c+1,jeu.grille[l][c]);
+                dessinerCarte(l+1,c+1,jeu.plateau().grille[l][c]);
             }
         }
     }

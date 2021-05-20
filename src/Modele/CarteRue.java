@@ -39,7 +39,7 @@ public class CarteRue {
     public CarteRue(Point position, Suspect suspect){
         Random rand = new Random();
         //On choisi une orientation des orientations possibles
-        orientation = Jeu.orientationsRues().get(rand.nextInt(Jeu.orientationsRues().size()));
+        orientation = Plateau.orientationsRues().get(rand.nextInt(Plateau.orientationsRues().size()));
         positionEnqueteur = 0;
         enqueteur = new Enqueteur();
         this.position = position;

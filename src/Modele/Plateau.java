@@ -1,9 +1,10 @@
 package Modele;
 
-import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 /*
 **Jeu**:
@@ -159,7 +160,8 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 	public Coup determinerCoup(Actions act){
         //Coup res = new Coup(this,act,); //TODO Modify Coup constructor before implementation
         //TODO if already played or cannot be rotated return null
-        return res;
+        //return res;
+        return null;
     }
 
     public void jouerCoup(Coup cp) {

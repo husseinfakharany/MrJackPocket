@@ -24,7 +24,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         jeton4A = chargeImage("Jeton-4-A");
         jeton4B = chargeImage("Jeton-4-B");
         offsetX = 20;
-        offsetY = 20;
+        offsetY = 30;
     }
 
     private Image chargeImage ( String nom) {
@@ -47,13 +47,13 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         jeton2 = jeton2A;
         jeton3 = jeton3A;
         jeton4 = jeton4B;
-        drawable.setFont(new Font("default", Font.BOLD, 16));
-        drawable.drawString("Jetons :",85,16);
+        drawable.setFont(new Font("default", Font.BOLD, 25));
+        drawable.drawString("Jetons :",(int) (largeur*0.5)-60,25);
         drawable.setFont(new Font("default", Font.PLAIN, 12));
-        drawable.drawImage(jeton1, offsetX, offsetY, tailleC, tailleC, null);
-        drawable.drawImage(jeton2, tailleC+2*offsetX, offsetY, tailleC, tailleC, null);
-        drawable.drawImage(jeton3, offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
-        drawable.drawImage(jeton4, tailleC+2*offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
+        drawable.drawImage(jeton1, 0, offsetY, tailleC, tailleC, null);
+        drawable.drawImage(jeton2, tailleC+offsetX, offsetY, tailleC, tailleC, null);
+        drawable.drawImage(jeton3, 0, tailleC+2*offsetY, tailleC, tailleC, null);
+        drawable.drawImage(jeton4, tailleC+offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
     }
 
     @Override
@@ -70,8 +70,8 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         drawable.clearRect(0, 0, largeur, hauteur);
 
         //Calcul de la taille d'une case
-        int hCase=(hauteur-3*offsetY)/2;
-        int lCase=(largeur-3*offsetX)/2;
+        int hCase=(hauteur-2*offsetY)/2;
+        int lCase=(largeur-2*offsetX)/2;
         tailleC=Math.min(hCase,lCase);
 
         dessinerJetons();

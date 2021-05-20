@@ -72,6 +72,21 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     }
 
+    public JButton nouveauBouton(String text){
+        JButton bouton = new JButton(text);
+        bouton.setMaximumSize(new Dimension(400, 40));
+        bouton.setPreferredSize(new Dimension(400, 40));
+        bouton.setFont(new Font("default",Font.PLAIN,25));
+        return bouton;
+    }
+
+    public JButton nouveauBouton(String text, int width, int height){
+        JButton bouton = new JButton(text);
+        bouton.setMaximumSize(new Dimension(width, height));
+        bouton.setPreferredSize(new Dimension(width, height));
+        bouton.setFont(new Font("default",Font.PLAIN,25));
+        return bouton;
+    }
     //Description des boites
     public Box getBoiteMenu(){
         if (boiteMenu == null){
@@ -96,9 +111,10 @@ public class InterfaceGraphique implements Observer, Runnable {
 
             //Alignement et ajout des pemiers éléments
             JLabel titre = new JLabel("Mr Jack Pocket");
-            titre.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 25));
+            titre.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 50));
             titre.setAlignmentX(Component.CENTER_ALIGNMENT);
-            JLabel astuces = new JLabel("Astuces : Cliquez sur le bouton commencer une partie, c'est magique !");
+            JLabel astuces = new JLabel("Astuces : Cliquez sur le bouton commencer une partie !");
+            astuces.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 25));
             astuces.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             boiteTitre.add(Box.createVerticalGlue());
@@ -116,8 +132,9 @@ public class InterfaceGraphique implements Observer, Runnable {
             //Lancer la partie
             String [] menuListe = {"Enquêteur", "Meurtrier", "Ordi Vs Ordi"};
             commencer = new JComboBox<>(menuListe);
-            commencer.setPreferredSize(new Dimension(200, 25));
-            commencer.setMaximumSize(new Dimension(450, 25));
+            commencer.setMaximumSize(new Dimension(400, 40));
+            commencer.setPreferredSize(new Dimension(400, 40));
+            commencer.setFont(new Font("default",Font.PLAIN,25));
             DefaultListCellRenderer listRenderer = new DefaultListCellRenderer();
             listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER); // center-aligned items
             commencer.setRenderer(listRenderer);
@@ -125,20 +142,17 @@ public class InterfaceGraphique implements Observer, Runnable {
             commencer.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             //Charger partie
-            charger = new JButton("Charger une partie");
-            charger.setMaximumSize(new Dimension(450, 25));
+            charger = nouveauBouton("Charger une partie");
             charger.addActionListener(new AdaptateurCommande(controle,"menuCharger"));
             charger.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             //Charger partie
-            quitter = new JButton("Quitter");
-            quitter.setMaximumSize(new Dimension(450, 25));
+            quitter = nouveauBouton("Quitter");
             quitter.addActionListener(new AdaptateurCommande(controle,"quitter"));
             quitter.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             //Règles & Tutoriel
-            tuto = new JButton("Règles & Tutoriel");
-            tuto.setMaximumSize(new Dimension(450, 25));
+            tuto = nouveauBouton("Règles & Tutoriel");
             tuto.addActionListener(new AdaptateurCommande(controle,"tuto"));
             tuto.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -165,18 +179,26 @@ public class InterfaceGraphique implements Observer, Runnable {
         if (boiteJeu == null){
             Box boiteInfo = Box.createHorizontalBox();
 
+            boiteInfo.setPreferredSize(new Dimension(1920,75));
+
+            Box boiteTour = Box.createHorizontalBox();
+            boiteTour.setSize(new Dimension(250,40) );
             tour = new JLabel();
-            tour.setText("Tour n°X");
+            tour.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+            tour.setText("  Tour n°X");
+            tour.setFont(new Font("default", Font.PLAIN, 25));
+            boiteTour.add(tour);
 
-            info = new JLabel();
-            info.setText("Explications");
+            info = new JLabel("Explications",SwingConstants.CENTER);
+            info.setFont(new Font("default", Font.PLAIN, 20));
 
-            JButton menu = new JButton("Retour au Menu");
+            JButton menu = nouveauBouton("Retour au Menu", 250 , 40);
             menu.addActionListener(new AdaptateurCommande(controle,"menuJ"));
 
             // JComponent plateauGraphique
             //frame.add(plateauGraphique);
-            //plateauGraphique.addMouseListener(new AdaptateurSouris(gaufreG, controle));
+            // plateauGraphique.addMouseListener(new AdaptateurSouris(gaufreG, controle));
+
 
             boiteInfo.add(tour);
             boiteInfo.add(Box.createHorizontalGlue());
@@ -184,16 +206,88 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteInfo.add(Box.createHorizontalGlue());
             boiteInfo.add(menu);
 
-            boiteJeu = Box.createVerticalBox();
-            boiteJeu.add(boiteInfo);
+
+            Box boiteUnReDo = Box.createHorizontalBox();
+
+            JButton undo = new JButton("⏪");
+            undo.setFont(new Font("default", Font.PLAIN, 35));
+            undo.setPreferredSize(new Dimension(100, 40));
+            undo.setMaximumSize(new Dimension(100, 40));
+            undo.addActionListener(new AdaptateurCommande(controle,"annuler"));
+            JButton redo = new JButton("⏩");
+            redo.setFont(new Font("default", Font.PLAIN, 35));
+            redo.setPreferredSize(new Dimension(100, 40));
+            redo.setMaximumSize(new Dimension(100, 40));
+            redo.addActionListener(new AdaptateurCommande(controle,"refaire"));
+
+            JButton voirJack = new JButton("Voir mes cartes");
+            voirJack.setFont(new Font("default", Font.PLAIN, 20));
+            voirJack.setPreferredSize(new Dimension(200, 40));
+            voirJack.setMaximumSize(new Dimension(200, 40));
+            voirJack.addActionListener(new AdaptateurCommande(controle,"main"));
+            voirJack.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+
+
+            boiteUnReDo.add(Box.createHorizontalGlue());
+            boiteUnReDo.add(undo);
+            boiteUnReDo.add(redo);
+            boiteUnReDo.add(Box.createHorizontalGlue());
+
+            Box boiteCentreD = Box.createVerticalBox();
+
+            jetons.setPreferredSize(new Dimension(240,240));
+            boiteCentreD.add(Box.createVerticalGlue());
+            boiteCentreD.add(jetons);
+            boiteCentreD.add(Box.createVerticalGlue());
+
+            Box boiteCentre = Box.createHorizontalBox();
+
+            identite.setPreferredSize(new Dimension(240,boiteCentre.getHeight()));
+            district.setPreferredSize(new Dimension(600,boiteCentre.getHeight()));
+
+            boiteCentre.add(Box.createHorizontalGlue());
+            boiteCentre.add(identite);
+            boiteCentre.add(Box.createHorizontalGlue());
+            boiteCentre.add(district);
+            boiteCentre.add(Box.createHorizontalGlue());
+            boiteCentre.add(boiteCentreD);
+            boiteCentre.add(Box.createHorizontalGlue());
+
+            Box boiteBasG = Box.createVerticalBox();
+
+            boiteBasG.setMaximumSize(new Dimension(400,200));
+
+            boiteBasG.add(voirJack);
+            boiteBasG.add(Box.createVerticalGlue());
+            boiteBasG.add(boiteUnReDo);
+
+            Box boiteBas = Box.createHorizontalBox();
+
+            boiteBas.setMaximumSize(new Dimension(1920,150));
+            boiteBas.setPreferredSize(new Dimension(1920,150));
+            boiteBasG.setPreferredSize(new Dimension(240,boiteBas.getHeight()));
+            main.setPreferredSize(new Dimension(800,150));
+            pioche.setSize(new Dimension(240,300));
+
+            boiteBas.add(boiteBasG);
+            boiteBas.add(Box.createHorizontalGlue());
+            boiteBas.add(main);
+            boiteBas.add(Box.createHorizontalGlue());
+            boiteBas.add(pioche);
+            boiteBas.add(Box.createHorizontalGlue());
+
             district.addMouseListener(new AdaptateurSouris(district, controle));
             jetons.addMouseListener(new AdaptateurSouris(jetons, controle));
-            //boiteJeu.add(district);
-            //boiteJeu.add(jetons);
-            //boiteJeu.add(pioche);
-            //boiteJeu.add(identite);
-            //boiteJeu.add(main);
+            pioche.addMouseListener(new AdaptateurSouris(pioche, controle));
 
+            boiteJeu = Box.createVerticalBox();
+
+            boiteJeu.add(boiteInfo);
+            boiteJeu.add(boiteCentre);
+            boiteJeu.add(boiteBas);
+
+            boiteJeu.setOpaque(true);
+            boiteJeu.setBackground(Color.WHITE);
         }
 
         return boiteJeu;
@@ -206,8 +300,9 @@ public class InterfaceGraphique implements Observer, Runnable {
             //Lancer la partie
             String [] menuListe = {"Facile", "Moyenne", "Difficile"};
             boutonIA = new JComboBox<>(menuListe);
-            boutonIA.setPreferredSize(new Dimension(200, 25));
-            boutonIA.setMaximumSize(new Dimension(450, 25));
+            boutonIA.setPreferredSize(new Dimension(400, 40));
+            boutonIA.setMaximumSize(new Dimension(400, 40));
+            boutonIA.setFont(new Font("default",Font.PLAIN,25));
             DefaultListCellRenderer listRenderer = new DefaultListCellRenderer();
             listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER); // center-aligned items
             boutonIA.setRenderer(listRenderer);
@@ -215,19 +310,17 @@ public class InterfaceGraphique implements Observer, Runnable {
             boutonIA.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             //Charger partie
-            JButton local = new JButton("Joueur contre un ami");
-            local.setMaximumSize(new Dimension(450, 25));
+            JButton local = nouveauBouton("Joueur contre un ami");
             local.addActionListener(new AdaptateurCommande(controle,"local"));
             local.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             //Charger partie
-            JButton reseau = new JButton("Joueur en réseau");
-            reseau.setMaximumSize(new Dimension(450, 25));
+            JButton reseau = nouveauBouton("Joueur en réseau");
             reseau.addActionListener(new AdaptateurCommande(controle,"reseau"));
             reseau.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             JLabel titre = new JLabel("Mr Jack Pocket");
-            titre.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 25));
+            titre.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 50));
             titre.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             boiteAvantPartie = Box.createVerticalBox();
@@ -263,16 +356,19 @@ public class InterfaceGraphique implements Observer, Runnable {
             JList list = new JList(listPartie);
             list.setAlignmentX(Component.CENTER_ALIGNMENT);
             list.setLayoutOrientation(JList.VERTICAL);
+            list.setFont(new Font("default",Font.PLAIN,20));
             JScrollPane listScroller = new JScrollPane(list);
-            listScroller.setPreferredSize(new Dimension(200, 350));
-            listScroller.setMaximumSize(new Dimension(200, 350));
+            listScroller.setPreferredSize(new Dimension(300, 350));
+            listScroller.setMaximumSize(new Dimension(300, 350));
+
 
             Box boiteTitre = Box.createVerticalBox();
 
             JLabel titre = new JLabel("Mr Jack Pocket");
-            titre.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 25));
+            titre.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 50));
             titre.setAlignmentX(Component.CENTER_ALIGNMENT);
             JLabel astuces = new JLabel("Astuces : Cliquez sur une partie et finissez là !");
+            astuces.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 25));
             astuces.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             Box boiteList = Box.createHorizontalBox();
@@ -282,12 +378,10 @@ public class InterfaceGraphique implements Observer, Runnable {
 
             Box boiteBoutons = Box.createHorizontalBox();
 
-            JButton charger = new JButton("Charger partie");
-            charger.setMaximumSize(new Dimension(450, 25));
+            JButton charger = nouveauBouton("Charger partie",250,40);
             charger.addActionListener(new AdaptateurCommande(controle,"charger"));
 
-            JButton menu = new JButton("Retour au Menu");
-            menu.setMaximumSize(new Dimension(450, 25));
+            JButton menu = nouveauBouton("Retour au Menu",250,40);
             menu.addActionListener(new AdaptateurCommande(controle,"menuC"));
 
             boiteBoutons.add(Box.createHorizontalGlue());

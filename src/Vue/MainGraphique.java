@@ -22,7 +22,7 @@ public class MainGraphique extends JComponent {
         suspectGri = chargeImage("Suspect-grisB");
         suspectNoi = chargeImage("Suspect-noirB");
         suspectRos = chargeImage("Suspect-roseB");
-        suspectVer = chargeImage("Suspect-vertB");;
+        suspectVer = chargeImage("Suspect-vertB");
         suspectBla = chargeImage("Suspect-blancB");
         suspectJau = chargeImage("Suspect-jauneB");
         suspectOra = chargeImage("Suspect-orangeB");
@@ -79,11 +79,11 @@ public class MainGraphique extends JComponent {
                 drawable.drawImage(suspectVio, x,y,tailleC,tailleC,null);
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + jeu.idJack);
+                throw new IllegalStateException("Unexpected value: " + jeu.plateau().idJack);
         }
     }
     public void dessinerMain(){
-        Iterator<CarteAlibi> main = jeu.enqueteur.getCardList().iterator();
+        Iterator<CarteAlibi> main = jeu.plateau().enqueteur.getCardList().iterator();
         int i=0;
         CarteAlibi actuel;
         while(main.hasNext()){

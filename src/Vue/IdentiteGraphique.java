@@ -12,11 +12,11 @@ public class IdentiteGraphique extends JComponent {
     Graphics2D drawable;
     int largeur,hauteur,tailleC;
     Jeu jeu;
-    Image jack,sherlock, pioche;
+    Image jack,sherlock, pioche, sablier;
 
     IdentiteGraphique(Jeu j){
         jeu=j;
-        switch (jeu.idJack){
+        switch (jeu.plateau().idJack){
             case BLEU:
                 jack = chargeImage("Suspect-bleuB");
                 break;
@@ -30,7 +30,7 @@ public class IdentiteGraphique extends JComponent {
                 jack = chargeImage("Suspect-roseB");
                 break;
             case VERT:
-                jack = chargeImage("Suspect-vertB");;
+                jack = chargeImage("Suspect-vertB");
                 break;
             case BLANC:
                 jack = chargeImage("Suspect-blancB");
@@ -45,10 +45,11 @@ public class IdentiteGraphique extends JComponent {
                 jack = chargeImage("Suspect-violetB");
                 break;
             default:
-                throw new IllegalStateException("Unexpected value: " + jeu.idJack);
+                throw new IllegalStateException("Unexpected value: " + jeu.plateau().idJack);
         }
         sherlock = chargeImage("Sherlock");
         pioche = chargeImage("PiocheA");
+        sablier = chargeImage("Sablier");
     }
 
     private Image chargeImage(String nom) {
@@ -66,29 +67,39 @@ public class IdentiteGraphique extends JComponent {
 
     public void dessinerIdentite(){
         Image personnage;
-        Joueur personnageCourant = jeu.joueurCourant;
-        int taillePiocheAdv ;
+        Joueur personnageCourant = jeu.plateau().joueurCourant;
+        int taillePiocheAdv, nbSabliers = jeu.plateau().jack.getSablier();
         boolean isJack = personnageCourant.isJack();
-        //isJack = !isJack;
+        isJack = !isJack;
         if(isJack){
             personnage = jack;
-            taillePiocheAdv = jeu.jack.getCardList().size();
+            taillePiocheAdv = jeu.plateau().jack.getCardList().size();
         } else {
             personnage = sherlock;
-            taillePiocheAdv = jeu.enqueteur.getCardList().size();
+            taillePiocheAdv = jeu.plateau().enqueteur.getCardList().size();
         }
 
         drawable.setFont(new Font("default", Font.BOLD, 16));
-        drawable.drawString("Vous Incarnez :",10,20);
+        drawable.drawString("Vous Incarnez :",30,(int) (0.2*tailleC));
         drawable.setFont(new Font("default", Font.ITALIC, 14));
-        if(isJack) drawable.drawString("Meurtrier",10,40);
-        else drawable.drawString("Enquêteur",10,40);
-        drawable.drawImage(personnage, 10, 75, tailleC, tailleC, null);
+        if(isJack) {
+            drawable.drawString("Meurtrier",30,(int) (0.3*tailleC));
+            drawable.setFont(new Font("default", Font.BOLD, 16));
+            drawable.drawImage(sablier,(int) (tailleC*0.2),(int) (1.5*tailleC), (int) (0.4*tailleC), (int) (0.4*tailleC), null);
+            drawable.drawString(": "+nbSabliers+" / 6",(int) (tailleC*0.5)+25,(int) (1.75*tailleC) );
+        }
+        else {
+            drawable.drawString("Enquêteur",30,(int) (0.3*tailleC));
+            drawable.setFont(new Font("default", Font.BOLD, 16));
+            drawable.drawImage(sablier,(int) (tailleC*0.2),(int) (3.2*tailleC), (int) (0.4*tailleC), (int) (0.4*tailleC), null);
+            drawable.drawString(": "+nbSabliers+" / 6",(int) (tailleC*0.5)+25,(int) (3.5*tailleC) );
+        }
+        drawable.drawImage(personnage, (int) (0.1*tailleC), (int) (0.35*tailleC), tailleC, tailleC, null);
+        drawable.drawString("Adversaire",(int) (0.45*tailleC),(int) (2.6*tailleC-20));
+        drawable.drawImage(pioche,(int) (tailleC*0.3),(int) (2.7*tailleC), (int) (0.4*tailleC), (int) (0.4*tailleC), null);
+        drawable.drawString(": "+taillePiocheAdv+" / 8",(int) (tailleC*0.7),(int) (2.9*tailleC) );
+        drawable.setFont(new Font("default", Font.PLAIN, 16));
 
-        drawable.setFont(new Font("default", Font.BOLD, 16));
-        drawable.drawString("Adversaire",10,(int) (2.6*tailleC-20));
-        drawable.drawImage(pioche,(int) (tailleC*0.05),(int) (2.6*tailleC), (int) (0.5*tailleC), (int) (0.5*tailleC), null);
-        drawable.drawString(": "+taillePiocheAdv+" / 8",(int) (tailleC*0.5)+25,(int) (2.9*tailleC) );
     }
 
     @Override

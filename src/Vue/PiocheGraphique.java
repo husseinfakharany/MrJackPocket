@@ -7,12 +7,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
 
-public class PiocheGraphique extends JComponent {
+public class PiocheGraphique extends JComponent implements ElementPlateauG{
     Graphics2D drawable;
     int tailleC;
     Jeu jeu;
     Image piocheA, piocheD;
     boolean piocheActive;
+    private int offsetX = 25, offsetY = 30;
+
     PiocheGraphique(Jeu j){
         jeu=j;
         piocheD = chargeImage("PiocheD");
@@ -48,17 +50,37 @@ public class PiocheGraphique extends JComponent {
         drawable.clearRect(0, 0, largeur, hauteur);
 
         //Calcul de la taille d'une case
-        int hCase=hauteur/5; //3 rues + 2 inspecteurs qui l'entoure possiblement
-        int lCase=largeur/5; //3 rues + 2 inspecteurs qui l'entoure possiblement
+        int hCase=hauteur;
+        int lCase=largeur;
         tailleC=Math.min(hCase,lCase);
 
         int taillePioche = 8;
         drawable.setFont(new Font("default", Font.BOLD, 16));
-        drawable.drawString("Pioche ( " + taillePioche + " / 8 ) :",10,20);
+        drawable.drawString("Pioche ( " + taillePioche + " / 8 ) :",(int) (largeur*0.5)-50,20);
         drawable.setFont(new Font("default", Font.PLAIN, 12));
-        if(piocheActive) drawable.drawImage(piocheA,25,30,tailleC,tailleC,null);
-        else drawable.drawImage(piocheD,25,30,tailleC,tailleC,null);
+        if(piocheActive) drawable.drawImage(piocheA,offsetX,offsetY,(int) (0.8*tailleC),(int) (0.8*tailleC),null);
+        else drawable.drawImage(piocheD,offsetX,offsetY,tailleC-offsetY,tailleC-offsetY,null);
 
 
+    }
+
+    @Override
+    public int getTailleCase() {
+        return tailleC;
+    }
+
+    @Override
+    public int getType() {
+        return 4; //4 pioche
+    }
+
+    @Override
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    @Override
+    public int getOffsetY() {
+        return offsetY;
     }
 }
