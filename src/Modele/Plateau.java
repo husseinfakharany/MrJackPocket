@@ -1,4 +1,6 @@
 package Modele;
 
-public class Plateau {
+public class Plateau extends Historique<Coup> implements Cloneable{
+
+
 }

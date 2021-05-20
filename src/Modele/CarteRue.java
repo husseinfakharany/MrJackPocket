@@ -36,20 +36,15 @@ public class CarteRue {
     public final static int SUD = 4;
     public final static int NORD = 8;
 
-    public CarteRue(Point position){
-        //TODO improve code : Recevoir le suspect dans le constructeur et laisser le jeu distribuer les suspects
+    public CarteRue(Point position, Suspect suspect){
         Random rand = new Random();
         //On choisi une orientation des orientations possibles
         orientation = Jeu.orientationsRues().get(rand.nextInt(Jeu.orientationsRues().size()));
         positionEnqueteur = 0;
         enqueteur = new Enqueteur();
         this.position = position;
-        int suspectIndex;
-        do{ //Si le suspect n'a pas encore une position, on lui attribue une position dans la grille
-            suspectIndex = rand.nextInt(Jeu.suspects().size());
-            suspect = Jeu.suspects().get(suspectIndex);
-        } while (suspect.getPosition() != null);
-        suspect.setPosition(this.position);
+        this.suspect = suspect;
+        this.suspect.setPosition(this.position);
     }
     
     

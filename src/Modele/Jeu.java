@@ -93,9 +93,18 @@ public class Jeu extends Observable{
     
     private void initialiserGrille(){
 
+        int i,j;
+        ArrayList<Integer> suspectIndices = new ArrayList<>();
+        for (i=0; i<9; i++){
+            suspectIndices.add(i);
+        }
+        Collections.shuffle(suspectIndices);
+
+        j=0;
         for(int l=0; l<3; l++){
             for(int c=0; c<3; c++){
-                grille[l][c] = new CarteRue(new Point(c,l));
+                grille[l][c] = new CarteRue(new Point(c,l), suspects().get(suspectIndices.get(j)));
+                j++;
             }
         }
 
