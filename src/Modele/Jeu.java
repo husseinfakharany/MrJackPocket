@@ -27,8 +27,6 @@ public class Jeu extends Observable{
     public Joueur enqueteur;
     public Joueur joueurCourant;
     int numTour;
-
-    //TODO identiteJack : Permet de connaitre l'identite de Jack
     public SuspectCouleur idJack;
 
     List<JetonActions> jetonsActions;
@@ -50,21 +48,16 @@ public class Jeu extends Observable{
         jack = new Joueur(true, "Hussein", 0,false,false);
         enqueteur = new Joueur(false, "Fabien", 0, false, true);
         numTour = 1;
-        initialiseOrientationsRues();
-        initialiseSuspects();
         grille = new CarteRue[3][3];
         temponGrille = new CarteRue[3][3];
-        initialiserGrille(); //Initialise et mélange la grille du premier tour
-        initialiseJetonsActions();
-        initialiseCarteAlibis();
         joueurCourant = enqueteur;
-        for(Suspect s:suspects){
-            System.out.println(s.getNomPersonnage() + s.getPioche().toString());
-        }
+
+        initialiseOrientationsRues();
+        initialiseSuspects();
+        initialiseJetonsActions();
+        initialiserGrille(); //Initialise et mélange la grille du premier tour
+        initialiseCarteAlibis();
         piocherJack();
-        for(Suspect s:suspects){
-            System.out.println(s.getNomPersonnage() + s.getPioche().toString());
-        }
     }
 
     private void initialiseOrientationsRues(){
@@ -144,9 +137,10 @@ public class Jeu extends Observable{
     
     public  void changerJoueur() {
 		if(joueurCourant.isJack() ) {
+            enqueteur.setTurn(true);
 			joueurCourant = enqueteur;
-			
 		}else {
+            jack.setTurn(true);
 			joueurCourant = jack;
 		}
 		
@@ -170,9 +164,27 @@ public class Jeu extends Observable{
         if (cp == null) {
             throw new IllegalStateException("Coup Impossible");
         } else {
+
         }
     }
 
+    //TODO complete case where rest of alibi cards are useless
+    public boolean finJeu(){
+        if (numTour>8) {
+            return true;
+        } else {
+            if (jack.getSablier()==6){
+                jack.setWinner(true);
+                return true;
+            } else {
+                if (enqueteur.getSablier()==3){
+                    enqueteur.setWinner(true);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     //TODO reinitialiser : Remettre le plateau en configuration initiale
     void reinitialiser(){
       
@@ -182,9 +194,12 @@ public class Jeu extends Observable{
         enqueteur.setSablier(0);
         enqueteur.setTurn(true);
         enqueteur.setWinner(false);
+        joueurCourant = enqueteur;
         setNumTour(0);
         initialiseSuspects();
         initialiserGrille();
+        initialiseCarteAlibis();
+        piocherJack();
     }
 
     //Getters and setters
