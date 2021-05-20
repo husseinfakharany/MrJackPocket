@@ -65,10 +65,12 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "Moyenne":
             case "Difficile":
                 ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
+                jeu.plateau().reinitialiser();
                 //fixerIA(c);
                 break;
             case "local":
                 ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
+                jeu.plateau().reinitialiser();
                 break;
             case "reseau":
                 System.out.println("Attente d'une partie .");

@@ -12,7 +12,7 @@ public class CarteAlibi {
 		private Suspect suspect;
 		private int sablier;
 
-		CarteAlibi(Suspect suspect){
+		public CarteAlibi(Suspect suspect){
 			this.suspect = suspect;
 			switch(suspect.getNomPersonnage()){
 				case JOHN_PIZER:

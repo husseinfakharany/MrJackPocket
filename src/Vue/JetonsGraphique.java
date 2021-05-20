@@ -43,6 +43,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
     //TODO charger la bonne face
     public void dessinerJetons(){
         Image jeton1, jeton2, jeton3, jeton4;
+        //TODO choisir la bonne face des jetons
         jeton1 = jeton1A;
         jeton2 = jeton2A;
         jeton3 = jeton3A;

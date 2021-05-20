@@ -289,7 +289,11 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteJeu.setOpaque(true);
             boiteJeu.setBackground(Color.WHITE);
         }
-
+        identite.repaint();
+        district.repaint();
+        pioche.repaint();
+        main.repaint();
+        jetons.repaint();
         return boiteJeu;
     }
 

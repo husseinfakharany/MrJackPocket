@@ -54,6 +54,7 @@ public class PiocheGraphique extends JComponent implements ElementPlateauG{
         int lCase=largeur;
         tailleC=Math.min(hCase,lCase);
 
+        //TODO recupérer taille pioche
         int taillePioche = 8;
         drawable.setFont(new Font("default", Font.BOLD, 16));
         drawable.drawString("Pioche ( " + taillePioche + " / 8 ) :",(int) (largeur*0.5)-50,20);

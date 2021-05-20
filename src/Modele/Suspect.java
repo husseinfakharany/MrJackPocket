@@ -20,7 +20,7 @@ public class Suspect {
     private Boolean isJack;
 
     //TODO implement getters and setters
-    Suspect(SuspectNom nomPerso, Point position){
+    public Suspect(SuspectNom nomPerso, Point position){
         nomPersonnage = nomPerso;
         this.setPosition(position);
         setCarteCache(false);

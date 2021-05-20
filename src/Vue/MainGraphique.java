@@ -10,6 +10,8 @@ import java.awt.*;
 import java.io.InputStream;
 import java.util.Iterator;
 
+//TODO agrandir la taille des cartes et recupere la bonne main
+
 public class MainGraphique extends JComponent {
     Graphics2D drawable;
     int largeur,hauteur,tailleC;
@@ -27,13 +29,13 @@ public class MainGraphique extends JComponent {
         suspectJau = chargeImage("Suspect-jauneB");
         suspectOra = chargeImage("Suspect-orangeB");
         suspectVio = chargeImage("Suspect-violetB");
-        /*List<CarteAlibi> mainFictif = new ArrayList<>();
+        /*List<CarteAlibi> mainFictif = new ArrayList<CarteAlibi>();
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.JEREMY_BERT,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.MADAME,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.JOHN_PIZER,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.INSPECTOR_LESTRADE,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.SERGENT_GOODLEY,null ) ) );
-        jeu.enqueteur.setCardList(mainFictif);*/
+        jeu.plateau().enqueteur.setCardList(mainFictif);*/
     }
 
     private Image chargeImage(String nom) {

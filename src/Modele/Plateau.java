@@ -200,7 +200,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         return false;
     }
 
-    void reinitialiser(){
+    public void reinitialiser(){
       
         jack.setSablier(0);
         jack.setTurn(false);

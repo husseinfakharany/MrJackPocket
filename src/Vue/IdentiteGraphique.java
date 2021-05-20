@@ -16,6 +16,31 @@ public class IdentiteGraphique extends JComponent {
 
     IdentiteGraphique(Jeu j){
         jeu=j;
+        sherlock = chargeImage("Sherlock");
+        pioche = chargeImage("PiocheA");
+        sablier = chargeImage("Sablier");
+    }
+
+    private Image chargeImage(String nom) {
+        Image img = null;
+        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream( "PNG/" + nom + ".png" );
+        try {
+        // Chargement d'une image
+            img = ImageIO.read (in);
+        } catch ( Exception e ) {
+            System.err.println("Pb image : " + nom);
+            System .exit(1);
+        }
+        return img;
+    }
+
+    public void dessinerIdentite(){
+        Image personnage;
+        Joueur personnageCourant = jeu.plateau().joueurCourant;
+        int taillePiocheAdv, nbSabliers = jeu.plateau().jack.getSablier();
+        boolean isJack = personnageCourant.isJack();
+        isJack = !isJack;
+
         switch (jeu.plateau().idJack){
             case BLEU:
                 jack = chargeImage("Suspect-bleuB");
@@ -47,30 +72,7 @@ public class IdentiteGraphique extends JComponent {
             default:
                 throw new IllegalStateException("Unexpected value: " + jeu.plateau().idJack);
         }
-        sherlock = chargeImage("Sherlock");
-        pioche = chargeImage("PiocheA");
-        sablier = chargeImage("Sablier");
-    }
 
-    private Image chargeImage(String nom) {
-        Image img = null;
-        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream( "PNG/" + nom + ".png" );
-        try {
-        // Chargement d'une image
-            img = ImageIO.read (in);
-        } catch ( Exception e ) {
-            System.err.println("Pb image : " + nom);
-            System .exit(1);
-        }
-        return img;
-    }
-
-    public void dessinerIdentite(){
-        Image personnage;
-        Joueur personnageCourant = jeu.plateau().joueurCourant;
-        int taillePiocheAdv, nbSabliers = jeu.plateau().jack.getSablier();
-        boolean isJack = personnageCourant.isJack();
-        isJack = !isJack;
         if(isJack){
             personnage = jack;
             taillePiocheAdv = jeu.plateau().jack.getCardList().size();
