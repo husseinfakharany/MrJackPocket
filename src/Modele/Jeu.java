@@ -56,8 +56,15 @@ public class Jeu extends Observable{
         temponGrille = new CarteRue[3][3];
         initialiserGrille(); //Initialise et mélange la grille du premier tour
         initialiseJetonsActions();
+        initialiseCarteAlibis();
         joueurCourant = enqueteur;
-        idJack = SuspectCouleur.ROSE;
+        for(Suspect s:suspects){
+            System.out.println(s.getNomPersonnage() + s.getPioche().toString());
+        }
+        piocherJack();
+        for(Suspect s:suspects){
+            System.out.println(s.getNomPersonnage() + s.getPioche().toString());
+        }
     }
 
     private void initialiseOrientationsRues(){
@@ -77,7 +84,7 @@ public class Jeu extends Observable{
 
     private void initialiseJetonsActions(){
         jetonsActions = new ArrayList<>();
-        //Création des 4 jetons actions en dur
+        //Création des 4 jetons actions en dûr
         jetonsActions.add(new JetonActions(Actions.DEPLACER_WATSON,Actions.DEPLACER_TOBBY));
         jetonsActions.add(new JetonActions(Actions.DEPLACER_JOKER,Actions.ROTATION_DISTRICT));
         jetonsActions.add(new JetonActions(Actions.ECHANGER_DISTRICT,Actions.ROTATION_DISTRICT));
@@ -85,7 +92,10 @@ public class Jeu extends Observable{
     }
 
     private void initialiseCarteAlibis(){
-
+        cartesAlibis = new ArrayList<>();
+        for(Suspect s: suspects){
+            cartesAlibis.add(new CarteAlibi(s));
+        }
     }
     
     private void initialiserGrille(){
@@ -130,24 +140,7 @@ public class Jeu extends Observable{
     static List<Integer> orientationsRues(){
         return orientationsRues;
     }
-    
-    
-    public void rotation(int orientation,Point position) {
-    	
-    	this.grille[position.y][ position.x].setOrientation(orientation);
-    	
-    }
-    
-    public void echanger(int orientation1,int orientation2, Point position1,Point position2) {
-    	CarteRue tmp = grille[position1.y][position1.x];
-    	this.grille[position1.y][position1.x] =this.grille[position2.y][position2.x];
-    	this.grille[position1.y][position1.x].setPositionEnqueteur(tmp.getPositionEnqueteur());
-    	tmp.setPositionEnqueteur(this.grille[position2.y][position2.x].getPositionEnqueteur());
-    	this.grille[position1.y][position1.x].setOrientation(orientation2);
-    	this.grille[position2.y][position2.x] = tmp;
-    	this.grille[position2.y][position2.x].setOrientation(orientation1);
-    	
-    }
+
     
     public  void changerJoueur() {
 		if(joueurCourant.isJack() ) {
@@ -163,8 +156,22 @@ public class Jeu extends Observable{
         return suspects;
     }
 
-    //TODO jouerCoup avec la méthode de l'objet Coup
-    public void jouerCoup(Coup cp){}
+    public void piocherJack(){
+        Random rd = new Random();
+        int index = rd.nextInt(cartesAlibis.size());
+        CarteAlibi JackCard = cartesAlibis.get(index);
+        cartesAlibis.remove(index);
+        JackCard.getSuspect().setIsJack(true);
+        JackCard.getSuspect().setPioche(true);
+        idJack = JackCard.getCouleur();
+    }
+
+    public void jouerCoup(Coup cp) {
+        if (cp == null) {
+            throw new IllegalStateException("Coup Impossible");
+        } else {
+        }
+    }
 
     //TODO reinitialiser : Remettre le plateau en configuration initiale
     void reinitialiser(){

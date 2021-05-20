@@ -49,8 +49,7 @@ public class CarteRue {
             suspectIndex = rand.nextInt(Jeu.suspects().size());
             suspect = Jeu.suspects().get(suspectIndex);
         } while (suspect.getPosition() != null);
-        suspect = new Suspect(suspect.getNomPersonnage(),this.position);
-        Jeu.suspects.set(suspectIndex, suspect);
+        suspect.setPosition(this.position);
     }
     
     
