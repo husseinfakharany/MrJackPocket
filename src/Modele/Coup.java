@@ -11,15 +11,19 @@ public class Coup extends Commande{
 	private Actions action;
     private Point position1;
     private Point position2;
+	private Plateau plateau;
     private int orientation1;
     private int orientation2;
     private int deplacement =0;
+
    
     //entier : 1 ou 2
 	
     //CAS Où ACTION EQUIVEAUT à ECHANGE OU ROTATION
-	public Coup(Actions action,Point position1,Point position2,int orientation1,int orientation2,int deplacement) {
-		
+	//TODO Modify constructor
+	public Coup(Plateau plateau, Actions action,Point position1,Point position2,int orientation1,int orientation2,int deplacement) {
+
+		this.plateau = plateau;
 		this.action = action;
 		this.position1 = position1;
 		this.position2 = position2;
@@ -28,23 +32,23 @@ public class Coup extends Commande{
 	    this.deplacement=deplacement;
 	
 	}
-/*
+
 	public void rotation(int orientation,Point position) {
 
-		this.grille[position.y][ position.x].setOrientation(orientation);
+		plateau.grille[position.y][ position.x].setOrientation(orientation);
 
 	}
 
 	public void echanger(int orientation1,int orientation2, Point position1,Point position2) {
-		CarteRue tmp = grille[position1.y][position1.x];
-		this.grille[position1.y][position1.x] =this.grille[position2.y][position2.x];
-		this.grille[position1.y][position1.x].setPositionEnqueteur(tmp.getPositionEnqueteur());
-		tmp.setPositionEnqueteur(this.grille[position2.y][position2.x].getPositionEnqueteur());
-		this.grille[position1.y][position1.x].setOrientation(orientation2);
-		this.grille[position2.y][position2.x] = tmp;
-		this.grille[position2.y][position2.x].setOrientation(orientation1);
+		CarteRue tmp = plateau.grille[position1.y][position1.x];
+		plateau.grille[position1.y][position1.x] =plateau.grille[position2.y][position2.x];
+		plateau.grille[position1.y][position1.x].setPositionEnqueteur(tmp.getPositionEnqueteur());
+		tmp.setPositionEnqueteur(plateau.grille[position2.y][position2.x].getPositionEnqueteur());
+		plateau.grille[position1.y][position1.x].setOrientation(orientation2);
+		plateau.grille[position2.y][position2.x] = tmp;
+		plateau.grille[position2.y][position2.x].setOrientation(orientation1);
 
-	}*/
+	}
    
 	public Actions getAction() {
 		return action;
@@ -99,6 +103,24 @@ public class Coup extends Commande{
 
 	@Override
 	void execute() {
+		switch(action){
+			case DEPLACER_JOKER:
+				break;
+			case DEPLACER_TOBBY:
+				break;
+			case DEPLACER_SHERLOCK:
+				break;
+			case DEPLACER_WATSON:
+				break;
+			case INNOCENTER_CARD:
+				break;
+			case ECHANGER_DISTRICT:
+				break;
+			case ROTATION_DISTRICT:
+				break;
+			default:
+				throw new IllegalStateException("Unexecpted action");
+		}
 
 	}
 
