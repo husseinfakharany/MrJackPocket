@@ -6,35 +6,31 @@ import java.util.ArrayList;
 //TODO compltete Historique and use intermediate class that extends Historique and called by Jeu
 
 public class Historique<E extends Commande> {
-	//ArrayList<E> passe, futur;
+	ArrayList<E> passe, futur;
 
-	/*
+
 	Historique() {
 		passe = new ArrayList<>();
 		futur = new ArrayList<>();
-	}*/
-
-	public void nouveau(E c) {
-		//passe.add(c);
-		c.execute();
-		/*
-		while (!futur.isEmpty())
-			futur.get(0);
-			futur.extraitTete();
-
-		 */
 	}
 
-	/*
+	public void nouveau(E c) {
+		passe.add(0,c);
+		c.execute();
+		while (!futur.isEmpty())
+			futur.remove(0);
+	}
+
+
 	public boolean peutAnnuler() {
-		return !passe.estVide();
+		return !passe.isEmpty();
 	}
 
 	E annuler() {
 		if (peutAnnuler()) {
-			E c = passe.extraitTete();
+			E c = passe.remove(0);
 			c.desexecute();
-			futur.insereTete(c);
+			futur.add(0,c);
 			return c;
 		} else {
 			return null;
@@ -42,18 +38,17 @@ public class Historique<E extends Commande> {
 	}
 
 	public boolean peutRefaire() {
-		return !futur.estVide();
+		return !futur.isEmpty();
 	}
 
 	E refaire() {
 		if (peutRefaire()) {
-			E c = futur.extraitTete();
+			E c = futur.remove(0);
 			c.execute();
-			passe.insereTete(c);
+			passe.add(0,c);
 			return c;
 		} else {
 			return null;
 		}
 	}
-	*/
 }
