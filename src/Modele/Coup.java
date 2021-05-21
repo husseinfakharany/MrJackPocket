@@ -51,7 +51,7 @@ public class Coup extends Commande{
 
 	}
 	
-		//l'orientation du dectective les indice i et j de sa grille et la grille
+	//l'orientation du dectective les indice i et j de sa grille et la grille
 	//TODO Voir si il faut metre ajour toutes les cartes de la colone ou la ligne concernee et egalement considerer le fait d'avoir plusieurs enquetteur au meme endroit
 	public void deplacer(int i,int j,CarteRue grille[][]) {
 		 CarteRue tempon; 
