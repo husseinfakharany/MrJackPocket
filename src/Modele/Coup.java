@@ -51,7 +51,7 @@ public class Coup extends Commande{
 	}
 	
 		//l'orientation du dectective les indice i et j de sa grille et la grille
-	//TODO Voir si il faut metre ajour tout les cartes decolone ou ligne concernee et egalement considerer le fait d'avoir plusieurs enquetteur au meme endroit
+	//TODO Voir si il faut metre ajour toutes les cartes de la colone ou la ligne concernee et egalement considerer le fait d'avoir plusieurs enquetteur au meme endroit
 	public void deplacer(int i,int j,CarteRue grille[][]) {
 		
 		//deplacement coté Nord
@@ -95,7 +95,7 @@ public class Coup extends Commande{
 				 grille[i+deplacement][j].setEnqueteur(grille[i][j].getEnqueteur());
 				 grille[i+deplacement][j].getEnqueteur().setNomPersonnage(grille[i][j].getEnqueteur().getNomPersonnage());
 				 
-				 
+				 grille[i][j].setEnqueteur(null);
 				 grille[i][j].setPositionEnqueteur(0b0000);
 			 }
 			 if((deplacement+i)==3 ) {
