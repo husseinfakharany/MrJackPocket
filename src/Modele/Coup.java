@@ -33,6 +33,7 @@ public class Coup extends Commande{
 	
 	}
 
+	/*
 	public void rotation(int orientation,Point position) {
 
 		plateau.grille[position.y][ position.x].setOrientation(orientation);
@@ -179,7 +180,7 @@ public class Coup extends Commande{
 			 }
 		 }
 		 
-	}
+	} */
 	
    
 	public Actions getAction() {

@@ -31,20 +31,30 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     int numTour;
     public SuspectCouleur idJack;
 
-    List<JetonActions> jetonsActions;
-    List<CarteAlibi> cartesAlibis;
 
     public CarteRue [][] grille;
     public CarteRue [][] temponGrille;
 
     //TODO static may cause error?
+    static List<JetonActions> jetonsActions;
+    static List<CarteAlibi> cartesAlibis;
     static List<Integer> orientationsRues;
     static List<Suspect> suspects;
+    static List<Enqueteur> enqueteurs;
 
-    static final int MUROUEST = 0b1110;
-    static final int MUREST = 0b1101;
-    static final int MURNORD = 0b0111;
-    static final int MURSUD = 0b1011;
+    static final int NSE = 0b1110;
+    static final int NSO = 0b1101;
+    static final int SEO = 0b0111;
+    static final int NEO = 0b1011;
+
+    static final int N = 0b1000;
+    static final int S = 0b0100;
+    static final int E = 0b0010;
+    static final int O = 0b0001;
+
+    static final int SHERLOCK = 0;
+    static final int WATSON = 1;
+    static final int TOBBY = 2;
 
     public Plateau(){
         jack = new Joueur(true, "Hussein", 0,false,false);
@@ -56,18 +66,20 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
         initialiseOrientationsRues();
         initialiseSuspects();
+        initialiseEnqueteurs();
         initialiseJetonsActions();
-        initialiserGrille(); //Initialise et mélange la grille du premier tour
+        initialiseGrille(); //Initialise et mélange la grille du premier tour
         initialiseCarteAlibis();
         piocherJack();
     }
 
+
     private void initialiseOrientationsRues(){
         orientationsRues = new ArrayList<>();
-        orientationsRues.add(MUREST);
-        orientationsRues.add(MUROUEST);
-        orientationsRues.add(MURSUD);
-        orientationsRues.add(MURNORD);
+        orientationsRues.add(NSO);
+        orientationsRues.add(NSE);
+        orientationsRues.add(NEO);
+        orientationsRues.add(SEO);
     }
 
     private void initialiseSuspects(){
@@ -75,6 +87,14 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         for(SuspectNom e:SuspectNom.values()){
             suspects.add(new Suspect(e,null));
         }
+    }
+
+    private void initialiseEnqueteurs() {
+        enqueteurs = new ArrayList<>();
+        enqueteurs.add(SHERLOCK,new Enqueteur(EnqueteurNom.SHERLOCK,null,Enqueteur.ABSENT));
+        enqueteurs.add(WATSON,new Enqueteur(EnqueteurNom.WATSON,null,Enqueteur.ABSENT));
+        enqueteurs.add(TOBBY,new Enqueteur(EnqueteurNom.TOBBY,null,Enqueteur.ABSENT));
+
     }
 
     private void initialiseJetonsActions(){
@@ -93,7 +113,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         }
     }
     
-    private void initialiserGrille(){
+    private void initialiseGrille(){
 
         int i,j;
         ArrayList<Integer> suspectIndices = new ArrayList<>();
@@ -110,16 +130,22 @@ public class Plateau extends Historique<Coup> implements Cloneable{
             }
         }
 
+
         //Orientations initiaux (enqueteurs face aux murs)
-        grille[0][0].setOrientation(0b1110);
-        grille[0][0].setPositionEnqueteur(0b0001);
-        grille[0][0].getEnqueteur().setNomPersonnage(EnqueteurNom.SHERLOCK);
-        grille[0][2].setOrientation(0b1101);
-        grille[0][2].setPositionEnqueteur(0b0010);
-        grille[0][2].getEnqueteur().setNomPersonnage(EnqueteurNom.WATSON);
-        grille[2][1].setOrientation(0b1011);
-        grille[2][1].setPositionEnqueteur(0b0100);
-        grille[2][1].getEnqueteur().setNomPersonnage(EnqueteurNom.TOBBY);
+        grille[0][0].setOrientation(NSE);
+        enqueteurs.get(SHERLOCK).setPositionSurCarte(O);
+        grille[0][0].setEnqueteur(enqueteurs.get(SHERLOCK));
+        System.out.println("Expected 1: " + grille[0][0].getPosEnqueteur(enqueteurs.get(SHERLOCK)));
+
+
+        grille[0][2].setOrientation(NSO);
+        grille[0][2].setEnqueteur(enqueteurs.get(WATSON));
+        enqueteurs.get(WATSON).setPositionSurCarte(E);
+        System.out.println("Expected 2: " + grille[0][2].getPosEnqueteur(enqueteurs.get(WATSON)));
+
+        grille[2][1].setOrientation(NEO);
+        enqueteurs.get(TOBBY).setPositionSurCarte(S);
+        grille[2][1].setEnqueteur(enqueteurs.get(TOBBY));
 
     }
 
@@ -211,7 +237,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         joueurCourant = enqueteur;
         setNumTour(0);
         initialiseSuspects();
-        initialiserGrille();
+        initialiseGrille();
         initialiseCarteAlibis();
         piocherJack();
     }
