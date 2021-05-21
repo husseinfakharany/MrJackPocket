@@ -151,14 +151,15 @@ public class Coup extends Commande{
 		 if(i==2 && grille[i][j].getPositionEnqueteur()==4) {
 			 if((j-deplacement)>=0) {
 				k=0;
-				 while(k<3)
-				 grille[k][j-deplacement].setPositionEnqueteur(tempon.getPositionEnqueteur());
-				 grille[k][j-deplacement].setEnqueteur(tempon.getEnqueteur());
-				 grille[k][j-deplacement].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-			     
-				 grille[k][j].setEnqueteur(null);
-				 grille[k][j].setPositionEnqueteur(0b0000);
-				 k++;
+				while(k<3){
+					 grille[k][j-deplacement].setPositionEnqueteur(tempon.getPositionEnqueteur());
+					 grille[k][j-deplacement].setEnqueteur(tempon.getEnqueteur());
+					 grille[k][j-deplacement].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
+
+					 grille[k][j].setEnqueteur(null);
+					 grille[k][j].setPositionEnqueteur(0b0000);
+					 k++;
+				 }
 			 }
 			 if((j-deplacement)==-1 ) {
 				
