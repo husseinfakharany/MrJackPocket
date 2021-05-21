@@ -1,12 +1,11 @@
 package Vue;
 
+import Global.Configuration;
 import Modele.CarteRue;
 import Modele.Jeu;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.InputStream;
 
 public class GrilleGraphique extends JComponent implements  ElementPlateauG{
     Graphics2D drawable;
@@ -18,37 +17,24 @@ public class GrilleGraphique extends JComponent implements  ElementPlateauG{
 
     GrilleGraphique(Jeu j){
         jeu=j;
-        quartier1 = chargeImage("QuartierVide-1");
-        quartier2 = chargeImage("QuartierVide-2");
-        quartier3 = chargeImage("QuartierVide-3");
-        quartier4 = chargeImage("QuartierVide-4");
-        quartierX = chargeImage("QuartierVideX");
-        cible = chargeImage("Cible");
-        suspectBla = chargeImage("Suspect-blancB");
-        suspectBle = chargeImage("Suspect-bleuB");
-        suspectJau = chargeImage("Suspect-jauneB");
-        suspectGri = chargeImage("Suspect-grisB");
-        suspectNoi = chargeImage("Suspect-noirB");
-        suspectOra = chargeImage("Suspect-orangeB");
-        suspectRos = chargeImage("Suspect-roseB");
-        suspectVer = chargeImage("Suspect-vertB");
-        suspectVio = chargeImage("Suspect-violetB");
-        sherlock = chargeImage("Sherlock");
-        watson = chargeImage("Watson");
-        chien = chargeImage("Chien");
-    }
-
-    private Image chargeImage ( String nom) {
-        Image img = null;
-        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream( "PNG/" + nom + ".png" );
-        try {
-        // Chargement d'une image
-            img = ImageIO.read (in);
-        } catch ( Exception e ) {
-            System.err.println("Pb image : " + nom);
-            System .exit(1);
-        }
-        return img;
+        quartier1 = Configuration.chargeImage("QuartierVide-1");
+        quartier2 = Configuration.chargeImage("QuartierVide-2");
+        quartier3 = Configuration.chargeImage("QuartierVide-3");
+        quartier4 = Configuration.chargeImage("QuartierVide-4");
+        quartierX = Configuration.chargeImage("QuartierVideX");
+        cible = Configuration.chargeImage("Cible");
+        suspectBla = Configuration.chargeImage("Suspect-blancB");
+        suspectBle = Configuration.chargeImage("Suspect-bleuB");
+        suspectJau = Configuration.chargeImage("Suspect-jauneB");
+        suspectGri = Configuration.chargeImage("Suspect-grisB");
+        suspectNoi = Configuration.chargeImage("Suspect-noirB");
+        suspectOra = Configuration.chargeImage("Suspect-orangeB");
+        suspectRos = Configuration.chargeImage("Suspect-roseB");
+        suspectVer = Configuration.chargeImage("Suspect-vertB");
+        suspectVio = Configuration.chargeImage("Suspect-violetB");
+        sherlock = Configuration.chargeImage("Sherlock");
+        watson = Configuration.chargeImage("Watson");
+        chien = Configuration.chargeImage("Chien");
     }
 
     public void dessinerCarte(int l, int c, CarteRue rue){

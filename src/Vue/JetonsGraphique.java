@@ -1,11 +1,10 @@
 package Vue;
 
+import Global.Configuration;
 import Modele.Jeu;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.InputStream;
 
 public class JetonsGraphique extends JComponent implements ElementPlateauG {
     Graphics2D drawable;
@@ -15,29 +14,16 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
 
     JetonsGraphique(Jeu j){
         jeu=j;
-        jeton1A = chargeImage("Jeton-1-A");
-        jeton1B = chargeImage("Jeton-1-B");
-        jeton2A = chargeImage("Jeton-2-A");
-        jeton2B = chargeImage("Jeton-2-B");
-        jeton3A = chargeImage("Jeton-3-A");
-        jeton3B = chargeImage("Jeton-3-B");
-        jeton4A = chargeImage("Jeton-4-A");
-        jeton4B = chargeImage("Jeton-4-B");
+        jeton1A = Configuration.chargeImage("Jeton-1-A");
+        jeton1B = Configuration.chargeImage("Jeton-1-B");
+        jeton2A = Configuration.chargeImage("Jeton-2-A");
+        jeton2B = Configuration.chargeImage("Jeton-2-B");
+        jeton3A = Configuration.chargeImage("Jeton-3-A");
+        jeton3B = Configuration.chargeImage("Jeton-3-B");
+        jeton4A = Configuration.chargeImage("Jeton-4-A");
+        jeton4B = Configuration.chargeImage("Jeton-4-B");
         offsetX = 20;
         offsetY = 30;
-    }
-
-    private Image chargeImage ( String nom) {
-        Image img = null;
-        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream( "PNG/" + nom + ".png" );
-        try {
-        // Chargement d'une image
-            img = ImageIO.read (in);
-        } catch ( Exception e ) {
-            System.err.println("Pb image : " + nom);
-            System .exit(1);
-        }
-        return img;
     }
 
     //TODO charger la bonne face

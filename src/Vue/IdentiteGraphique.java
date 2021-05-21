@@ -1,12 +1,11 @@
 package Vue;
 
+import Global.Configuration;
 import Modele.Jeu;
 import Modele.Joueur;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.InputStream;
 
 public class IdentiteGraphique extends JComponent {
     Graphics2D drawable;
@@ -16,22 +15,9 @@ public class IdentiteGraphique extends JComponent {
 
     IdentiteGraphique(Jeu j){
         jeu=j;
-        sherlock = chargeImage("Sherlock");
-        pioche = chargeImage("PiocheA");
-        sablier = chargeImage("Sablier");
-    }
-
-    private Image chargeImage(String nom) {
-        Image img = null;
-        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream( "PNG/" + nom + ".png" );
-        try {
-        // Chargement d'une image
-            img = ImageIO.read (in);
-        } catch ( Exception e ) {
-            System.err.println("Pb image : " + nom);
-            System .exit(1);
-        }
-        return img;
+        sherlock = Configuration.chargeImage("Sherlock");
+        pioche = Configuration.chargeImage("PiocheA");
+        sablier = Configuration.chargeImage("Sablier");
     }
 
     public void dessinerIdentite(){
@@ -43,31 +29,31 @@ public class IdentiteGraphique extends JComponent {
 
         switch (jeu.plateau().idJack){
             case BLEU:
-                jack = chargeImage("Suspect-bleuB");
+                jack = Configuration.chargeImage("Suspect-bleuB");
                 break;
             case GRIS:
-                jack = chargeImage("Suspect-grisB");
+                jack = Configuration.chargeImage("Suspect-grisB");
                 break;
             case NOIR:
-                jack = chargeImage("Suspect-noirB");
+                jack = Configuration.chargeImage("Suspect-noirB");
                 break;
             case ROSE:
-                jack = chargeImage("Suspect-roseB");
+                jack = Configuration.chargeImage("Suspect-roseB");
                 break;
             case VERT:
-                jack = chargeImage("Suspect-vertB");
+                jack = Configuration.chargeImage("Suspect-vertB");
                 break;
             case BLANC:
-                jack = chargeImage("Suspect-blancB");
+                jack = Configuration.chargeImage("Suspect-blancB");
                 break;
             case JAUNE:
-                jack = chargeImage("Suspect-jauneB");
+                jack = Configuration.chargeImage("Suspect-jauneB");
                 break;
             case ORANGE:
-                jack = chargeImage("Suspect-orangeB");
+                jack = Configuration.chargeImage("Suspect-orangeB");
                 break;
             case VIOLET:
-                jack = chargeImage("Suspect-violetB");
+                jack = Configuration.chargeImage("Suspect-violetB");
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + jeu.plateau().idJack);

@@ -1,13 +1,12 @@
 package Vue;
 
+import Global.Configuration;
 import Modele.CarteAlibi;
 import Modele.Jeu;
 import Modele.SuspectCouleur;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.InputStream;
 import java.util.Iterator;
 
 //TODO agrandir la taille des cartes et recupere la bonne main
@@ -20,15 +19,15 @@ public class MainGraphique extends JComponent {
 
     MainGraphique(Jeu j){
         jeu=j;
-        suspectBle = chargeImage("Suspect-bleuB");
-        suspectGri = chargeImage("Suspect-grisB");
-        suspectNoi = chargeImage("Suspect-noirB");
-        suspectRos = chargeImage("Suspect-roseB");
-        suspectVer = chargeImage("Suspect-vertB");
-        suspectBla = chargeImage("Suspect-blancB");
-        suspectJau = chargeImage("Suspect-jauneB");
-        suspectOra = chargeImage("Suspect-orangeB");
-        suspectVio = chargeImage("Suspect-violetB");
+        suspectBle = Configuration.chargeImage("Suspect-bleuB");
+        suspectGri = Configuration.chargeImage("Suspect-grisB");
+        suspectNoi = Configuration.chargeImage("Suspect-noirB");
+        suspectRos = Configuration.chargeImage("Suspect-roseB");
+        suspectVer = Configuration.chargeImage("Suspect-vertB");
+        suspectBla = Configuration.chargeImage("Suspect-blancB");
+        suspectJau = Configuration.chargeImage("Suspect-jauneB");
+        suspectOra = Configuration.chargeImage("Suspect-orangeB");
+        suspectVio = Configuration.chargeImage("Suspect-violetB");
         /*List<CarteAlibi> mainFictif = new ArrayList<CarteAlibi>();
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.JEREMY_BERT,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.MADAME,null ) ) );
@@ -36,19 +35,6 @@ public class MainGraphique extends JComponent {
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.INSPECTOR_LESTRADE,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.SERGENT_GOODLEY,null ) ) );
         jeu.plateau().enqueteur.setCardList(mainFictif);*/
-    }
-
-    private Image chargeImage(String nom) {
-        Image img = null;
-        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream( "PNG/" + nom + ".png" );
-        try {
-        // Chargement d'une image
-            img = ImageIO.read (in);
-        } catch ( Exception e ) {
-            System.err.println("Pb image : " + nom);
-            System .exit(1);
-        }
-        return img;
     }
 
     public void dessinerCarte(SuspectCouleur couleur, int x, int y){

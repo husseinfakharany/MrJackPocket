@@ -1,11 +1,10 @@
 package Vue;
 
+import Global.Configuration;
 import Modele.Jeu;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.InputStream;
 
 public class PiocheGraphique extends JComponent implements ElementPlateauG{
     Graphics2D drawable;
@@ -17,22 +16,9 @@ public class PiocheGraphique extends JComponent implements ElementPlateauG{
 
     PiocheGraphique(Jeu j){
         jeu=j;
-        piocheD = chargeImage("PiocheD");
-        piocheA = chargeImage("PiocheA");
+        piocheD = Configuration.chargeImage("PiocheD");
+        piocheA = Configuration.chargeImage("PiocheA");
         piocheActive = false;
-    }
-
-    private Image chargeImage ( String nom) {
-        Image img = null;
-        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream( "PNG/" + nom + ".png" );
-        try {
-        // Chargement d'une image
-            img = ImageIO.read (in);
-        } catch ( Exception e ) {
-            System.err.println("Pb image : " + nom);
-            System .exit(1);
-        }
-        return img;
     }
 
     @Override
