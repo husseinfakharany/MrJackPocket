@@ -54,31 +54,31 @@ public class MainGraphique extends JComponent {
     public void dessinerCarte(SuspectCouleur couleur, int x, int y){
         switch (couleur){
             case BLEU:
-                drawable.drawImage(suspectBle, x,y,tailleC,tailleC,null);
+                drawable.drawImage(suspectBle, x,y,tailleC-y,tailleC-y,null);
                 break;
             case GRIS:
-                drawable.drawImage(suspectGri, x,y,tailleC,tailleC,null);
+                drawable.drawImage(suspectGri, x,y,tailleC-y,tailleC-y,null);
                 break;
             case NOIR:
-                drawable.drawImage(suspectNoi, x,y,tailleC,tailleC,null);
+                drawable.drawImage(suspectNoi, x,y,tailleC-y,tailleC-y,null);
                 break;
             case ROSE:
-                drawable.drawImage(suspectRos, x,y,tailleC,tailleC,null);
+                drawable.drawImage(suspectRos, x,y,tailleC-y,tailleC-y,null);
                 break;
             case VERT:
-                drawable.drawImage(suspectVer, x,y,tailleC,tailleC,null);
+                drawable.drawImage(suspectVer, x,y,tailleC-y,tailleC-y,null);
                 break;
             case BLANC:
-                drawable.drawImage(suspectBla, x,y,tailleC,tailleC,null);
+                drawable.drawImage(suspectBla, x,y,tailleC-y,tailleC-y,null);
                 break;
             case JAUNE:
-                drawable.drawImage(suspectJau, x,y,tailleC,tailleC,null);
+                drawable.drawImage(suspectJau, x,y,tailleC-y,tailleC-y,null);
                 break;
             case ORANGE:
-                drawable.drawImage(suspectOra, x,y,tailleC,tailleC,null);
+                drawable.drawImage(suspectOra, x,y,tailleC-y,tailleC-y,null);
                 break;
             case VIOLET:
-                drawable.drawImage(suspectVio, x,y,tailleC,tailleC,null);
+                drawable.drawImage(suspectVio, x,y,tailleC-y,tailleC-y,null);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + jeu.plateau().idJack);
@@ -90,7 +90,7 @@ public class MainGraphique extends JComponent {
         CarteAlibi actuel;
         while(main.hasNext()){
             actuel = main.next();
-            dessinerCarte(actuel.getSuspect().getCouleur(),i* (int) (tailleC*0.85),45);
+            dessinerCarte(actuel.getSuspect().getCouleur(),i* (int) ((tailleC-45)*0.85),45);
             i++;
         }
         drawable.setFont(new Font("default", Font.BOLD, 25));
@@ -113,7 +113,7 @@ public class MainGraphique extends JComponent {
         drawable.clearRect(0, 0, largeur, hauteur);
 
         //Calcul de la taille d'une case
-        int hCase=hauteur/4; //texte + Photo + Blanc + Adversaire
+        int hCase=hauteur;
         int lCase=largeur;
         tailleC=Math.min(hCase,lCase);
 

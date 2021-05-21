@@ -8,11 +8,15 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class InterfaceGraphique implements Observer, Runnable {
+    static int MIN_WIDTH = 1080;
+    static int MIN_HEIGHT = 720;
     Jeu jeu;
     JFrame frame;
     private Box boiteMenu = null,boiteTitre  = null,boiteBoutons = null, boiteJeu = null, boiteAvantPartie = null,
             boiteCharger = null;
-    boolean ia;
+    boolean ia,isJack;
+    JButton voirJack, undo, redo, menu;
+    JLabel info,tour;
     CollecteurEvenements controle;
     JComboBox<String> commencer, boutonIA;
     GrilleGraphique district;
@@ -20,10 +24,10 @@ public class InterfaceGraphique implements Observer, Runnable {
     JetonsGraphique jetons;
     IdentiteGraphique identite;
     MainGraphique main;
+    Box boiteBas, boiteBasG, boiteInfo, boiteUnReDo, boiteCentreD, courant;
 
-    //DONE Fonction charger boite + fonctions privés qui contruisent la boite si null (~ Confguration Sokoban) +
-    // une fonction qui renvoie la boite d'un String en parametre avec un switch Ex: afficherEcran("Menu")
     // TODO Implémentation Tutoriel
+    // TODO ratio des constantes en fonction de la taille de la fenetre (1080 720)
 
     InterfaceGraphique(Jeu j, CollecteurEvenements c) {
         jeu = j;
@@ -44,9 +48,10 @@ public class InterfaceGraphique implements Observer, Runnable {
     public void run() {
         frame = new JFrame("Mr Jack Pocket");
         frame.add(getBoiteMenu());
+        courant = boiteMenu;
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1080,720);
-        //activerPleinEcran();
+        frame.setSize(MIN_WIDTH,MIN_HEIGHT);
+        frame.addComponentListener(new EcouteurFenetre(this));
         frame.setVisible(true);
     }
 
@@ -55,6 +60,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     }
 
     public void changerMenu(Box ancienne,Box nouvelle){
+        courant = nouvelle;
         frame.remove(ancienne);
         frame.add(nouvelle);
         frame.revalidate();
@@ -75,7 +81,6 @@ public class InterfaceGraphique implements Observer, Runnable {
     public JButton nouveauBouton(String text){
         JButton bouton = new JButton(text);
         bouton.setMaximumSize(new Dimension(400, 40));
-        bouton.setPreferredSize(new Dimension(400, 40));
         bouton.setFont(new Font("default",Font.PLAIN,25));
         return bouton;
     }
@@ -83,7 +88,6 @@ public class InterfaceGraphique implements Observer, Runnable {
     public JButton nouveauBouton(String text, int width, int height){
         JButton bouton = new JButton(text);
         bouton.setMaximumSize(new Dimension(width, height));
-        bouton.setPreferredSize(new Dimension(width, height));
         bouton.setFont(new Font("default",Font.PLAIN,25));
         return bouton;
     }
@@ -156,8 +160,6 @@ public class InterfaceGraphique implements Observer, Runnable {
             tuto.addActionListener(new AdaptateurCommande(controle,"tuto"));
             tuto.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
-
             boiteBoutons =Box.createVerticalBox();
 
             boiteBoutons.add(Box.createVerticalGlue());
@@ -175,125 +177,136 @@ public class InterfaceGraphique implements Observer, Runnable {
     }
 
     public Box getBoiteJeu(){
-        JLabel info,tour;
-        if (boiteJeu == null){
-            Box boiteInfo = Box.createHorizontalBox();
+        isJack = jeu.plateau().joueurCourant.isJack();
+        int width = frame.getWidth(), height = frame.getHeight();
+        //isJack=!isJack;
 
-            boiteInfo.setPreferredSize(new Dimension(1920,75));
-
-            Box boiteTour = Box.createHorizontalBox();
-            boiteTour.setSize(new Dimension(250,40) );
-            tour = new JLabel();
-            tour.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-            tour.setText("  Tour n°X");
-            tour.setFont(new Font("default", Font.PLAIN, 25));
-            boiteTour.add(tour);
-
-            info = new JLabel("Explications",SwingConstants.CENTER);
-            info.setFont(new Font("default", Font.PLAIN, 20));
-
-            JButton menu = nouveauBouton("Retour au Menu", 250 , 40);
-            menu.addActionListener(new AdaptateurCommande(controle,"menuJ"));
-
-            // JComponent plateauGraphique
-            //frame.add(plateauGraphique);
-            // plateauGraphique.addMouseListener(new AdaptateurSouris(gaufreG, controle));
+        if(boiteJeu==null)boiteInfo = Box.createHorizontalBox();
+        else boiteInfo.removeAll();
 
 
-            boiteInfo.add(tour);
-            boiteInfo.add(Box.createHorizontalGlue());
-            boiteInfo.add(info);
-            boiteInfo.add(Box.createHorizontalGlue());
-            boiteInfo.add(menu);
+        boiteInfo.setPreferredSize(new Dimension(1*width,(int) (0.104*height) ));
+
+        tour = new JLabel();
+        tour.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        tour.setText("  Tour n°X");
+        tour.setFont(new Font("default", Font.PLAIN, (int) (0.034*height) ));
+
+        info = new JLabel("Explications",SwingConstants.CENTER);
+        info.setFont(new Font("default", Font.PLAIN, (int) (0.028*height) ));
+
+        menu = nouveauBouton("Retour au Menu", (int) (0.231*width) , (int) (0.056*height) );
+        menu.addActionListener(new AdaptateurCommande(controle,"menuJ"));
+
+        boiteInfo.add(tour);
+        boiteInfo.add(Box.createHorizontalGlue());
+        boiteInfo.add(info);
+        boiteInfo.add(Box.createHorizontalGlue());
+        boiteInfo.add(menu);
 
 
-            Box boiteUnReDo = Box.createHorizontalBox();
-
-            JButton undo = new JButton("⏪");
-            undo.setFont(new Font("default", Font.PLAIN, 35));
-            undo.setPreferredSize(new Dimension(100, 40));
-            undo.setMaximumSize(new Dimension(100, 40));
+        if(boiteJeu==null) {
+            boiteUnReDo = Box.createHorizontalBox();
+            undo = new JButton("⏪");
             undo.addActionListener(new AdaptateurCommande(controle,"annuler"));
-            JButton redo = new JButton("⏩");
-            redo.setFont(new Font("default", Font.PLAIN, 35));
-            redo.setPreferredSize(new Dimension(100, 40));
-            redo.setMaximumSize(new Dimension(100, 40));
+            redo = new JButton("⏩");
             redo.addActionListener(new AdaptateurCommande(controle,"refaire"));
-
-            JButton voirJack = new JButton("Voir mes cartes");
-            voirJack.setFont(new Font("default", Font.PLAIN, 20));
-            voirJack.setPreferredSize(new Dimension(200, 40));
-            voirJack.setMaximumSize(new Dimension(200, 40));
+            voirJack = new JButton("Voir mes cartes");
             voirJack.addActionListener(new AdaptateurCommande(controle,"main"));
-            voirJack.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-
-
-            boiteUnReDo.add(Box.createHorizontalGlue());
-            boiteUnReDo.add(undo);
-            boiteUnReDo.add(redo);
-            boiteUnReDo.add(Box.createHorizontalGlue());
-
-            Box boiteCentreD = Box.createVerticalBox();
-
-            jetons.setPreferredSize(new Dimension(240,240));
-            boiteCentreD.add(Box.createVerticalGlue());
-            boiteCentreD.add(jetons);
-            boiteCentreD.add(Box.createVerticalGlue());
-
-            Box boiteCentre = Box.createHorizontalBox();
-
-            identite.setPreferredSize(new Dimension(240,boiteCentre.getHeight()));
-            district.setPreferredSize(new Dimension(600,boiteCentre.getHeight()));
-
-            boiteCentre.add(Box.createHorizontalGlue());
-            boiteCentre.add(identite);
-            boiteCentre.add(Box.createHorizontalGlue());
-            boiteCentre.add(district);
-            boiteCentre.add(Box.createHorizontalGlue());
-            boiteCentre.add(boiteCentreD);
-            boiteCentre.add(Box.createHorizontalGlue());
-
-            Box boiteBasG = Box.createVerticalBox();
-
-            boiteBasG.setMaximumSize(new Dimension(400,200));
-
-            boiteBasG.add(voirJack);
-            boiteBasG.add(Box.createVerticalGlue());
-            boiteBasG.add(boiteUnReDo);
-
-            Box boiteBas = Box.createHorizontalBox();
-
-            boiteBas.setMaximumSize(new Dimension(1920,150));
-            boiteBas.setPreferredSize(new Dimension(1920,150));
-            boiteBasG.setPreferredSize(new Dimension(240,boiteBas.getHeight()));
-            main.setPreferredSize(new Dimension(800,150));
-            pioche.setSize(new Dimension(240,300));
-
-            boiteBas.add(boiteBasG);
-            boiteBas.add(Box.createHorizontalGlue());
-            boiteBas.add(main);
-            boiteBas.add(Box.createHorizontalGlue());
-            boiteBas.add(pioche);
-            boiteBas.add(Box.createHorizontalGlue());
-
-            district.addMouseListener(new AdaptateurSouris(district, controle));
-            jetons.addMouseListener(new AdaptateurSouris(jetons, controle));
-            pioche.addMouseListener(new AdaptateurSouris(pioche, controle));
-
-            boiteJeu = Box.createVerticalBox();
-
-            boiteJeu.add(boiteInfo);
-            boiteJeu.add(boiteCentre);
-            boiteJeu.add(boiteBas);
-
-            boiteJeu.setOpaque(true);
-            boiteJeu.setBackground(Color.WHITE);
         }
+        else boiteUnReDo.removeAll();
+
+        undo.setFont(new Font("default", Font.PLAIN, (int) (0.048*height) ));
+        undo.setPreferredSize(new Dimension( (int) (0.093*width), (int) (0.056*height)));
+        undo.setMaximumSize(new Dimension((int) (0.093*width), (int) (0.056*height)));
+
+        redo.setFont(new Font("default", Font.PLAIN, 35));
+        redo.setPreferredSize(new Dimension((int) (0.093*width), (int) (0.056*height)));
+        redo.setMaximumSize(new Dimension((int) (0.093*width), (int) (0.056*height)));
+
+
+        voirJack.setFont(new Font("default", Font.PLAIN, 20));
+        voirJack.setPreferredSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
+        voirJack.setMaximumSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
+
+        voirJack.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+
+
+        boiteUnReDo.add(Box.createHorizontalGlue());
+        boiteUnReDo.add(undo);
+        boiteUnReDo.add(redo);
+        boiteUnReDo.add(Box.createHorizontalGlue());
+
+
+        if(boiteCentreD == null) boiteCentreD = Box.createVerticalBox();
+        else boiteCentreD.removeAll();
+
+        jetons.setPreferredSize(new Dimension((int) (0.223*width),(int) (0.334*height)));
+        boiteCentreD.add(Box.createVerticalGlue());
+        boiteCentreD.add(jetons);
+        boiteCentreD.add(Box.createVerticalGlue());
+
+        Box boiteCentre = Box.createHorizontalBox();
+
+        identite.setPreferredSize(new Dimension((int) (0.223*width),boiteCentre.getHeight()));
+        district.setPreferredSize(new Dimension( (int) (0.4*width),(int) (0.4*width) ));
+
+        boiteCentre.add(Box.createHorizontalGlue());
+        boiteCentre.add(identite);
+        boiteCentre.add(Box.createHorizontalGlue());
+        boiteCentre.add(district);
+        boiteCentre.add(Box.createHorizontalGlue());
+        boiteCentre.add(boiteCentreD);
+        boiteCentre.add(Box.createHorizontalGlue());
+
+        boiteBasG = Box.createVerticalBox();
+
+        boiteBasG.setMaximumSize(new Dimension((int) (0.37*width),(int) (0.278*height) ));
+
+        boiteBasG.add(voirJack);
+        boiteBasG.add(Box.createVerticalGlue());
+        boiteBasG.add(boiteUnReDo);
+        boiteBasG.add(Box.createVerticalGlue());
+
+
+        if(boiteBas == null) boiteBas = Box.createHorizontalBox();
+        else boiteBas.removeAll();
+
+        boiteBas.setMaximumSize(new Dimension(width,(int) (0.243*height) ));
+        boiteBas.setPreferredSize(new Dimension(width,(int) (0.243*height)));
+        boiteBasG.setPreferredSize(new Dimension((int) (0.175*width),boiteBas.getHeight()));
+        main.setPreferredSize(new Dimension((int) (0.650*width),(int) (0.208*height) ));
+        pioche.setPreferredSize(new Dimension((int) (0.175*width),(int) (0.243*height)));
+        pioche.setMaximumSize(new Dimension((int) (0.175*width),(int) (0.243*height)));
+
+        boiteBas.add(boiteBasG);
+        boiteBas.add(Box.createHorizontalGlue());
+        boiteBas.add(main);
+        boiteBas.add(Box.createHorizontalGlue());
+        boiteBas.add(pioche);
+
+        district.addMouseListener(new AdaptateurSouris(district, controle));
+        jetons.addMouseListener(new AdaptateurSouris(jetons, controle));
+        pioche.addMouseListener(new AdaptateurSouris(pioche, controle));
+
+        if(boiteJeu == null) boiteJeu = Box.createVerticalBox();
+        else boiteJeu.removeAll();
+
+        boiteJeu.add(boiteInfo);
+        boiteJeu.add(boiteCentre);
+        boiteJeu.add(boiteBas);
+
+        boiteJeu.setOpaque(true);
+        boiteJeu.setBackground(Color.WHITE);
+
+        voirJack.setEnabled(isJack);
+        voirJack.setVisible(isJack);
         identite.repaint();
         district.repaint();
         pioche.repaint();
         main.repaint();
         jetons.repaint();
+
         return boiteJeu;
     }
 
@@ -405,5 +418,9 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteCharger.add(boiteTitre);
         }
         return boiteCharger;
+    }
+
+    public Box getCourant(){
+        return courant;
     }
 }

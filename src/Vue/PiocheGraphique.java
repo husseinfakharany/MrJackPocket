@@ -13,7 +13,7 @@ public class PiocheGraphique extends JComponent implements ElementPlateauG{
     Jeu jeu;
     Image piocheA, piocheD;
     boolean piocheActive;
-    private int offsetX = 25, offsetY = 30;
+    private int offsetX = 25, offsetY = 35;
 
     PiocheGraphique(Jeu j){
         jeu=j;
@@ -56,8 +56,8 @@ public class PiocheGraphique extends JComponent implements ElementPlateauG{
 
         //TODO recupérer taille pioche
         int taillePioche = 8;
-        drawable.setFont(new Font("default", Font.BOLD, 16));
-        drawable.drawString("Pioche ( " + taillePioche + " / 8 ) :",(int) (largeur*0.5)-50,20);
+        drawable.setFont(new Font("default", Font.BOLD, 25));
+        drawable.drawString("Pioche ( " + taillePioche + " / 8 ) :",(int) (tailleC*0.5)-75,25);
         drawable.setFont(new Font("default", Font.PLAIN, 12));
         if(piocheActive) drawable.drawImage(piocheA,offsetX,offsetY,(int) (0.8*tailleC),(int) (0.8*tailleC),null);
         else drawable.drawImage(piocheD,offsetX,offsetY,tailleC-offsetY,tailleC-offsetY,null);

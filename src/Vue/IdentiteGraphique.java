@@ -39,7 +39,7 @@ public class IdentiteGraphique extends JComponent {
         Joueur personnageCourant = jeu.plateau().joueurCourant;
         int taillePiocheAdv, nbSabliers = jeu.plateau().jack.getSablier();
         boolean isJack = personnageCourant.isJack();
-        isJack = !isJack;
+        //isJack = !isJack;
 
         switch (jeu.plateau().idJack){
             case BLEU:
@@ -81,23 +81,23 @@ public class IdentiteGraphique extends JComponent {
             taillePiocheAdv = jeu.plateau().enqueteur.getCardList().size();
         }
 
-        drawable.setFont(new Font("default", Font.BOLD, 16));
+        drawable.setFont(new Font("default", Font.BOLD, 25));
         drawable.drawString("Vous Incarnez :",30,(int) (0.2*tailleC));
-        drawable.setFont(new Font("default", Font.ITALIC, 14));
+        drawable.setFont(new Font("default", Font.ITALIC, 20));
         if(isJack) {
-            drawable.drawString("Meurtrier",30,(int) (0.3*tailleC));
-            drawable.setFont(new Font("default", Font.BOLD, 16));
-            drawable.drawImage(sablier,(int) (tailleC*0.2),(int) (1.5*tailleC), (int) (0.4*tailleC), (int) (0.4*tailleC), null);
-            drawable.drawString(": "+nbSabliers+" / 6",(int) (tailleC*0.5)+25,(int) (1.75*tailleC) );
+            drawable.drawString("Meurtrier",30,(int) (0.4*tailleC));
+            drawable.setFont(new Font("default", Font.BOLD, 25));
+            drawable.drawImage(sablier,(int) (tailleC*0.3),(int) (1.5*tailleC), (int) (0.4*tailleC), (int) (0.4*tailleC), null);
+            drawable.drawString(": "+nbSabliers+" / 6",(int) (tailleC*0.7),(int) (1.75*tailleC) );
         }
         else {
-            drawable.drawString("Enquêteur",30,(int) (0.3*tailleC));
-            drawable.setFont(new Font("default", Font.BOLD, 16));
-            drawable.drawImage(sablier,(int) (tailleC*0.2),(int) (3.2*tailleC), (int) (0.4*tailleC), (int) (0.4*tailleC), null);
-            drawable.drawString(": "+nbSabliers+" / 6",(int) (tailleC*0.5)+25,(int) (3.5*tailleC) );
+            drawable.drawString("Enquêteur",30,(int) (0.4*tailleC));
+            drawable.setFont(new Font("default", Font.BOLD, 25));
+            drawable.drawImage(sablier,(int) (tailleC*0.3),(int) (3.2*tailleC), (int) (0.4*tailleC), (int) (0.4*tailleC), null);
+            drawable.drawString(": "+nbSabliers+" / 6",(int) (tailleC*0.7),(int) (3.5*tailleC) );
         }
-        drawable.drawImage(personnage, (int) (0.1*tailleC), (int) (0.35*tailleC), tailleC, tailleC, null);
-        drawable.drawString("Adversaire",(int) (0.45*tailleC),(int) (2.6*tailleC-20));
+        drawable.drawImage(personnage, (int) (0.2*tailleC), (int) (0.5*tailleC), tailleC, tailleC, null);
+        drawable.drawString("Adversaire",(int) (0.5*tailleC)-25,(int) (2.6*tailleC-20));
         drawable.drawImage(pioche,(int) (tailleC*0.3),(int) (2.7*tailleC), (int) (0.4*tailleC), (int) (0.4*tailleC), null);
         drawable.drawString(": "+taillePiocheAdv+" / 8",(int) (tailleC*0.7),(int) (2.9*tailleC) );
         drawable.setFont(new Font("default", Font.PLAIN, 16));

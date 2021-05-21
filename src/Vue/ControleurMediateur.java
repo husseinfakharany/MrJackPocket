@@ -78,10 +78,10 @@ public class ControleurMediateur implements CollecteurEvenements {
                 System.out.println("Attente d'une partie ...");
                 ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
                 break;
-            case "undo":
+            case "annuler":
                 undo();
                 break;
-            case "redo":
+            case "refaire":
                 redo();
                 break;
             case "menuJ":
@@ -96,6 +96,9 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "charger":
                 System.out.println("Chargement de la partie...");
                 break;
+            /*case "main":
+                jeu.plateau().changerMain();
+                break;*/
             default:
                 return false;
         }
