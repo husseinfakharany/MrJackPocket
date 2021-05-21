@@ -27,7 +27,6 @@ public class InterfaceGraphique implements Observer, Runnable {
     Box boiteBas, boiteBasG, boiteInfo, boiteUnReDo, boiteCentreD, courant;
 
     // TODO Implémentation Tutoriel
-    // TODO ratio des constantes en fonction de la taille de la fenetre (1080 720)
 
     InterfaceGraphique(Jeu j, CollecteurEvenements c) {
         jeu = j;
