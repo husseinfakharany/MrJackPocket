@@ -59,7 +59,9 @@ public class Coup extends Commande{
 		carteRue2.setSuspect(tmpSuspect);
 
 	}
-	
+
+	/*
+	//TODO check
 	//l'orientation du dectective les indice i et j de sa grille et la grille
 	//TODO Voir si il faut mettre a jour toutes les cartes de la colone ou la ligne concernee et egalement considerer le fait d'avoir plusieurs enquetteur au meme endroit
 	public void deplacer(int i,int j,CarteRue grille[][]) {
@@ -248,60 +250,18 @@ public class Coup extends Commande{
 	} */
 	
 	
-	public Actions getAction() {
+	public Action getAction() {
 		return action;
 	}
 
-	public void setAction(Actions action) {
+	public void setAction(Action action) {
 		this.action = action;
 	}
 
-	public Point getPosition1() {
-		return position1;
-	}
-
-	public void setPosition1(Point position1) {
-		this.position1 = position1;
-	}
-
-	public Point getPosition2() {
-		return position2;
-	}
-
-	public void setPositionQuartier2(Point position2) {
-		this.position2 = position2;
-	}
-
-	public int getOrientation1() {
-		return orientation1;
-	}
-
-	public void setOrientation1(int orientation) {
-		this.orientation1 = orientation;
-	}
-
-	public int getDeplacement() {
-		return deplacement;
-	}
-
-	public void setDeplacement(int deplacement) {
-		this.deplacement = deplacement;
-	}
-
-
-	public int getOrientation2() {
-		return orientation2;
-	}
-
-
-	public void setOrientation2(int orientation2) {
-		this.orientation2 = orientation2;
-	}
-
-
+	//TODO implement execute
 	@Override
 	void execute() {
-		switch(action){
+		switch(action.getAction()){
 			case DEPLACER_JOKER:
 				break;
 			case DEPLACER_TOBBY:
