@@ -186,7 +186,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
 	public Coup determinerCoup(Actions act){
         //Coup res = new Coup(this,act,); //TODO Modify Coup constructor before implementation
-        //TODO if already played or cannot be rotated return null
+        //TODO if already played or cannot be rotated and cannot change 2 cards with 1 already innocented return null
         //return res;
         return null;
     }

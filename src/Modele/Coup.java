@@ -39,13 +39,24 @@ public class Coup extends Commande{
 
 
 	public void echanger() {
-		CarteRue tmp = plateau.grille[action.getPosition1().y][action.getPosition1().x];
-		plateau.grille[action.getPosition1().y][action.getPosition1().x] = plateau.grille[action.getPosition2().y][action.getPosition2().x];
-		plateau.grille[action.getPosition1().y][action.getPosition1().x].setPositionEnqueteur(tmp.getPositionEnqueteur());
-		tmp.setPositionEnqueteur(plateau.grille[position2.y][position2.x].getPositionEnqueteur());
-		plateau.grille[position1.y][position1.x].setOrientation(orientation2);
-		plateau.grille[position2.y][position2.x] = tmp;
-		plateau.grille[position2.y][position2.x].setOrientation(orientation1);
+
+		CarteRue carteRue1 = plateau.grille[action.getPosition1().y][action.getPosition1().x];
+		int orientation1 = carteRue1.getOrientation();
+		Suspect suspect1 = carteRue1.getSuspect();
+
+		CarteRue carteRue2 = plateau.grille[action.getPosition2().y][action.getPosition2().x];
+		int orientation2 = carteRue2.getOrientation();
+		Suspect suspect2 = carteRue2.getSuspect();
+
+		int tmpOrientation = orientation1;
+		Suspect tmpSuspect = suspect1;
+
+		//On échange que l'orientation et le suspect
+		carteRue1.setOrientation(orientation2);
+		carteRue1.setSuspect(suspect2);
+
+		carteRue2.setOrientation(tmpOrientation);
+		carteRue2.setSuspect(tmpSuspect);
 
 	}
 	
