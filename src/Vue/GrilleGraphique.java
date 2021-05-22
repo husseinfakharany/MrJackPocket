@@ -3,6 +3,7 @@ package Vue;
 import Global.Configuration;
 import Modele.CarteRue;
 import Modele.Jeu;
+import Modele.Plateau;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,19 +41,19 @@ public class GrilleGraphique extends JComponent implements  ElementPlateauG{
     public void dessinerCarte(int l, int c, CarteRue rue){
         Image quartier,suspect;
         switch (rue.orientation){
-            case CarteRue.NSE:
+            case Plateau.NSE:
                 quartier = quartier4;
                 break;
-            case CarteRue.NSO:
+            case Plateau.NSO:
                 quartier = quartier3;
                 break;
-            case CarteRue.NEO:
+            case Plateau.NEO:
                 quartier = quartier2;
                 break;
-            case CarteRue.SEO:
+            case Plateau.SEO:
                 quartier = quartier1;
                 break;
-            case CarteRue.NSEO:
+            case Plateau.NSEO:
                 quartier = quartierX;
                 break;
             default:

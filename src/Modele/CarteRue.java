@@ -19,12 +19,6 @@ public class CarteRue {
     public ArrayList<Enqueteur> enqueteurs;
     public Suspect suspect;
 
-    public final static int NSEO = 15; //1111(Nord, Sud, Est,Ouest)
-    public final static int NSE = 14; //1110(Nord, Sud, Est)
-    public final static int NSO = 13; //1101 (Nord, Sud, Ouest)
-    public final static int NEO = 11; //1011 (Nord, Est, Ouest)
-    public final static int SEO = 7; //0111 (Sud, Est, Ouest)
-
     public CarteRue(Point position, Suspect suspect){
         Random rand = new Random();
         //On choisi une orientation des orientations possibles

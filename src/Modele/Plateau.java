@@ -42,10 +42,11 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     static List<Suspect> suspects;
     static List<Enqueteur> enqueteurs;
 
-    static final int NSE = 0b1110;
-    static final int NSO = 0b1101;
-    static final int SEO = 0b0111;
-    static final int NEO = 0b1011;
+    public static final int NSEO = 0b1111;
+    public static final int NSE = 0b1110;
+    public static final int NSO = 0b1101;
+    public static final int SEO = 0b0111;
+    public static final int NEO = 0b1011;
 
     static final int N = 0b1000;
     static final int S = 0b0100;
@@ -208,6 +209,14 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         idJack = JackCard.getCouleur();
     }
 
+    public CarteAlibi piocher(){
+        Random rd = new Random();
+        int index = rd.nextInt(cartesAlibis.size());
+        CarteAlibi card = cartesAlibis.get(index);
+        cartesAlibis.remove(index);
+        card.getSuspect().setPioche(true);
+        return card;
+    }
     //TODO complete case where rest of alibi cards are useless
     public boolean finJeu(){
         if (numTour>8) {

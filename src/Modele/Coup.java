@@ -8,42 +8,40 @@ Methode qui execute le coup
  */
 public class Coup extends Commande{
 	
-	private Actions action;
-    private Point position1;
-    private Point position2;
+	private Action action;
 	private Plateau plateau;
-    private int orientation1;
-    private int orientation2;
-    private int deplacement =0;
 
    
     //entier : 1 ou 2
 	
     //CAS Où ACTION EQUIVEAUT à ECHANGE OU ROTATION
 	//TODO Modify constructor
-	public Coup(Plateau plateau, Actions action,Point position1,Point position2,int orientation1,int orientation2,int deplacement) {
-
+	public Coup(Plateau plateau, Action action){
 		this.plateau = plateau;
 		this.action = action;
-		this.position1 = position1;
-		this.position2 = position2;
-		this.orientation1 = orientation1;
-		this.orientation2 = orientation2;
-	    this.deplacement=deplacement;
-	
 	}
 
-	/*
-	public void rotation(int orientation,Point position) {
 
-		plateau.grille[position.y][ position.x].setOrientation(orientation);
-
+	public void innoncenter(){
+		CarteAlibi card = plateau.piocher();
+		int carteRueX = card.getSuspect().getPosition().x;
+		int carteRueY = card.getSuspect().getPosition().y;
+		int sabliersJoueur = action.getJoueur().getSablier();
+		int sabliersCarte = card.getSablier();
+		plateau.grille[carteRueY][carteRueX].setOrientation(plateau.NSEO);
+		action.getJoueur().setSablier(sabliersJoueur+sabliersCarte);
 	}
 
-	public void echanger(int orientation1,int orientation2, Point position1,Point position2) {
-		CarteRue tmp = plateau.grille[position1.y][position1.x];
-		plateau.grille[position1.y][position1.x] =plateau.grille[position2.y][position2.x];
-		plateau.grille[position1.y][position1.x].setPositionEnqueteur(tmp.getPositionEnqueteur());
+	public void rotation() {
+		plateau.grille[action.getPosition1().y][action.position1.x].setOrientation(action.getOrientation1());
+	}
+
+
+
+	public void echanger() {
+		CarteRue tmp = plateau.grille[action.getPosition1().y][action.getPosition1().x];
+		plateau.grille[action.getPosition1().y][action.getPosition1().x] = plateau.grille[action.getPosition2().y][action.getPosition2().x];
+		plateau.grille[action.getPosition1().y][action.getPosition1().x].setPositionEnqueteur(tmp.getPositionEnqueteur());
 		tmp.setPositionEnqueteur(plateau.grille[position2.y][position2.x].getPositionEnqueteur());
 		plateau.grille[position1.y][position1.x].setOrientation(orientation2);
 		plateau.grille[position2.y][position2.x] = tmp;
@@ -52,7 +50,7 @@ public class Coup extends Commande{
 	}
 	
 	//l'orientation du dectective les indice i et j de sa grille et la grille
-	//TODO Voir si il faut metre ajour toutes les cartes de la colone ou la ligne concernee et egalement considerer le fait d'avoir plusieurs enquetteur au meme endroit
+	//TODO Voir si il faut mettre a jour toutes les cartes de la colone ou la ligne concernee et egalement considerer le fait d'avoir plusieurs enquetteur au meme endroit
 	public void deplacer(int i,int j,CarteRue grille[][]) {
 		 CarteRue tempon; 
 		 int k=0;
