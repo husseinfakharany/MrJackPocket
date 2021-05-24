@@ -155,30 +155,6 @@ public class Coup extends Commande{
 		this.action = action;
 	}
 
-	@Override
-	boolean execute() {
-		switch(action.getAction()){
-			case DEPLACER_JOKER:
-				return deplacer(action.getNumEnqueteur(),action.getDeplacement(),1);
-			case DEPLACER_WATSON:
-				return deplacer(1,action.getDeplacement(),1);
-			case DEPLACER_SHERLOCK:
-				return deplacer(0,action.getDeplacement(),1);
-			case DEPLACER_TOBBY:
-				return deplacer(2,action.getDeplacement(),1);
-			case INNOCENTER_CARD:
-				return innoncenter();
-			case ECHANGER_DISTRICT:
-				//L'ordre des parametres est purement esthetique
-				return echanger(action.getPosition1(), action.getPosition2());
-			case ROTATION_DISTRICT:
-				return rotation(action.getPosition1(),action.getOrientationNew());
-			default:
-				throw new IllegalStateException("Unexpected action");
-		}
-
-	}
-
 	public void ajouterArguments(int l, int c){
 		if(action == null) {
 			System.out.println("Impossible d'ajouter un argument");
@@ -306,6 +282,32 @@ public class Coup extends Commande{
 
 	public void reinitialiser(){
 		action.reinitialiser();
+	}
+
+	@Override
+	boolean execute() {
+		plateau.numAction++;
+		plateau.actionJouee();
+		switch(action.getAction()){
+			case DEPLACER_JOKER:
+				return deplacer(action.getNumEnqueteur(),action.getDeplacement(),1);
+			case DEPLACER_WATSON:
+				return deplacer(Plateau.WATSON,action.getDeplacement(),1);
+			case DEPLACER_SHERLOCK:
+				return deplacer(Plateau.SHERLOCK,action.getDeplacement(),1);
+			case DEPLACER_TOBBY:
+				return deplacer(Plateau.TOBBY,action.getDeplacement(),1);
+			case INNOCENTER_CARD:
+				return innoncenter();
+			case ECHANGER_DISTRICT:
+				//L'ordre des parametres est purement esthetique
+				return echanger(action.getPosition1(), action.getPosition2());
+			case ROTATION_DISTRICT:
+				return rotation(action.getPosition1(),action.getOrientationNew());
+			default:
+				throw new IllegalStateException("Unexpected action");
+		}
+
 	}
 
 	@Override

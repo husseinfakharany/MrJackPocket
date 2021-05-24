@@ -29,6 +29,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     public Joueur enqueteur;
     public Joueur joueurCourant;
     int numTour;
+    int numAction;
     public SuspectCouleur idJack;
 
 
@@ -62,7 +63,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         rd = new Random();
         jack = new Joueur(true, "Hussein", 0,false,false);
         enqueteur = new Joueur(false, "Fabien", 0, false, true);
-        numTour = 1;
+        numTour = 0;
         grille = new CarteRue[3][3];
         joueurCourant = enqueteur;
 
@@ -74,6 +75,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         initialiseCarteAlibis();
         piocherJack();
         jetJetons();
+        initialiseTour();
     }
 
 
@@ -157,6 +159,28 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
     }
 
+    void initialiseTour(){
+        numTour++;
+        numAction = 0;
+        melangeJetonsActions();
+    }
+
+    //retourne vrai si c'est la fin du jeu
+    public boolean actionJouee(){
+        System.out.println("Numéro Tour: " + numTour);
+        System.out.println("Numéro Action: " + numAction);
+        if (numAction==1 || numAction==3){
+            changerJoueur();
+        } else if (numAction == 4){
+            if (finJeu()){
+                System.out.println("Fin du jeu");
+                return true;
+            } else {
+                initialiseTour();
+            }
+        }
+        return false;
+    }
 
     //Mélange ou inverse les cartes actions (depend du numéro du tour)
     void melangeJetonsActions(){
@@ -164,27 +188,19 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         else jetJetons();
     }
 
-    void jetJetons() {
-        int act;
-        JetonActions current;
-        for (act = 0; act < 4; act++) {
-            current = jetonsActions.get(act);
-            current.setEstRecto(rd.nextBoolean()); //Lancement de chaque jeton
-            current.setDejaJoue(false);
+    void jetJetons() { ;
+        for(JetonActions act:jetonsActions){
+            act.setEstRecto(rd.nextBoolean()); //Lancement de chaque jeton
         }
     }
 
     void inverserJetons() {
-        JetonActions current;
-        int act;
-        for(act=0; act<4; act++){
-            current = jetonsActions.get(act);
-            current.setEstRecto(!current.estRecto());
-            current.setDejaJoue(false);
+        for(JetonActions act:jetonsActions){
+            act.setEstRecto(!act.estRecto());
         }
     }
 
-    public  void changerJoueur() {
+    public void changerJoueur() {
 		if(joueurCourant.isJack() ) {
             enqueteur.setTurn(true);
 			joueurCourant = enqueteur;
@@ -226,6 +242,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         return false;
     }
 
+    //TODO fix non visible by detective who sees Jack but visible by other detectives flipped
     //Cet fonction retourne vrai s'il reste qu'une seule carte non innonctée (Jack)
     public boolean verdictTour(){
         for(Enqueteur e:enqueteurs){
@@ -248,6 +265,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
             }
         }
         if (suspectsInnoncete.size()==8){
+            enqueteur.setWinner(true);
             return true;
         }
         return false;
@@ -286,6 +304,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         initialiseCarteAlibis();
         piocherJack();
         jetJetons();
+        initialiseTour();
 
         afficherConfig();
     }

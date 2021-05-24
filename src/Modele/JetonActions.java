@@ -7,11 +7,12 @@ Boolean recto (True) = Action 1 ou verso (False) = Action 2
 Boolean dejaJoue
  */
 public class JetonActions {
-	
+
+	//TODO implement dejaJoue
+
 	Actions action1; //action face 1 
 	Actions action2;  // action face 2
 	boolean estRecto = true;
-	boolean dejaJoue = false;
 	
 	
 	public JetonActions(Actions action1, Actions action2) {
@@ -44,12 +45,5 @@ public class JetonActions {
 		this.estRecto = estRecto;
 	}
 
-	public boolean getDejaJoue() {
-		return dejaJoue;
-	}
-
-	public void setDejaJoue(boolean dejaJoue) {
-		this.dejaJoue = dejaJoue;
-	}
 	
 }
