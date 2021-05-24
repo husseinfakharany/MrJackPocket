@@ -70,6 +70,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         initialiseGrille(); //Initialise et mélange la grille du premier tour
         initialiseCarteAlibis();
         piocherJack();
+        melangeJetonsActions();
     }
 
 
@@ -155,19 +156,31 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
     //Mélange ou inverse les cartes actions (depend du numéro du tour)
     void melangeJetonsActions(){
+
+        if (numTour%2 == 1) inverserJetons();
+        else jetJetons();
+    }
+
+    void jetJetons() {
         Random rd = new Random();
         int act;
         JetonActions current;
-        for(act=0; act<4; act++){
+        for (act = 0; act < 4; act++) {
             current = jetonsActions.get(act);
-            if (numTour%2 == 1){ //Mélange des jétons actions
+            if (numTour % 2 == 1) { //Mélange des jétons actions
                 current.setEstRecto(rd.nextBoolean()); //Lancement de chaque jeton
-            } else {
-               //Inversement de chaque jeton
-                current.setEstRecto(!current.estRecto());
             }
         }
+    }
 
+    void inverserJetons() {
+        JetonActions current;
+        int act;
+        for(act=0; act<4; act++){
+            current = jetonsActions.get(act);
+            current.setEstRecto(!current.estRecto());
+
+        }
     }
 
     static List<Integer> orientationsRues(){
@@ -237,6 +250,20 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         return false;
     }
 
+    public Actions getActionJeton(int num){
+        if(num < 0 || num > 3) throw new IllegalStateException("Indice des jetons non comprises entre 0 et 4");
+        JetonActions jeton = jetonsActions.get(num);
+        if(jeton.estRecto()){
+            return jeton.getAction1();
+        } else {
+            return jeton.getAction2();
+        }
+    }
+    public JetonActions getJeton(int num){
+        if(num < 0 || num > 3) throw new IllegalStateException("Indice des jetons non comprises entre 0 et 4");
+        return jetonsActions.get(num);
+    }
+
     public void reinitialiser(){
       
         jack.setSablier(0);
@@ -251,6 +278,32 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         initialiseGrille();
         initialiseCarteAlibis();
         piocherJack();
+        jetJetons();
+
+        aficherConfig();
+    }
+
+    private void aficherConfig(){
+        int compteurCarte = 1;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.println("Carte " + compteurCarte);
+                System.out.print("Orientation: " + grille[i][j].getOrientation());
+                System.out.print(" - Position: " + grille[i][j].getPosition());
+                System.out.print(" - Position personnage: " + grille[i][j].getSuspect().getPosition());
+                System.out.print(" - Nom Personnage: " + grille[i][j].getSuspect().getNomPersonnage());
+                System.out.print(" - Carte Cachée: " + grille[i][j].getSuspect().getCarteCache());
+                System.out.print(" - Personnage pioché: " + grille[i][j].getSuspect().getPioche());
+                System.out.println();
+                compteurCarte++;
+            }
+        }
+        System.out.println( "Nb carte(s) :" +compteurCarte );
+
+        System.out.println( getActionJeton(0) );
+        System.out.println( getActionJeton(1) );
+        System.out.println( getActionJeton(2) );
+        System.out.println( getActionJeton(3) );
     }
 
     //Getters and setters

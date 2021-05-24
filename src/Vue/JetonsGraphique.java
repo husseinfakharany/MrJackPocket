@@ -26,14 +26,16 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         offsetY = 30;
     }
 
-    //TODO charger la bonne face
     public void dessinerJetons(){
         Image jeton1, jeton2, jeton3, jeton4;
-        //TODO choisir la bonne face des jetons
-        jeton1 = jeton1A;
-        jeton2 = jeton2A;
-        jeton3 = jeton3A;
-        jeton4 = jeton4B;
+        if(jeu.plateau().getJeton(0).estRecto())jeton1 = jeton1A;
+        else jeton1 = jeton1B;
+        if(jeu.plateau().getJeton(1).estRecto())jeton2 = jeton2A;
+        else jeton2 = jeton2B;
+        if(jeu.plateau().getJeton(2).estRecto())jeton3 = jeton3A;
+        else jeton3 = jeton3B;
+        if(jeu.plateau().getJeton(3).estRecto())jeton4 = jeton4A;
+        else jeton4 = jeton4B;
         drawable.setFont(new Font("default", Font.BOLD, 25));
         drawable.drawString("Jetons :",(int) (largeur*0.5)-60,25);
         drawable.setFont(new Font("default", Font.PLAIN, 12));

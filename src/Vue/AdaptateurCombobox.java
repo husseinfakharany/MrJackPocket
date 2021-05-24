@@ -16,7 +16,7 @@ public class AdaptateurCombobox implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		JComboBox cb = (JComboBox)e.getSource();
 		String champ = (String)cb.getSelectedItem();
-		controle.commande(champ);
+		controle.commandeMenu(champ);
 	}
 
 }

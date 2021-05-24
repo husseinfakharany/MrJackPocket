@@ -2,13 +2,14 @@ package Vue;
 
 import Global.Configuration;
 import Modele.CarteRue;
+import Modele.Enqueteur;
 import Modele.Jeu;
 import Modele.Plateau;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GrilleGraphique extends JComponent implements  ElementPlateauG{
+public class DistrictGraphique extends JComponent implements  ElementPlateauG{
     Graphics2D drawable;
     int tailleC;
     Jeu jeu;
@@ -16,7 +17,12 @@ public class GrilleGraphique extends JComponent implements  ElementPlateauG{
             suspectOra, suspectRos, suspectVer, suspectVio, suspectGri, sherlock, watson, chien;
     private int offsetX=0,offsetY=0;
 
-    GrilleGraphique(Jeu j){
+    //TODO Previsualisation de l'action
+    //Mettre a jour après commandeDistrict et commandeJeu
+    //reinitialiser après jouerCoup
+    Action actionTemp;
+
+    DistrictGraphique(Jeu j){
         jeu=j;
         quartier1 = Configuration.chargeImage("QuartierVide-1");
         quartier2 = Configuration.chargeImage("QuartierVide-2");
@@ -39,7 +45,39 @@ public class GrilleGraphique extends JComponent implements  ElementPlateauG{
     }
 
     public void dessinerCarte(int l, int c, CarteRue rue){
-        Image quartier,suspect;
+        Image quartier,suspect,enqueteur;
+        int tailleE = (int) (0.8*tailleC);
+        int offsetE = (int) (0.1*tailleC);
+        if(!rue.getEnqueteurs().isEmpty()) {
+            Enqueteur e = rue.getEnqueteurs().get(rue.getEnqueteurs().size()-1);
+            switch (e.getNomPersonnage()){
+                case TOBBY:
+                    enqueteur = chien;
+                    break;
+                case WATSON:
+                    enqueteur = watson;
+                    break;
+                case SHERLOCK:
+                    enqueteur = sherlock;
+                    break;
+                default:
+                    throw new IllegalStateException("Enqueteur inconnu");
+            }
+            switch(e.getPositionSurCarte()){
+                case Enqueteur.NORD:
+                    drawable.drawImage(enqueteur, c*tailleC+offsetE, (l-1)*tailleC+offsetE, tailleE, tailleE, null);
+                    break;
+                case Enqueteur.EST:
+                    drawable.drawImage(enqueteur, (c+1)*tailleC+offsetE, l*tailleC+offsetE, tailleE, tailleE, null);
+                    break;
+                case Enqueteur.SUD:
+                    drawable.drawImage(enqueteur, c*tailleC+offsetE, (l+1)*tailleC+offsetE, tailleE, tailleE, null);
+                    break;
+                case Enqueteur.OUEST:
+                    drawable.drawImage(enqueteur, (c-1)*tailleC+offsetE, l*tailleC+offsetE, tailleE, tailleE, null);
+                    break;
+            }
+        }
         switch (rue.orientation){
             case Plateau.NSE:
                 quartier = quartier4;
@@ -99,10 +137,10 @@ public class GrilleGraphique extends JComponent implements  ElementPlateauG{
         int i=0,j=0;
         for(int l=0; l < 3; l++){
             for(int c=0; c < 3; c++){
-                if(l==0) drawable.drawImage(cible, (c+1)*tailleC, 0, tailleC, tailleC, null);
-                if(l==2) drawable.drawImage(cible, (c+1)*tailleC, 4*tailleC, tailleC, tailleC, null);
-                if(c==0) drawable.drawImage(cible, 0, (l+1)*tailleC, tailleC, tailleC, null);
-                if(c==2) drawable.drawImage(cible, 4*tailleC, (l+1)*tailleC, tailleC, tailleC, null);
+                //if(l==0) drawable.drawImage(cible, (c+1)*tailleC, 0, tailleC, tailleC, null);
+                //if(l==2) drawable.drawImage(cible, (c+1)*tailleC, 4*tailleC, tailleC, tailleC, null);
+                //if(c==0) drawable.drawImage(cible, 0, (l+1)*tailleC, tailleC, tailleC, null);
+                //if(c==2) drawable.drawImage(cible, 4*tailleC, (l+1)*tailleC, tailleC, tailleC, null);
                 dessinerCarte(l+1,c+1,jeu.plateau().grille[l][c]);
             }
         }

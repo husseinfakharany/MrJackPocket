@@ -14,7 +14,7 @@ public class AdaptateurCommande implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		controle.commande(commande);
+		controle.commandeMenu(commande);
 	}
 
 }

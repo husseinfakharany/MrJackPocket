@@ -139,8 +139,7 @@ public class Coup extends Commande{
 		}
 		return false;
 	}
-	
-	
+
 	public Action getAction() {
 		return action;
 	}
@@ -166,6 +165,63 @@ public class Coup extends Commande{
 				throw new IllegalStateException("Unexpected action");
 		}
 
+	}
+
+	public void ajouterArguments(int l, int c){
+		if(action == null) {
+			System.out.println("Impossible d'ajouter un argument");
+			return;
+		}
+		switch (action.action){
+			case DEPLACER_JOKER:
+				break;
+			case DEPLACER_TOBBY:
+				break;
+			case DEPLACER_SHERLOCK:
+				break;
+			case DEPLACER_WATSON:
+				break;
+			case ECHANGER_DISTRICT:
+				if(action.getPosition1() != null && action.getPosition1().x == c && action.getPosition1().y == l) {
+					action.setPosition1(action.getPosition2());
+					action.setPosition2(null);
+					break;
+				}
+				if(action.getPosition2() != null && action.getPosition2().x == c && action.getPosition2().y == l) {
+					action.setPosition2(null);
+					break;
+				}
+				if(action.getPosition1() == null) action.setPosition1(new Point(c,l));
+				else action.setPosition2(new Point(c,l));
+
+				break;
+			case INNOCENTER_CARD:
+				break;
+			case ROTATION_DISTRICT:
+				action.setPosition1(new Point(c,l));
+				switch (action.getOrientationNew()){
+					case Plateau.SEO:
+						action.setOrientationNew(Plateau.NSO);
+						break;
+					case Plateau.NSO:
+						action.setOrientationNew(Plateau.NEO);
+						break;
+					case Plateau.NEO:
+						action.setOrientationNew(Plateau.NSE);
+						break;
+					case Plateau.NSE:
+						action.setOrientationNew(Plateau.SEO);
+						break;
+					default:
+						action.setOrientationNew(plateau.grille[l][c].orientation);
+						break;
+				}
+				break;
+		}
+	}
+
+	public void reinitialiser(){
+		action.reinitialiser();
 	}
 
 	@Override

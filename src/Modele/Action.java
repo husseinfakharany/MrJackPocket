@@ -26,6 +26,42 @@ public class Action {
         this.joueur = joueur;
     }
 
+    public Action(Joueur joueur){
+        this.action = null;
+        this.position1 = null;
+        this.position2 = null;
+        this.orientationOld = -1;
+        this.orientationNew = -1;
+        this.deplacement = -1;
+        this.joueur = joueur;
+    }
+
+    public boolean estValide(){
+        if(action == null) return false;
+        switch (action){
+            case DEPLACER:
+                return deplacement==0 || deplacement==1 || deplacement==2;
+            case INNOCENTER_CARD:
+                return true;
+            case ECHANGER_DISTRICT:
+                return getPosition1() != null && getPosition2() !=null;
+            case ROTATION_DISTRICT:
+                return getPosition1() != null &&
+                    (  getOrientationNew() == Plateau.NSE || getOrientationNew() == Plateau.NSO
+                    || getOrientationNew() == Plateau.SEO || getOrientationNew() == Plateau.NEO);
+        }
+        return false;
+    }
+
+    public void reinitialiser(){
+        this.action = null;
+        this.position1 = null;
+        this.position2 = null;
+        this.orientationOld = -1;
+        this.orientationNew = -1;
+        this.deplacement = -1;
+        this.joueur = null;
+    }
 
     //Getters and setters
     public Actions getAction(){

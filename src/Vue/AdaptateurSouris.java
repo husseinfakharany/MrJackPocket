@@ -23,12 +23,21 @@ public class AdaptateurSouris extends MouseAdapter {
 		switch(elementG.getType()){
 			case district:
 				System.out.println("District : ( " +l +" , "+c+" )");
+				controle.commandeDistrict(l,c);
 				break;
 			case jetons:
 				System.out.println("Jetons : ( " +l +" , "+c+" )");
+				if(l==0){
+					if(c==0) controle.commandeJeu("jetonA");
+					if(c==1) controle.commandeJeu("jetonB");
+				}
+				if(l==1){
+					if(c==0) controle.commandeJeu("jetonC");
+					if(c==1) controle.commandeJeu("jetonD");
+				}
 				break;
 			case pioche:
-				System.out.println("Pioche : ( " +l +" , "+c+" )");
+				controle.commandeJeu("pioche");
 				break;
 			default:
 				throw new IllegalStateException("Unexpected value: " + elementG.getType());

@@ -1,18 +1,24 @@
 package Vue;
 
-
+import Modele.Action;
+import Modele.Actions;
 import Modele.Coup;
 import Modele.Jeu;
 
+//TODO fonctions fixerIA(String com) activeIA(int state) undo() redo()
 public class ControleurMediateur implements CollecteurEvenements {
     InterfaceGraphique ig;
     Jeu jeu;
     boolean iaActive;
     boolean iaPeutJouer;
 
+    Action action;
+    Coup cp;
     public ControleurMediateur(Jeu j) {
         jeu = j;
         iaActive = false;
+        action = new Action(jeu.plateau().joueurCourant);
+        cp=new Coup(jeu.plateau(),action);
     }
 
     public boolean iaActive(){
@@ -38,17 +44,60 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     @Override
-    public void undo() {
-
+    public void annuler() {
+        jeu.annule();
     }
 
     @Override
-    public void redo() {
-
+    public void refaire() {
+        jeu.refaire();
     }
 
     @Override
-    public boolean commande(String c) {
+    public void commandeDistrict(int l, int c){
+        cp.ajouterArguments(l-1,c-1);
+    }
+
+    @Override
+    public boolean commandeJeu(String c){
+        switch (c){
+            case "jetonA":
+                if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(0)) )
+                    jouerCoup();
+                action.setAction(jeu.plateau().getActionJeton(0));
+                break;
+            case "jetonB":
+                if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(1)) )
+                    jouerCoup();
+                action.setAction(jeu.plateau().getActionJeton(1));
+                break;
+            case "jetonC":
+                if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(2)) )
+                    jouerCoup();
+                action.setAction(jeu.plateau().getActionJeton(2));
+                break;
+            case "jetonD":
+                if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(3)) && !action.getAction().equals(Actions.INNOCENTER_CARD))
+                    jouerCoup();
+                action.setAction(jeu.plateau().getActionJeton(3));
+                break;
+            case "pioche":
+                if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(3)) && action.getAction().equals(Actions.INNOCENTER_CARD))
+                    jouerCoup();
+                break;
+        }
+        return true;
+    }
+
+    public void jouerCoup(){
+        System.out.println("Coup joué");
+        jeu.jouerCoup(cp);
+        cp.reinitialiser();
+        ig.getBoiteJeu().repaint();
+    }
+
+    @Override
+    public boolean commandeMenu(String c) {
         switch (c) {
             case "quitter":
                 System.exit(0);
@@ -66,7 +115,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "Difficile":
                 ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
                 jeu.plateau().reinitialiser();
-                //fixerIA(c);
+                fixerIA(c);
                 break;
             case "local":
                 ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
@@ -77,12 +126,6 @@ public class ControleurMediateur implements CollecteurEvenements {
                 System.out.println("Attente d'une partie ..");
                 System.out.println("Attente d'une partie ...");
                 ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
-                break;
-            case "annuler":
-                undo();
-                break;
-            case "refaire":
-                redo();
                 break;
             case "menuJ":
                 ig.changerMenu(ig.getBoiteJeu(), ig.getBoiteMenu() );
@@ -96,9 +139,12 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "charger":
                 System.out.println("Chargement de la partie...");
                 break;
-            /*case "main":
-                jeu.plateau().changerMain();
-                break;*/
+            case "annuler":
+                annuler();
+                break;
+            case "refaire":
+                refaire();
+                break;
             default:
                 return false;
         }

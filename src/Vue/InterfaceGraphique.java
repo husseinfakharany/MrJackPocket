@@ -19,7 +19,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     JLabel info,tour;
     CollecteurEvenements controle;
     JComboBox<String> commencer, boutonIA;
-    GrilleGraphique district;
+    DistrictGraphique district;
     PiocheGraphique pioche;
     JetonsGraphique jetons;
     IdentiteGraphique identite;
@@ -33,7 +33,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         jeu.addObserver(this);
         controle = c;
         controle.fixerInterfaceUtilisateur(this);
-        district = new GrilleGraphique(jeu);
+        district = new DistrictGraphique(jeu);
         pioche = new PiocheGraphique(jeu);
         jetons = new JetonsGraphique(jeu);
         identite = new IdentiteGraphique(jeu);

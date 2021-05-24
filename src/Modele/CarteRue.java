@@ -35,6 +35,7 @@ public class CarteRue {
 		return orientation;
 	}
 
+
 	void setOrientation(int orientation) {
 		this.orientation = orientation;
 	}
