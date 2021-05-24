@@ -44,11 +44,11 @@ public class JetonActions {
 		this.estRecto = estRecto;
 	}
 
-	public boolean dejaJoue() {
+	public boolean getDejaJoue() {
 		return dejaJoue;
 	}
 
-	public void dejaJoue(boolean dejaJoue) {
+	public void setDejaJoue(boolean dejaJoue) {
 		this.dejaJoue = dejaJoue;
 	}
 	

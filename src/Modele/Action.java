@@ -12,6 +12,7 @@ public class Action {
     int orientationOld;
     int numEnqueteur;
     int deplacement;
+    boolean dejaJoue;
 
 
 
@@ -24,6 +25,7 @@ public class Action {
         this.numEnqueteur = numEnqueteur;
         this.deplacement = deplacement;
         this.joueur = joueur;
+        this.dejaJoue = false;
     }
 
     public Action(Joueur joueur){
@@ -40,7 +42,11 @@ public class Action {
         if(action == null) return false;
         switch (action){
             case DEPLACER_JOKER:
-                return (deplacement==0 || deplacement==1) && numEnqueteur>=0 && numEnqueteur<=2;
+                if (joueur.isJack()) {
+                    return (deplacement == 0 || deplacement == 1 || deplacement == 2) && numEnqueteur >= 0 && numEnqueteur <= 2;
+                } else {
+                    return (deplacement == 1 || deplacement == 2) && numEnqueteur >= 0 && numEnqueteur <= 2;
+                }
             case DEPLACER_TOBBY:
             case DEPLACER_WATSON:
             case DEPLACER_SHERLOCK:
@@ -131,4 +137,13 @@ public class Action {
     public void setDeplacement(int deplacement){
         this.deplacement = deplacement;
     }
+
+    public boolean getDejaJoue(){
+        return dejaJoue;
+    }
+
+    public void setDejaJoue(boolean dejaJoue){
+        this.dejaJoue = dejaJoue;
+    }
+
 }

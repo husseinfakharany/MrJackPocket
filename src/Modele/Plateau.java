@@ -129,7 +129,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         j=0;
         for(int l=0; l<3; l++){
             for(int c=0; c<3; c++){
-                grille[l][c] = new CarteRue(new Point(c,l), suspects().get(suspectIndices.get(j)));
+                grille[l][c] = new CarteRue(new Point(c,l), getSuspects().get(suspectIndices.get(j)));
                 j++;
             }
         }
@@ -170,6 +170,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         for (act = 0; act < 4; act++) {
             current = jetonsActions.get(act);
             current.setEstRecto(rd.nextBoolean()); //Lancement de chaque jeton
+            current.setDejaJoue(false);
         }
     }
 
@@ -179,15 +180,10 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         for(act=0; act<4; act++){
             current = jetonsActions.get(act);
             current.setEstRecto(!current.estRecto());
-
+            current.setDejaJoue(false);
         }
     }
 
-    static ArrayList<Integer> orientationsRues(){
-        return orientationsRues;
-    }
-
-    
     public  void changerJoueur() {
 		if(joueurCourant.isJack() ) {
             enqueteur.setTurn(true);
@@ -199,20 +195,10 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 		
 	}
 
-	public Coup determinerCoup(Actions act){
-        //Coup res = new Coup(this,act); //TODO Modify Coup constructor before implementation
-        //TODO if already played or cannot be rotated and cannot change 2 cards with 1 already inno cented return null
-        //return res;
-        return null;
-    }
-
     public void jouerCoup(Coup cp) {
         nouveau(cp);
     }
-    
-    static ArrayList<Suspect> suspects() {
-        return suspects;
-    }
+
 
     public void piocherJack(){
         int index = rd.nextInt(cartesAlibis.size());
@@ -285,22 +271,8 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         return verdictTour();
     }
 
-    public Actions getActionJeton(int num){
-        if(num < 0 || num > 3) throw new IllegalStateException("Indice des jetons non comprises entre 0 et 4");
-        JetonActions jeton = jetonsActions.get(num);
-        if(jeton.estRecto()){
-            return jeton.getAction1();
-        } else {
-            return jeton.getAction2();
-        }
-    }
-    public JetonActions getJeton(int num){
-        if(num < 0 || num > 3) throw new IllegalStateException("Indice des jetons non comprises entre 0 et 4");
-        return jetonsActions.get(num);
-    }
-
     public void reinitialiser(){
-      
+
         jack.setSablier(0);
         jack.setTurn(false);
         jack.setWinner(false);
@@ -342,8 +314,32 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     }
 
     //Getters and setters
+
+    static ArrayList<Suspect> getSuspects() {
+        return suspects;
+    }
+
+    public Actions getActionJeton(int num){
+        if(num < 0 || num > 3) throw new IllegalStateException("Indice des jetons non comprises entre 0 et 4");
+        JetonActions jeton = jetonsActions.get(num);
+        if(jeton.estRecto()){
+            return jeton.getAction1();
+        } else {
+            return jeton.getAction2();
+        }
+    }
+
+    public JetonActions getJeton(int num){
+        if(num < 0 || num > 3) throw new IllegalStateException("Indice des jetons non comprises entre 0 et 4");
+        return jetonsActions.get(num);
+    }
+
+
     void setNumTour(int numTour){
         this.numTour = numTour;
     }
 
+    static ArrayList<Integer> getOrientationsRues(){
+        return orientationsRues;
+    }
 }

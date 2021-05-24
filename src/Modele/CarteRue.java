@@ -12,21 +12,23 @@ Boolean dejaRetourne
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
-//TODO disallow illegal positionSurCarte for enqueteurs
+
 public class CarteRue {
     public int orientation; //4 bits de poids faible indiquent les orientations des rues (N,S,E,O) - 3/4 activés (si 1110 alors Mur|-)
     public Point position;
     public ArrayList<Enqueteur> enqueteurs; //liste des enqueteurs sur cette carte (seulement pour les cartes des bords)
     public Suspect suspect;
+    public boolean dejaTourne;
 
     public CarteRue(Point position, Suspect suspect){
         Random rand = new Random();
         //On choisi une orientation des orientations possibles
-        orientation = Plateau.orientationsRues().get(rand.nextInt(Plateau.orientationsRues().size()));
+        orientation = Plateau.getOrientationsRues().get(rand.nextInt(Plateau.getOrientationsRues().size()));
         enqueteurs = new ArrayList<>();
         this.position = position;
         this.suspect = suspect;
         this.suspect.setPosition(this.position);
+        this.dejaTourne = false;
     }
     
     
@@ -83,6 +85,15 @@ public class CarteRue {
 		this.suspect = suspect;
 	}
 
+	public boolean getDejaTourne(){
+    	return dejaTourne;
+	}
 
+	public void setDejaTourne(Boolean dejaTourne){
+    	this.dejaTourne = dejaTourne;
+	}
 
+	public boolean getInnocente(){
+    	return suspect.getInnocente();
+	}
 }

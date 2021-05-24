@@ -1,5 +1,5 @@
 import Modele.Jeu;
-import Vue.ControleurMediateur;
+import Controle.ControleurMediateur;
 import Vue.InterfaceGraphique;
 
 

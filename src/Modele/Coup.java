@@ -33,14 +33,19 @@ public class Coup extends Commande{
 	}
 
 	public boolean rotation(Point position1, int orientation) {
+		if (plateau.grille[position1.y][position1.x].getDejaTourne()){
+			return false;
+		}
 		action.setOrientationOld(plateau.grille[position1.y][position1.x].getOrientation());
 		plateau.grille[position1.y][position1.x].setOrientation(orientation);
+		plateau.grille[position1.y][position1.x].setDejaTourne(true);
 		return true;
 	}
 
 	public boolean echanger(Point position1, Point position2) {
 
 		CarteRue carteRue1 = plateau.grille[position1.y][position1.x];
+
 		int orientation1 = carteRue1.getOrientation();
 		Suspect suspect1 = carteRue1.getSuspect();
 
@@ -50,6 +55,10 @@ public class Coup extends Commande{
 
 		int tmpOrientation = orientation1;
 		Suspect tmpSuspect = suspect1;
+
+		if (carteRue1.getInnocente() || carteRue2.getInnocente()){
+			return false;
+		}
 
 		//On échange que l'orientation et le suspect
 		carteRue1.setOrientation(orientation2);
@@ -61,13 +70,8 @@ public class Coup extends Commande{
 		return true;
 	}
 
-	//enqueteur = {0 = SHERLOCK,1 = WATSON,2 = TOBBY,3 = NONE (Only for Jack)}
-	//deplacement = {0 (Only for Jack),1,2}
-	//TODO add conventions to determinerCoup()
-
 	public boolean deplacer(int numEnqueteur, int deplacement, int sens){
 		boolean res = true;
-		if(deplacement>2) return false;
 		for(int i=0; i<deplacement;i++){
 			res = res && avancer(numEnqueteur, sens);
 		}
@@ -78,6 +82,7 @@ public class Coup extends Commande{
 		return deplacer(numEnqueteur,deplacement,1);
 	}
 
+	//TODO Factorise code if possible
 	private boolean avancer(int numEnqueteur, int sens) {
 		Enqueteur enqueteur = plateau.enqueteurs.get(numEnqueteur);
 		int positionX = enqueteur.getPosition().x;
@@ -208,7 +213,6 @@ public class Coup extends Commande{
 				}
 				if(action.getPosition1() == null) action.setPosition1(new Point(c,l));
 				else action.setPosition2(new Point(c,l));
-
 				break;
 			case INNOCENTER_CARD:
 				break;

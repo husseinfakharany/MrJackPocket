@@ -1,9 +1,11 @@
-package Vue;
+package Controle;
 
 import Modele.Action;
 import Modele.Actions;
 import Modele.Coup;
 import Modele.Jeu;
+import Vue.CollecteurEvenements;
+import Vue.InterfaceGraphique;
 
 //TODO fonctions fixerIA(String com) activeIA(int state) undo() redo()
 public class ControleurMediateur implements CollecteurEvenements {

@@ -19,7 +19,6 @@ public class Suspect {
     private Boolean pioche;
     private Boolean isJack;
 
-    //TODO implement getters and setters
     public Suspect(SuspectNom nomPerso, Point position){
         nomPersonnage = nomPerso;
         this.setPosition(position);

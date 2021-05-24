@@ -2,9 +2,6 @@ package Modele;
 
 import java.util.ArrayList;
 
-
-//TODO compltete Historique and use intermediate class that extends Historique and called by Jeu
-
 public class Historique<E extends Commande> {
 	ArrayList<E> passe, futur;
 

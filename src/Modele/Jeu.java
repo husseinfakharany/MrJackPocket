@@ -12,17 +12,13 @@ public class Jeu extends Observable{
 
     public Plateau plateau(){return plateau;}
 
-    //TODO complete determinerCoup
-    public Coup determinerCoup(Actions act) {
-        return plateau.determinerCoup(act);
-    }
-
-
     public void jouerCoup(Coup cp) {
         if (cp == null) {
             throw new IllegalStateException("Coup Impossible");
         } else {
             plateau.jouerCoup(cp);
+            //TODO check with Fabien
+            notifyObservers();
         }
     }
 

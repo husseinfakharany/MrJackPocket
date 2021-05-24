@@ -113,8 +113,6 @@ public class Enqueteur {
 
     }
 
-    //TODO setPositionSurCarte changes CarteRue automatically
-
     public int getPositionSurCarte(){
         return positionSurCarte;
     }
