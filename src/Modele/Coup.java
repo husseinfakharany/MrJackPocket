@@ -11,11 +11,6 @@ public class Coup extends Commande{
 	private Action action;
 	private Plateau plateau;
 
-   
-    //entier : 1 ou 2
-	
-    //CAS Où ACTION EQUIVEAUT à ECHANGE OU ROTATION
-	//TODO Modify constructor
 	public Coup(Plateau plateau, Action action){
 		this.plateau = plateau;
 		this.action = action;
@@ -38,8 +33,6 @@ public class Coup extends Commande{
 		plateau.grille[position1.y][position1.x].setOrientation(orientation);
 		return true;
 	}
-
-
 
 	public boolean echanger(Point position1, Point position2) {
 
@@ -64,10 +57,6 @@ public class Coup extends Commande{
 		return true;
 	}
 
-
-	//TODO check
-	//l'orientation du dectective les indice i et j de sa grille et la grille
-	//TODO Voir si il faut mettre a jour toutes les cartes de la colone ou la ligne concernee et egalement considerer le fait d'avoir plusieurs enquetteur au meme endroit
 	//enqueteur = {0 = SHERLOCK,1 = WATSON,2 = TOBBY,3 = NONE (Only for Jack)}
 	//deplacement = {0 (Only for Jack),1,2}
 	//TODO add conventions to determinerCoup()
@@ -148,11 +137,13 @@ public class Coup extends Commande{
 		this.action = action;
 	}
 
-	//TODO implement execute
 	@Override
 	boolean execute() {
 		switch(action.getAction()){
-			case DEPLACER:
+			case DEPLACER_JOKER:
+			case DEPLACER_WATSON:
+			case DEPLACER_SHERLOCK:
+			case DEPLACER_TOBBY:
 				return deplacer(action.getNumEnqueteur(),action.getDeplacement(),1);
 			case INNOCENTER_CARD:
 				return innoncenter();
@@ -227,7 +218,10 @@ public class Coup extends Commande{
 	@Override
 	boolean desexecute() {
 		switch (action.getAction()){
-			case DEPLACER:
+			case DEPLACER_JOKER:
+			case DEPLACER_WATSON:
+			case DEPLACER_SHERLOCK:
+			case DEPLACER_TOBBY:
 				return deplacer(action.getNumEnqueteur(), action.getDeplacement(),-1);
 			case INNOCENTER_CARD:
 				//On n'a pas le droit de desexecuter innoncenter_card
