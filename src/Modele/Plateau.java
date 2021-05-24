@@ -309,7 +309,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         afficherConfig();
     }
 
-    private void afficherConfig(){
+    public void afficherConfig(){
         int compteurCarte = 1;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -320,6 +320,10 @@ public class Plateau extends Historique<Coup> implements Cloneable{
                 System.out.print(" - Nom Personnage: " + grille[i][j].getSuspect().getNomPersonnage());
                 System.out.print(" - Carte Cachée: " + grille[i][j].getSuspect().getInnocente());
                 System.out.print(" - Personnage pioché: " + grille[i][j].getSuspect().getPioche());
+                if(!grille[i][j].getEnqueteurs().isEmpty()){
+                    System.out.print(" - Enqueteur: " + grille[i][j].getEnqueteurs().get(0).getNomPersonnage().toString());
+                    System.out.print(" - Enqueteur: " + grille[i][j].getEnqueteurs().get(0).getPositionSurCarte());
+                }
                 System.out.println();
                 compteurCarte++;
             }

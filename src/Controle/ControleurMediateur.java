@@ -59,11 +59,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void commandeDistrict(int l, int c){
         if(l>=1 && l <= 3 && c>=1 && c<=3)cp.ajouterArguments(l-1,c-1);
         else{
-            if(l == 4) l--;
-            if(l == 0) l++;
-            if(c == 4) c--;
-            if(c == 0) c++;
-            cp.ajouterArguments(l-1,c-1);
+            cp.ajouterArguments(l,c);
         }
     }
 

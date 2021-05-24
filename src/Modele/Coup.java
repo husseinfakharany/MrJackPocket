@@ -217,30 +217,27 @@ public class Coup extends Commande{
 
 	public int calculDepl(int numEnqueteur,int l,int c){
 		Enqueteur enqueteur = plateau.enqueteurs.get(numEnqueteur);
-		int moveC = c - enqueteur.getPosition().x ;
-		int moveL = l - enqueteur.getPosition().y ;
-		if(moveC==0 && moveL==0) return 1; //TODO si clique sur le personnage dans un angle le déplace d'un
-		if(moveL<0 && enqueteur.getPosition().x !=0) {
-			System.out.println("Coup invalide");
-			return -1;
-		}
-		if(moveL>0 && enqueteur.getPosition().x !=2) {
-			System.out.println("Coup invalide");
-			return -1;
-		}
-		if(moveC<0 && enqueteur.getPosition().y !=2) {
-			System.out.println("Coup invalide");
-			return -1;
-		}
-		if(moveC>0 && enqueteur.getPosition().y !=0) {
-			System.out.println("Coup invalide");
-			return -1;
-		}
-		return Math.abs(moveC) + Math.abs(moveL);
+		if( l!=0 && l!=4 && c!=0 && c!=4) return -1;
+		if( (l==0 && (c==0 || c==4)) || (l==4 && (c==0 || c==4))) return -1;
+		int posC = enqueteur.getPosition().x + 1;
+		int posL = enqueteur.getPosition().y + 1;
+		if (enqueteur.getPositionSurCarte() == Enqueteur.EST) posC ++;
+		if (enqueteur.getPositionSurCarte() == Enqueteur.OUEST) posC--;
+		if (enqueteur.getPositionSurCarte() == Enqueteur.SUD) posL ++;
+		if (enqueteur.getPositionSurCarte() == Enqueteur.NORD) posL--;
+		int moveC = c - posC ;
+		int moveL = l - posL ;
+		int res = Math.abs(moveC) + Math.abs(moveL);
+		if(moveC!=0 && moveL!=0) res-- ;
+		return res;
 	}
 
 	public int calculEnqueteur(int l, int c){
 		ArrayList<Enqueteur> enqueteurs;
+		if(l==4) l--;
+		if(c==4) c--;
+		l--;c--;
+
 		if(l==2 && c==0) {
 			enqueteurs = plateau.grille[l][c].getEnqueteurs();
 			if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.SUD)
@@ -260,7 +257,7 @@ public class Coup extends Commande{
 			enqueteurs = plateau.grille[l][c].getEnqueteurs();
 			if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.EST)
 				return enqueteurs.get(0).getNumEnqueteur();
-		}
+		} //TODO Verifier orientation
 		if(l==0 && c > 0){
 			enqueteurs = plateau.grille[l][c-1].getEnqueteurs();
 			if(!enqueteurs.isEmpty()) return enqueteurs.get(0).getNumEnqueteur();
@@ -307,6 +304,7 @@ public class Coup extends Commande{
 			default:
 				throw new IllegalStateException("Unexpected action");
 		}
+
 
 	}
 
