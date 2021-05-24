@@ -8,18 +8,18 @@ public class Action {
     Joueur joueur;
     Point position1;
     Point position2;
-    int orientation1;
-    int orientation2;
+    int orientation;
+    int numEnqueteur;
     int deplacement;
 
 
 
-    Action(Actions action, Point position1, Point position2, int orientation1, int orientation2, int deplacement, Joueur joueur){
+    Action(Actions action, Point position1, Point position2, int orientation, int numEnqueteur, int deplacement, Joueur joueur){
         this.action = action;
         this.position1 = position1;
         this.position2 = position2;
-        this.orientation1 = orientation1;
-        this.orientation2 = orientation2;
+        this.orientation = orientation;
+        this.numEnqueteur = numEnqueteur;
         this.deplacement = deplacement;
         this.joueur = joueur;
     }
@@ -58,20 +58,20 @@ public class Action {
         this.position2 = position;
     }
 
-    public int getOrientation1(){
-        return orientation1;
+    public int getOrientation(){
+        return orientation;
     }
 
-    public void setOrientation1(int orientation){
-        this.orientation1 = orientation;
+    public void setOrientation(int orientation){
+        this.orientation = orientation;
     }
 
-    public int getOrientation2(){
-        return orientation2;
+    public int getNumEnqueteur(){
+        return numEnqueteur;
     }
 
-    public void setOrientation2(int orientation){
-        this.orientation2 = orientation;
+    public void setNumEnqueteur(int numEnqueteur){
+        this.numEnqueteur = numEnqueteur;
     }
 
     public int getDeplacement(){

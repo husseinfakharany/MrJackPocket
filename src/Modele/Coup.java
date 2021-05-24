@@ -132,13 +132,7 @@ public class Coup extends Commande{
 	@Override
 	void execute() {
 		switch(action.getAction()){
-			case DEPLACER_JOKER:
-				break;
-			case DEPLACER_TOBBY:
-				break;
-			case DEPLACER_SHERLOCK:
-				break;
-			case DEPLACER_WATSON:
+			case DEPLACER:
 				break;
 			case INNOCENTER_CARD:
 				break;
