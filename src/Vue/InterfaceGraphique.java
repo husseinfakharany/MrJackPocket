@@ -284,9 +284,12 @@ public class InterfaceGraphique implements Observer, Runnable {
         boiteBas.add(Box.createHorizontalGlue());
         boiteBas.add(pioche);
 
-        district.addMouseListener(new AdaptateurSouris(district, controle));
-        jetons.addMouseListener(new AdaptateurSouris(jetons, controle));
-        pioche.addMouseListener(new AdaptateurSouris(pioche, controle));
+        if(boiteJeu == null) {
+            district.addMouseListener(new AdaptateurSouris(district, controle));
+            jetons.addMouseListener(new AdaptateurSouris(jetons, controle));
+            pioche.addMouseListener(new AdaptateurSouris(pioche, controle));
+        }
+
 
         if(boiteJeu == null) boiteJeu = Box.createVerticalBox();
         else boiteJeu.removeAll();

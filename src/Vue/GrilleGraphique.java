@@ -138,7 +138,7 @@ public class GrilleGraphique extends JComponent implements  ElementPlateauG{
 
     @Override
     public int getType() {
-        return 1; //1 grille
+        return AdaptateurSouris.district;
     }
 
     @Override

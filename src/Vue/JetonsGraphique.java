@@ -72,7 +72,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
 
     @Override
     public int getType() {
-        return 2; //2 : Jetons
+        return AdaptateurSouris.jetons;
     }
 
     @Override

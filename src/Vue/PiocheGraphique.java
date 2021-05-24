@@ -58,7 +58,7 @@ public class PiocheGraphique extends JComponent implements ElementPlateauG{
 
     @Override
     public int getType() {
-        return 4; //4 pioche
+        return AdaptateurSouris.pioche;
     }
 
     @Override
