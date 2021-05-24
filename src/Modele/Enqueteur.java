@@ -47,6 +47,7 @@ public class Enqueteur {
 
     public void setPosition(Point position) {
         this.position = position;
+
     }
 
 

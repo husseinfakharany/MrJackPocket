@@ -33,7 +33,6 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
 
     public CarteRue [][] grille;
-    public CarteRue [][] temponGrille;
 
     //TODO static may cause error?
     static List<JetonActions> jetonsActions;
@@ -62,7 +61,6 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         enqueteur = new Joueur(false, "Fabien", 0, false, true);
         numTour = 1;
         grille = new CarteRue[3][3];
-        temponGrille = new CarteRue[3][3];
         joueurCourant = enqueteur;
 
         initialiseOrientationsRues();
@@ -137,12 +135,16 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         enqueteurs.get(SHERLOCK).setPositionSurCarte(O);
         grille[0][0].setEnqueteur(enqueteurs.get(SHERLOCK));
         System.out.println("Expected 1: " + grille[0][0].getPosEnqueteur(enqueteurs.get(SHERLOCK)));
+        System.out.println("Expected 1: " + enqueteurs.get(SHERLOCK).getPositionSurCarte());
+        System.out.println("Expected 0,0: " + enqueteurs.get(SHERLOCK).getPosition());
 
 
         grille[0][2].setOrientation(NSO);
         grille[0][2].setEnqueteur(enqueteurs.get(WATSON));
         enqueteurs.get(WATSON).setPositionSurCarte(E);
         System.out.println("Expected 2: " + grille[0][2].getPosEnqueteur(enqueteurs.get(WATSON)));
+        System.out.println("Expected 2: " + enqueteurs.get(WATSON).getPositionSurCarte());
+        System.out.println("Expected 2,0: " + enqueteurs.get(WATSON).getPosition());
 
         grille[2][1].setOrientation(NEO);
         enqueteurs.get(TOBBY).setPositionSurCarte(S);
@@ -185,8 +187,8 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 	}
 
 	public Coup determinerCoup(Actions act){
-        //Coup res = new Coup(this,act,); //TODO Modify Coup constructor before implementation
-        //TODO if already played or cannot be rotated and cannot change 2 cards with 1 already innocented return null
+        //Coup res = new Coup(this,act); //TODO Modify Coup constructor before implementation
+        //TODO if already played or cannot be rotated and cannot change 2 cards with 1 already inno cented return null
         //return res;
         return null;
     }
@@ -255,4 +257,5 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     void setNumTour(int numTour){
         this.numTour = numTour;
     }
+
 }

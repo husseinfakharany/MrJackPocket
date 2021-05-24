@@ -22,7 +22,7 @@ public class Coup extends Commande{
 	}
 
 
-	public void innoncenter(){
+	public boolean innoncenter(){
 		CarteAlibi card = plateau.piocher();
 		int carteRueX = card.getSuspect().getPosition().x;
 		int carteRueY = card.getSuspect().getPosition().y;
@@ -30,15 +30,17 @@ public class Coup extends Commande{
 		int sabliersCarte = card.getSablier();
 		plateau.grille[carteRueY][carteRueX].setOrientation(plateau.NSEO);
 		action.getJoueur().setSablier(sabliersJoueur+sabliersCarte);
+		return true;
 	}
 
-	public void rotation() {
+	public boolean rotation() {
 		plateau.grille[action.getPosition1().y][action.position1.x].setOrientation(action.getOrientation1());
+		return true;
 	}
 
 
 
-	public void echanger() {
+	public boolean echanger() {
 
 		CarteRue carteRue1 = plateau.grille[action.getPosition1().y][action.getPosition1().x];
 		int orientation1 = carteRue1.getOrientation();
@@ -58,196 +60,64 @@ public class Coup extends Commande{
 		carteRue2.setOrientation(tmpOrientation);
 		carteRue2.setSuspect(tmpSuspect);
 
+		return true;
 	}
 
-	/*
+
 	//TODO check
 	//l'orientation du dectective les indice i et j de sa grille et la grille
 	//TODO Voir si il faut mettre a jour toutes les cartes de la colone ou la ligne concernee et egalement considerer le fait d'avoir plusieurs enquetteur au meme endroit
-	public void deplacer(int i,int j,CarteRue grille[][]) {
-		 CarteRue tempon; 
-		 int k=0;
-		 tempon=grille[i][j];
-		//deplacement coté Nord
-		 if(i==0 && grille[i][j].getPositionEnqueteur()== 8) {
-			
-			 if((deplacement+j)<3 ) {
-					while(i<3) {
-					 
-					 grille[i][j+deplacement].setPositionEnqueteur(tempon.getPositionEnqueteur());
-					 grille[i][j+deplacement].setEnqueteur(tempon.getEnqueteur());
-					 grille[i][j+deplacement].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-				     
-					 grille[i][j].setEnqueteur(null);
-					 grille[i][j].setPositionEnqueteur(0b0000);
-					 
-				     i++;
+	//enqueteur = {0 = SHERLOCK,1 = WATSON,2 = TOBBY,3 = NONE (Only for Jack)}
+	//deplacement = {0 (Only for Jack),1,2}
+	//TODO add conventions to determinerCoup()
+	public boolean deplacer(int numEnqueteur, int deplacement) {
+		Enqueteur enqueteur = plateau.enqueteurs.get(numEnqueteur);
+		int positionX = enqueteur.getPosition().x;
+		int positionY = enqueteur.getPosition().y;
+		int posSurCarte = enqueteur.getPositionSurCarte();
+		if (deplacement==0){
+			return true;
+		} else {
+			//if cas limite
+			if ((positionX==0 || positionX ==2) && (positionY==0 || positionY==2)) {
+				switch (posSurCarte) {
+					case 1:
+						enqueteur.setPositionSurCarte(8);
+						return true;
+					case 2:
+						enqueteur.setPositionSurCarte(4);
+						return true;
+					case 4:
+						enqueteur.setPositionSurCarte(1);
+						return true;
+					case 8:
+						enqueteur.setPositionSurCarte(2);
+						return true;
 				}
-			 }	
-			 if((deplacement+j)==3 ) {
-				  k=0;
-				  while(k<3) {
-					 grille[k][j].setEnqueteur(null);
-					 grille[k][j].setPositionEnqueteur(0b0000);
-					 
-					 grille[i][k].setPositionEnqueteur(0b0010);
-					 grille[i][k].setEnqueteur(tempon.getEnqueteur());
-					 grille[i][k].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-					 
-					 
-					 k++;
-				  }
-			 }
-			 if((deplacement+j)==4) {
-				 k=0;
-				 while(k<3) { 
-					 
-					 grille[k][j].setEnqueteur(null);
-					 grille[k][j].setPositionEnqueteur(0b0000);
-					 
-					 grille[1][k].setPositionEnqueteur(tempon.getPositionEnqueteur());
-					 grille[1][k].setEnqueteur(tempon.getEnqueteur());
-					 grille[1][k].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-				    
-					 k++;
-				 }
-			 }
-			 
-		 }
-		 
-		 //deplacement coté Est
-		 if(j==2  && grille[i][j].getPositionEnqueteur()== 2) {
-			
-			 if((deplacement+i)<3 ) {
-				 j=0;
-				 while(j<3) {
-					 grille[i+deplacement][j].setPositionEnqueteur(tempon.getPositionEnqueteur());
-					 grille[i+deplacement][j].setEnqueteur(tempon.getEnqueteur());
-					 grille[i+deplacement][j].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-					 
-					 grille[i][j].setEnqueteur(null);
-					 grille[i][j].setPositionEnqueteur(0b0000);
-					 j++;
-				 }
-			 }
-			 if((deplacement+i)==3 ) {
-				 
-				 k=0;
-				 while(k<3) {
-					 grille[i][k].setEnqueteur(null);
-					 grille[i][k].setPositionEnqueteur(0b0000);
-					 
-					 grille[k][j].setPositionEnqueteur(0b0100);
-					 grille[k][j].setEnqueteur(tempon.getEnqueteur());
-					 grille[k][j].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-					 k++;
-				 } 
-				
-				
-			 }
-			 if((deplacement+j)==4) {
-				 k=0;
-				 while(k<0) {
-					 grille[i][k].setEnqueteur(null);
-					 grille[i][k].setPositionEnqueteur(0b0000);
-					 
-					 grille[k][1].setPositionEnqueteur(0b0100);
-					 grille[k][1].setEnqueteur(tempon.getEnqueteur());
-					 grille[k][1].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-					 k++;
-			        }
-		       }
-		 }
-		 
-		 //coté Sud
-		 if(i==2 && grille[i][j].getPositionEnqueteur()==4) {
-			 if((j-deplacement)>=0) {
-				k=0;
-				while(k<3){
-					 grille[k][j-deplacement].setPositionEnqueteur(tempon.getPositionEnqueteur());
-					 grille[k][j-deplacement].setEnqueteur(tempon.getEnqueteur());
-					 grille[k][j-deplacement].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-
-					 grille[k][j].setEnqueteur(null);
-					 grille[k][j].setPositionEnqueteur(0b0000);
-					 k++;
-				 }
-			 }
-			 if((j-deplacement)==-1 ) {
-				
-				 while(k<3) {
-					 
-					 
-					 grille[k][j].setEnqueteur(null);
-					 grille[k][j].setPositionEnqueteur(0b0000);
-					 grille[i][k].setPositionEnqueteur(0b0001);
-					 grille[i][k].setEnqueteur(tempon.getEnqueteur());
-					 grille[i][k].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-					 
-					
-					 k++;
-				 }
-			 }
-			 if((j-deplacement)==-2) {
-				
-				 while(k<3) {
-					 grille[k][j].setEnqueteur(null);
-					 grille[k][j].setPositionEnqueteur(0b0000);	 
-				 
-					 grille[1][k].setPositionEnqueteur(0b0001);
-					 grille[1][k].setEnqueteur(tempon.getEnqueteur());
-					 grille[1][k].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-				     k++;
-				 }
-				 
-			 }
-			 
-			 
-		 }
-		 //deplacement coté ouest
-		 if(j==0 && grille[i][j].getPositionEnqueteur()==1) {
-			 if((i-deplacement)>=0) {
-				 while(j<3) {
-					 grille[i-deplacement][j].setPositionEnqueteur(tempon.getPositionEnqueteur());
-					 grille[i-deplacement][j].setEnqueteur(tempon.getEnqueteur());
-					 grille[i-deplacement][j].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-				     
-					 grille[i][j].setEnqueteur(null);
-					 grille[i][j].setPositionEnqueteur(0b0000);
-					 
-					 j++;
-				 }
-			 }
-			 if((i-deplacement)==-1 ) {
-				 while(k<3) {
-					 grille[i][k].setEnqueteur(null);
-					 grille[i][k].setPositionEnqueteur(0b0000);
-					 grille[k][0].setPositionEnqueteur(0b1110);
-					 grille[k][0].setEnqueteur(tempon.getEnqueteur());
-					 grille[k][0].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-					 
-					
-					 k++;
-					 
-				 }
-			 }
-			 if((i-deplacement)==-2) {
-				 while(k<3) {
-					 
-					 grille[i][k].setEnqueteur(null);
-					 grille[i][k].setPositionEnqueteur(0b0000);
-					 
-					 grille[k][1].setPositionEnqueteur(0b1110);
-					 grille[k][1].setEnqueteur(tempon.getEnqueteur());
-					 grille[k][1].getEnqueteur().setNomPersonnage(tempon.getEnqueteur().getNomPersonnage());
-					 
-					 
-					 k++;
-				 } 
-			 }
-		 }
-		 
-	} */
+			}
+			//if cas general
+			plateau.grille[positionY][positionX].removeEnqueteur(enqueteur);
+			switch (posSurCarte){
+				//est sur l'ouest de la grille (0,2) ou (0,1)
+				case 1:
+					plateau.grille[positionY--][positionX].setEnqueteur(enqueteur);
+					return true;
+				//est sur l'est de la grille (2,0) ou (2,1)
+				case 2:
+					plateau.grille[positionY++][positionX].setEnqueteur(enqueteur);
+					return true;
+				//est sur le sud de la grille (2,2) ou (1,2)
+				case 4:
+					plateau.grille[positionY][positionX--].setEnqueteur(enqueteur);
+					return true;
+				//est sur le nord de la grille (0,0) ou (1,0)
+				case 8:
+					plateau.grille[positionY][positionX++].setEnqueteur(enqueteur);
+					return true;
+			}
+		}
+		return false;
+	}
 	
 	
 	public Action getAction() {

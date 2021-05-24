@@ -12,11 +12,11 @@ Boolean dejaRetourne
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
-
+//TODO disallow illegal positionSurCarte for enqueteurs
 public class CarteRue {
     public int orientation; //4 bits de poids faible indiquent les orientations des rues (N,S,E,O) - 3/4 activés (si 1110 alors Mur|-)
     public Point position;
-    public ArrayList<Enqueteur> enqueteurs;
+    public ArrayList<Enqueteur> enqueteurs; //liste des enqueteurs sur cette carte (seulement pour les cartes des bords)
     public Suspect suspect;
 
     public CarteRue(Point position, Suspect suspect){
