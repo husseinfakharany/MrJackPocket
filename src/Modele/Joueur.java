@@ -17,7 +17,7 @@ Liste cartes alibi piochés
 
 public class Joueur {
 	
-	private List<CarteAlibi> cardList = new ArrayList<>();
+	private ArrayList<CarteAlibi> cardList;
 	private int sablier;
 	private boolean isJack = false;
 	private boolean win = false;
@@ -29,6 +29,7 @@ public class Joueur {
 	//  isJack
 	//sablier
 	public Joueur(boolean isJack, String name, int sablier,boolean win,boolean turn) {
+		cardList = new ArrayList<>();
 		setJack(isJack);
 		setName(name);
 		setSablier(sablier);
@@ -47,11 +48,11 @@ public class Joueur {
 	}
 
 	// Getters and Setters
-	public List<CarteAlibi> getCardList() {
+	public ArrayList<CarteAlibi> getCardList() {
 		return cardList;
 	}
 
-	public void setCardList(List<CarteAlibi> cardList) {
+	public void setCardList(ArrayList<CarteAlibi> cardList) {
 		this.cardList = cardList;
 	}
 

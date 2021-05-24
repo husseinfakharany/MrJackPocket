@@ -28,7 +28,7 @@ public class MainGraphique extends JComponent {
         suspectJau = Configuration.chargeImage("Suspect-jauneB");
         suspectOra = Configuration.chargeImage("Suspect-orangeB");
         suspectVio = Configuration.chargeImage("Suspect-violetB");
-        /*List<CarteAlibi> mainFictif = new ArrayList<CarteAlibi>();
+        /*ArrayList<CarteAlibi> mainFictif = new ArrayList<CarteAlibi>();
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.JEREMY_BERT,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.MADAME,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.JOHN_PIZER,null ) ) );

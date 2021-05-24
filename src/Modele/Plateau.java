@@ -35,11 +35,13 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     public CarteRue [][] grille;
 
     //TODO static may cause error?
-    static List<JetonActions> jetonsActions;
-    static List<CarteAlibi> cartesAlibis;
-    static List<Integer> orientationsRues;
-    static List<Suspect> suspects;
-    static List<Enqueteur> enqueteurs;
+    static ArrayList<JetonActions> jetonsActions;
+    static ArrayList<CarteAlibi> cartesAlibis;
+    static ArrayList<Integer> orientationsRues;
+    static ArrayList<Suspect> suspects;
+    static ArrayList<Suspect> suspectsInnoncete;
+    static ArrayList<Enqueteur> enqueteurs;
+
 
     public static final int NSEO = 0b1111;
     public static final int NSE = 0b1110;
@@ -84,6 +86,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
     private void initialiseSuspects(){
         suspects = new ArrayList<>();
+        suspectsInnoncete = new ArrayList<>();
         for(SuspectNom e:SuspectNom.values()){
             suspects.add(new Suspect(e,null));
         }
@@ -183,7 +186,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         }
     }
 
-    static List<Integer> orientationsRues(){
+    static ArrayList<Integer> orientationsRues(){
         return orientationsRues;
     }
 
@@ -210,7 +213,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         nouveau(cp);
     }
     
-    static List<Suspect> suspects() {
+    static ArrayList<Suspect> suspects() {
         return suspects;
     }
 
@@ -232,9 +235,46 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         card.getSuspect().setPioche(true);
         return card;
     }
-    //TODO complete case where rest of alibi cards are useless
+
+    public boolean jackVisible(Enqueteur e){
+        for(Suspect s:e.Visible(grille)){
+            if (s.getIsJack()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //Cet fonction retourne vrai s'il reste qu'une seule carte non innonctée (Jack)
+    public boolean verdictTour(){
+        for(Enqueteur e:enqueteurs){
+            if (!jackVisible(e)){
+                //Si Jack n'est pas visible, tous les suspects visibles sont innoncentés
+                for(Suspect s:e.Visible(grille)){
+                    s.setInnocente(true);
+                    s.retournerCarteRue(grille);
+                    suspectsInnoncete.add(s);
+                }
+            } else {
+                //Pour chaque suspect sur la grille, s'il n'est pas visible pas cet enqueteur, il est innocenté
+                for(Suspect s:suspects){
+                    if (!e.Visible(grille).contains(s)){
+                        s.setInnocente(true);
+                        s.retournerCarteRue(grille);
+                        suspectsInnoncete.add(s);
+                    }
+                }
+            }
+        }
+        if (suspectsInnoncete.size()==8){
+            return true;
+        }
+        return false;
+    }
+
+    //Fonction appelée apres la fin du tour
     public boolean finJeu(){
-        if (numTour>8) {
+        if (numTour>=8) {
             return true;
         } else {
             if (jack.getSablier()==6){
@@ -247,7 +287,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
                 }
             }
         }
-        return false;
+        return verdictTour();
     }
 
     public Actions getActionJeton(int num){
@@ -292,7 +332,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
                 System.out.print(" - Position: " + grille[i][j].getPosition());
                 System.out.print(" - Position personnage: " + grille[i][j].getSuspect().getPosition());
                 System.out.print(" - Nom Personnage: " + grille[i][j].getSuspect().getNomPersonnage());
-                System.out.print(" - Carte Cachée: " + grille[i][j].getSuspect().getCarteCache());
+                System.out.print(" - Carte Cachée: " + grille[i][j].getSuspect().getInnocente());
                 System.out.print(" - Personnage pioché: " + grille[i][j].getSuspect().getPioche());
                 System.out.println();
                 compteurCarte++;

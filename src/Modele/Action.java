@@ -39,7 +39,10 @@ public class Action {
     public boolean estValide(){
         if(action == null) return false;
         switch (action){
-            case DEPLACER:
+            case DEPLACER_JOKER:
+            case DEPLACER_WATSON:
+            case DEPLACER_SHERLOCK:
+            case DEPLACER_TOBBY:
                 return deplacement==0 || deplacement==1 || deplacement==2;
             case INNOCENTER_CARD:
                 return true;

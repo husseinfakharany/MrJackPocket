@@ -19,12 +19,14 @@ public class Coup extends Commande{
 
 	public boolean innoncenter(){
 		CarteAlibi card = plateau.piocher();
-		int carteRueX = card.getSuspect().getPosition().x;
-		int carteRueY = card.getSuspect().getPosition().y;
+		Suspect s = card.getSuspect();
+		Joueur j = action.getJoueur();
 		int sabliersJoueur = action.getJoueur().getSablier();
 		int sabliersCarte = card.getSablier();
-		plateau.grille[carteRueY][carteRueX].setOrientation(plateau.NSEO);
-		action.getJoueur().setSablier(sabliersJoueur+sabliersCarte);
+		s.setInnocente(true);
+		s.retournerCarteRue(plateau.grille);
+		j.setSablier(sabliersJoueur+sabliersCarte);
+		j.ajouterCarte(card);
 		return true;
 	}
 

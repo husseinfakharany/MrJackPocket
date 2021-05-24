@@ -15,7 +15,7 @@ public class Suspect {
     private SuspectNom nomPersonnage;
     private SuspectCouleur couleur;
     private Point position; //position sur la grille
-    private Boolean carteCache;
+    private Boolean innocente;
     private Boolean pioche;
     private Boolean isJack;
 
@@ -23,8 +23,8 @@ public class Suspect {
     public Suspect(SuspectNom nomPerso, Point position){
         nomPersonnage = nomPerso;
         this.setPosition(position);
-        setCarteCache(false);
-        setPioche(false);
+        this.innocente = false;
+        this.pioche = false;
 		switch (nomPersonnage){
 			case MADAME:
 				couleur = ROSE;
@@ -75,12 +75,12 @@ public class Suspect {
 		this.position = position;
 	}
 	
-	public Boolean getCarteCache() {
-		return carteCache;
+	public Boolean getInnocente() {
+		return innocente;
 	}
 	
-	public void setCarteCache(Boolean carteCache) {
-		this.carteCache = carteCache;
+	public void setInnocente(Boolean innocente) {
+		this.innocente = innocente;
 	}
 	
 	public Boolean getPioche() {
@@ -102,5 +102,8 @@ public class Suspect {
 	public Boolean getIsJack(){
     	return isJack;
 	}
-   
+
+	public void retournerCarteRue(CarteRue[][] grille) {
+		grille[position.y][position.x].setOrientation(Plateau.NSEO);
+	}
 }
