@@ -130,7 +130,7 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
         }
         //suspect.getScaledInstance(tailleC,tailleC,Image.SCALE_DEFAULT);
         drawable.drawImage(quartier, c*tailleC, l*tailleC,tailleC, tailleC, null);
-        drawable.drawImage(suspect, (int) ((c+0.25)*tailleC), (int) ((l+0.25)*tailleC), (int) (tailleC*0.5), (int) (tailleC*0.5), null);
+        if(!rue.getSuspect().getInnocente())drawable.drawImage(suspect, (int) ((c+0.25)*tailleC), (int) ((l+0.25)*tailleC), (int) (tailleC*0.5), (int) (tailleC*0.5), null);
     }
 
     public void dessinerGrille(){

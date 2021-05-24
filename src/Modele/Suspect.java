@@ -104,6 +104,7 @@ public class Suspect {
 	}
 
 	public void retournerCarteRue(CarteRue[][] grille) {
-		grille[position.y][position.x].setOrientation(Plateau.NSEO);
+		if(grille[position.y][position.x].getSuspect().getCouleur() == GRIS) grille[position.y][position.x].setOrientation(Plateau.NSEO);
 	}
+
 }

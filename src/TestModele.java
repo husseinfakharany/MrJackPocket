@@ -13,7 +13,7 @@ public class TestModele {
                 System.out.print(" - Position: " + jeu.plateau().grille[i][j].getPosition());
                 System.out.print(" - Position personnage: " + jeu.plateau().grille[i][j].getSuspect().getPosition());
                 System.out.print(" - Nom Personnage: " + jeu.plateau().grille[i][j].getSuspect().getNomPersonnage());
-                System.out.print(" - Carte Cachée: " + jeu.plateau().grille[i][j].getSuspect().getCarteCache());
+                System.out.print(" - Carte Cachée: " + jeu.plateau().grille[i][j].getSuspect().getInnocente());
                 System.out.print(" - Personnage pioché: " + jeu.plateau().grille[i][j].getSuspect().getPioche());
                 System.out.println();
                 compteurCarte++;

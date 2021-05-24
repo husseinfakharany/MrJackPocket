@@ -40,10 +40,11 @@ public class Action {
         if(action == null) return false;
         switch (action){
             case DEPLACER_JOKER:
+                return (deplacement==0 || deplacement==1) && numEnqueteur>=0 && numEnqueteur<=2;
+            case DEPLACER_TOBBY:
             case DEPLACER_WATSON:
             case DEPLACER_SHERLOCK:
-            case DEPLACER_TOBBY:
-                return deplacement==0 || deplacement==1 || deplacement==2;
+                return deplacement==1 || deplacement==2;
             case INNOCENTER_CARD:
                 return true;
             case ECHANGER_DISTRICT:

@@ -274,7 +274,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         boiteBas.setMaximumSize(new Dimension(width,(int) (0.243*height) ));
         boiteBas.setPreferredSize(new Dimension(width,(int) (0.243*height)));
         boiteBasG.setPreferredSize(new Dimension((int) (0.175*width),boiteBas.getHeight()));
-        main.setPreferredSize(new Dimension((int) (0.650*width),(int) (0.208*height) ));
+        main.setPreferredSize(new Dimension((int) (0.8*width),(int) (0.243*height) ));
         pioche.setPreferredSize(new Dimension((int) (0.175*width),(int) (0.243*height)));
         pioche.setMaximumSize(new Dimension((int) (0.175*width),(int) (0.243*height)));
 

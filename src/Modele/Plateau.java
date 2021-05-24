@@ -3,7 +3,6 @@ package Modele;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 /*
@@ -25,6 +24,7 @@ Attribuer le sablier du tour courant
 
 public class Plateau extends Historique<Coup> implements Cloneable{
 
+    Random rd ;
     public Joueur jack;
     public Joueur enqueteur;
     public Joueur joueurCourant;
@@ -43,11 +43,11 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     static ArrayList<Enqueteur> enqueteurs;
 
 
-    public static final int NSEO = 0b1111;
-    public static final int NSE = 0b1110;
-    public static final int NSO = 0b1101;
-    public static final int SEO = 0b0111;
-    public static final int NEO = 0b1011;
+    public static final int NSEO = 0b1111; //15
+    public static final int NSE = 0b1110;  //12
+    public static final int NSO = 0b1101;  //13
+    public static final int SEO = 0b0111;  //7
+    public static final int NEO = 0b1011;  //11
 
     static final int N = 0b1000;
     static final int S = 0b0100;
@@ -59,6 +59,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     static final int TOBBY = 2;
 
     public Plateau(){
+        rd = new Random();
         jack = new Joueur(true, "Hussein", 0,false,false);
         enqueteur = new Joueur(false, "Fabien", 0, false, true);
         numTour = 1;
@@ -72,7 +73,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         initialiseGrille(); //Initialise et mélange la grille du premier tour
         initialiseCarteAlibis();
         piocherJack();
-        melangeJetonsActions();
+        jetJetons();
     }
 
 
@@ -159,20 +160,16 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
     //Mélange ou inverse les cartes actions (depend du numéro du tour)
     void melangeJetonsActions(){
-
         if (numTour%2 == 1) inverserJetons();
         else jetJetons();
     }
 
     void jetJetons() {
-        Random rd = new Random();
         int act;
         JetonActions current;
         for (act = 0; act < 4; act++) {
             current = jetonsActions.get(act);
-            if (numTour % 2 == 1) { //Mélange des jétons actions
-                current.setEstRecto(rd.nextBoolean()); //Lancement de chaque jeton
-            }
+            current.setEstRecto(rd.nextBoolean()); //Lancement de chaque jeton
         }
     }
 
@@ -218,7 +215,6 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     }
 
     public void piocherJack(){
-        Random rd = new Random();
         int index = rd.nextInt(cartesAlibis.size());
         CarteAlibi JackCard = cartesAlibis.get(index);
         cartesAlibis.remove(index);
@@ -228,7 +224,6 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     }
 
     public CarteAlibi piocher(){
-        Random rd = new Random();
         int index = rd.nextInt(cartesAlibis.size());
         CarteAlibi card = cartesAlibis.get(index);
         cartesAlibis.remove(index);
@@ -320,10 +315,10 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         piocherJack();
         jetJetons();
 
-        aficherConfig();
+        afficherConfig();
     }
 
-    private void aficherConfig(){
+    private void afficherConfig(){
         int compteurCarte = 1;
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {

@@ -87,6 +87,19 @@ public class Enqueteur {
         return nomPersonnage;
     }
 
+    public int getNumEnqueteur(){
+        switch (nomPersonnage){
+            case SHERLOCK:
+                return 0;
+            case WATSON:
+                return 1;
+            case TOBBY:
+                return 2;
+            default:
+                return -1;
+        }
+    }
+
     public void setNomPersonnage(EnqueteurNom nom ) {
         nomPersonnage = nom;
     }
