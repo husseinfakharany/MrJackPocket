@@ -83,58 +83,61 @@ public class Coup extends Commande{
 		int positionX = enqueteur.getPosition().x;
 		int positionY = enqueteur.getPosition().y;
 		int posSurCarte = enqueteur.getPositionSurCarte();
-		//CAS carte rue sur 1 des 4 coins de la grille
-		if ((positionX==0 || positionX ==2) && (positionY==0 || positionY==2)) {
-			switch (posSurCarte) {
-				case 1:
+
+		switch(posSurCarte){
+			case 1:
+				//CAS carte rue sur 1 des 4 coins de la grille
+				if (positionX==0 && positionY==0){
 					if (sens==-1){
 						enqueteur.setPositionSurCarte(4);
 						return true;
 					}
 					enqueteur.setPositionSurCarte(8);
 					return true;
-				case 2:
+				} else {
+					plateau.grille[positionY][positionX].removeEnqueteur(enqueteur);
+					plateau.grille[positionY-sens][positionX].setEnqueteur(enqueteur);
+					return true;
+				}
+			case 2:
+				if (positionX==2 && positionY==2){
 					if (sens==-1){
 						enqueteur.setPositionSurCarte(8);
 						return true;
 					}
 					enqueteur.setPositionSurCarte(4);
 					return true;
-				case 4:
+				} else {
+					plateau.grille[positionY][positionX].removeEnqueteur(enqueteur);
+					plateau.grille[positionY+sens][positionX].setEnqueteur(enqueteur);
+					return true;
+				}
+			case 4:
+				if (positionX==0 && positionY==2){
 					if (sens==-1){
 						enqueteur.setPositionSurCarte(2);
 						return true;
 					}
 					enqueteur.setPositionSurCarte(1);
 					return true;
-				case 8:
+				} else {
+					plateau.grille[positionY][positionX].removeEnqueteur(enqueteur);
+					plateau.grille[positionY][positionX-sens].setEnqueteur(enqueteur);
+					return true;
+				}
+			case 8:
+				if (positionX==2 && positionY==0){
 					if (sens==-1){
 						enqueteur.setPositionSurCarte(1);
 						return true;
 					}
 					enqueteur.setPositionSurCarte(2);
 					return true;
-			}
-		}
-		//CAS general
-		plateau.grille[positionY][positionX].removeEnqueteur(enqueteur);
-		switch (posSurCarte){
-			//est sur l'ouest de la grille (0,2) ou (0,1)
-			case 1:
-				plateau.grille[positionY-sens][positionX].setEnqueteur(enqueteur);
-				return true;
-			//est sur l'est de la grille (2,0) ou (2,1)
-			case 2:
-				plateau.grille[positionY+sens][positionX].setEnqueteur(enqueteur);
-				return true;
-			//est sur le sud de la grille (2,2) ou (1,2)
-			case 4:
-				plateau.grille[positionY][positionX-sens].setEnqueteur(enqueteur);
-				return true;
-			//est sur le nord de la grille (0,0) ou (1,0)
-			case 8:
-				plateau.grille[positionY][positionX+sens].setEnqueteur(enqueteur);
-				return true;
+				} else {
+					plateau.grille[positionY][positionX].removeEnqueteur(enqueteur);
+					plateau.grille[positionY][positionX+sens].setEnqueteur(enqueteur);
+					return true;
+				}
 		}
 		return false;
 	}
@@ -182,16 +185,16 @@ public class Coup extends Commande{
 				action.setNumEnqueteur(calculEnqueteur(l,c));
 				break;
 			case DEPLACER_SHERLOCK:
-				action.setDeplacement(calculDepl(0,l,c));
-				action.setNumEnqueteur(0);
+				action.setDeplacement(calculDepl(Plateau.SHERLOCK,l,c));
+				action.setNumEnqueteur(Plateau.SHERLOCK);
 				break;
 			case DEPLACER_WATSON:
-				action.setDeplacement(calculDepl(1,l,c));
-				action.setNumEnqueteur(1);
+				action.setDeplacement(calculDepl(Plateau.WATSON,l,c));
+				action.setNumEnqueteur(Plateau.WATSON);
 				break;
 			case DEPLACER_TOBBY:
-				action.setDeplacement(calculDepl(2,l,c));
-				action.setNumEnqueteur(2);
+				action.setDeplacement(calculDepl(Plateau.TOBBY,l,c));
+				action.setNumEnqueteur(Plateau.TOBBY);
 				break;
 			case ECHANGER_DISTRICT:
 				if(action.getPosition1() != null && action.getPosition1().x == c && action.getPosition1().y == l) {

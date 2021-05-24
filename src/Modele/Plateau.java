@@ -138,14 +138,14 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         //Orientations initiaux (enqueteurs face aux murs)
         grille[0][0].setOrientation(NSE);
         enqueteurs.get(SHERLOCK).setPositionSurCarte(O);
-        grille[0][0].setEnqueteur(enqueteurs.get(SHERLOCK));
+        grille[0][0].setEnqueteur(enqueteurs.get(SHERLOCK)); //Modified for test (original = [0][0],E)
         System.out.println("Expected 1: " + grille[0][0].getPosEnqueteur(enqueteurs.get(SHERLOCK)));
         System.out.println("Expected 1: " + enqueteurs.get(SHERLOCK).getPositionSurCarte());
         System.out.println("Expected 0,0: " + enqueteurs.get(SHERLOCK).getPosition());
 
 
         grille[0][2].setOrientation(NSO);
-        grille[0][2].setEnqueteur(enqueteurs.get(WATSON));
+        grille[0][2].setEnqueteur(enqueteurs.get(WATSON)); //Modified for test (original = [0][2])
         enqueteurs.get(WATSON).setPositionSurCarte(E);
         System.out.println("Expected 2: " + grille[0][2].getPosEnqueteur(enqueteurs.get(WATSON)));
         System.out.println("Expected 2: " + enqueteurs.get(WATSON).getPositionSurCarte());
@@ -153,7 +153,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
         grille[2][1].setOrientation(NEO);
         enqueteurs.get(TOBBY).setPositionSurCarte(S);
-        grille[2][1].setEnqueteur(enqueteurs.get(TOBBY));
+        grille[2][1].setEnqueteur(enqueteurs.get(TOBBY)); //Modified for test (original = [2][1])
 
     }
 
