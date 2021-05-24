@@ -15,10 +15,11 @@ public class Historique<E extends Commande> {
 	}
 
 	public void nouveau(E c) {
-		passe.add(0,c);
-		c.execute();
-		while (!futur.isEmpty())
-			futur.remove(0);
+		if(c.execute()){
+			passe.add(0,c);
+			while (!futur.isEmpty())
+				futur.remove(0);
+		}
 	}
 
 
@@ -29,9 +30,13 @@ public class Historique<E extends Commande> {
 	E annuler() {
 		if (peutAnnuler()) {
 			E c = passe.remove(0);
-			c.desexecute();
-			futur.add(0,c);
-			return c;
+			if (c.desexecute()){
+				futur.add(0,c);
+				return c;
+			} else {
+				passe.add(0,c);
+				return null;
+			}
 		} else {
 			return null;
 		}

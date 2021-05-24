@@ -33,20 +33,21 @@ public class Coup extends Commande{
 		return true;
 	}
 
-	public boolean rotation() {
-		plateau.grille[action.getPosition1().y][action.position1.x].setOrientation(action.getOrientation1());
+	public boolean rotation(Point position1, int orientation) {
+		action.setOrientationOld(plateau.grille[position1.y][position1.x].getOrientation());
+		plateau.grille[position1.y][position1.x].setOrientation(orientation);
 		return true;
 	}
 
 
 
-	public boolean echanger() {
+	public boolean echanger(Point position1, Point position2) {
 
-		CarteRue carteRue1 = plateau.grille[action.getPosition1().y][action.getPosition1().x];
+		CarteRue carteRue1 = plateau.grille[position1.y][position1.x];
 		int orientation1 = carteRue1.getOrientation();
 		Suspect suspect1 = carteRue1.getSuspect();
 
-		CarteRue carteRue2 = plateau.grille[action.getPosition2().y][action.getPosition2().x];
+		CarteRue carteRue2 = plateau.grille[position2.y][position2.x];
 		int orientation2 = carteRue2.getOrientation();
 		Suspect suspect2 = carteRue2.getSuspect();
 
@@ -70,51 +71,71 @@ public class Coup extends Commande{
 	//enqueteur = {0 = SHERLOCK,1 = WATSON,2 = TOBBY,3 = NONE (Only for Jack)}
 	//deplacement = {0 (Only for Jack),1,2}
 	//TODO add conventions to determinerCoup()
-	public boolean deplacer(int numEnqueteur, int deplacement) {
+
+	public boolean deplacer(int numEnqueteur, int deplacement, int sens){
+		boolean res = true;
+		for(int i=0; i<deplacement;i++){
+			res = avancer(numEnqueteur, sens);
+		}
+		return res;
+	}
+	private boolean avancer(int numEnqueteur, int sens) {
 		Enqueteur enqueteur = plateau.enqueteurs.get(numEnqueteur);
 		int positionX = enqueteur.getPosition().x;
 		int positionY = enqueteur.getPosition().y;
 		int posSurCarte = enqueteur.getPositionSurCarte();
-		if (deplacement==0){
-			return true;
-		} else {
-			//if cas limite
-			if ((positionX==0 || positionX ==2) && (positionY==0 || positionY==2)) {
-				switch (posSurCarte) {
-					case 1:
-						enqueteur.setPositionSurCarte(8);
-						return true;
-					case 2:
+		//CAS carte rue sur 1 des 4 coins de la grille
+		if ((positionX==0 || positionX ==2) && (positionY==0 || positionY==2)) {
+			switch (posSurCarte) {
+				case 1:
+					if (sens==-1){
 						enqueteur.setPositionSurCarte(4);
 						return true;
-					case 4:
-						enqueteur.setPositionSurCarte(1);
+					}
+					enqueteur.setPositionSurCarte(8);
+					return true;
+				case 2:
+					if (sens==-1){
+						enqueteur.setPositionSurCarte(8);
 						return true;
-					case 8:
+					}
+					enqueteur.setPositionSurCarte(4);
+					return true;
+				case 4:
+					if (sens==-1){
 						enqueteur.setPositionSurCarte(2);
 						return true;
-				}
-			}
-			//if cas general
-			plateau.grille[positionY][positionX].removeEnqueteur(enqueteur);
-			switch (posSurCarte){
-				//est sur l'ouest de la grille (0,2) ou (0,1)
-				case 1:
-					plateau.grille[positionY--][positionX].setEnqueteur(enqueteur);
+					}
+					enqueteur.setPositionSurCarte(1);
 					return true;
-				//est sur l'est de la grille (2,0) ou (2,1)
-				case 2:
-					plateau.grille[positionY++][positionX].setEnqueteur(enqueteur);
-					return true;
-				//est sur le sud de la grille (2,2) ou (1,2)
-				case 4:
-					plateau.grille[positionY][positionX--].setEnqueteur(enqueteur);
-					return true;
-				//est sur le nord de la grille (0,0) ou (1,0)
 				case 8:
-					plateau.grille[positionY][positionX++].setEnqueteur(enqueteur);
+					if (sens==-1){
+						enqueteur.setPositionSurCarte(1);
+						return true;
+					}
+					enqueteur.setPositionSurCarte(2);
 					return true;
 			}
+		}
+		//CAS general
+		plateau.grille[positionY][positionX].removeEnqueteur(enqueteur);
+		switch (posSurCarte){
+			//est sur l'ouest de la grille (0,2) ou (0,1)
+			case 1:
+				plateau.grille[positionY-sens][positionX].setEnqueteur(enqueteur);
+				return true;
+			//est sur l'est de la grille (2,0) ou (2,1)
+			case 2:
+				plateau.grille[positionY+sens][positionX].setEnqueteur(enqueteur);
+				return true;
+			//est sur le sud de la grille (2,2) ou (1,2)
+			case 4:
+				plateau.grille[positionY][positionX-sens].setEnqueteur(enqueteur);
+				return true;
+			//est sur le nord de la grille (0,0) ou (1,0)
+			case 8:
+				plateau.grille[positionY][positionX+sens].setEnqueteur(enqueteur);
+				return true;
 		}
 		return false;
 	}
@@ -130,23 +151,39 @@ public class Coup extends Commande{
 
 	//TODO implement execute
 	@Override
-	void execute() {
+	boolean execute() {
 		switch(action.getAction()){
 			case DEPLACER:
-				break;
+				return deplacer(action.getNumEnqueteur(),action.getDeplacement(),1);
 			case INNOCENTER_CARD:
-				break;
+				return innoncenter();
 			case ECHANGER_DISTRICT:
-				break;
+				//L'ordre des parametres est purement esthetique
+				return echanger(action.getPosition1(), action.getPosition2());
 			case ROTATION_DISTRICT:
-				break;
+				return rotation(action.getPosition1(),action.getOrientationNew());
 			default:
-				throw new IllegalStateException("Unexecpted action");
+				throw new IllegalStateException("Unexpected action");
 		}
 
 	}
 
 	@Override
-	void desexecute() {
+	boolean desexecute() {
+		switch (action.getAction()){
+			case DEPLACER:
+				return deplacer(action.getNumEnqueteur(), action.getDeplacement(),-1);
+			case INNOCENTER_CARD:
+				//On n'a pas le droit de desexecuter innoncenter_card
+				//TODO print in logger error
+				return false;
+			case ECHANGER_DISTRICT:
+				//L'ordre des parametres est purement esthetique
+				return echanger(action.getPosition2(), action.getPosition1());
+			case ROTATION_DISTRICT:
+				return rotation(action.getPosition1(),action.getOrientationOld());
+			default:
+				throw new IllegalStateException("Unexpected action");
+		}
 	}
 }

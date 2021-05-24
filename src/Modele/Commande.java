@@ -1,6 +1,6 @@
 package Modele;
 
 public abstract class Commande {
-	abstract void execute();
-	abstract void desexecute();
+	abstract boolean execute();
+	abstract boolean desexecute();
 }
