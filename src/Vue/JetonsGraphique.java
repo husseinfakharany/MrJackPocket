@@ -94,6 +94,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
 
     public void setSelection(int selection){
         this.selection = selection;
+        repaint();
     }
 
     @Override

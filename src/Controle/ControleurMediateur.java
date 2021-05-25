@@ -65,12 +65,12 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     @Override
     public boolean commandeJeu(String c){
-        action.setJoueur(jeu.plateau().joueurCourant);
         switch (c){
             case "jetonA":
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(0)) ){
                     if (!jeu.plateau().getJeton(0).getDejaJoue()){
                         jouerCoup();
+                        return true;
                     } else {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
@@ -82,6 +82,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(1)) ) {
                     if (!jeu.plateau().getJeton(1).getDejaJoue()) {
                         jouerCoup();
+                        return true;
                     } else {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
@@ -93,6 +94,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(2)) ){
                     if (!jeu.plateau().getJeton(2).getDejaJoue()) {
                         jouerCoup();
+                        return true;
                     } else {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
@@ -104,6 +106,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(3)) && !action.getAction().equals(Actions.INNOCENTER_CARD)){
                     if (!jeu.plateau().getJeton(3).getDejaJoue()) {
                         jouerCoup();
+                        return true;
                     } else {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
@@ -115,6 +118,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(3)) && action.getAction().equals(Actions.INNOCENTER_CARD)) {
                     if (!jeu.plateau().getJeton(3).getDejaJoue()) {
                         jouerCoup();
+                        return true;
                     } else {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
@@ -122,22 +126,25 @@ public class ControleurMediateur implements CollecteurEvenements {
                 selectionne=3;
                 break;
         }
-        ig.getJetons().setJouable(action.estValide());
-        ig.getJetons().repaint();
-        ig.getPioche().setPiocheActive(action.getAction().equals(Actions.INNOCENTER_CARD));
+        action.setJoueur(jeu.plateau().joueurCourant);
+        ig.getJetons().setJouable(action.estValide() && !action.getAction().equals(Actions.INNOCENTER_CARD));
+        if(action.getAction() != null) ig.getPioche().setPiocheActive(action.getAction().equals(Actions.INNOCENTER_CARD));
+        ig.getDistrict().setActionTemp(action);
         return true;
     }
 
     public void jouerCoup(){
         System.out.println("Coup joué");
         jeu.jouerCoup(cp);
+        selectionne = 0;
         //TODO to be modified for historique
         jeu.plateau().setNumAction(jeu.plateau().getNumAction()+1);
         jeu.plateau().actionJouee();
         jeu.plateau().getJeton(selectionne).setDejaJoue(true);
+        ig.getJetons().setSelection(-1);
         ig.getJetons().setJouable(false);
+        ig.getDistrict().setActionTemp(null);
         cp.reinitialiser();
-        ig.getBoiteJeu().repaint();
 
     }
 
@@ -160,12 +167,14 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "Difficile":
                 ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
                 jeu.plateau().reinitialiser();
+                action.reinitialiser();
                 ig.getJetons().setSelection(-1);
                 fixerIA(c);
                 break;
             case "local":
                 ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
                 jeu.plateau().reinitialiser();
+                action.reinitialiser();
                 ig.getJetons().setSelection(-1);
                 break;
             case "reseau":
@@ -194,6 +203,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
             case "main":
                 ig.getMain().changerMain();
+                ig.getIdentite().switchAfficherCaches();
                 if(ig.getMain().getAfficherEnqueteur()) ig.getVoirJack().setText("Voir mes cartes");
                 else ig.getVoirJack().setText("Cacher mes cartes");
                 break;

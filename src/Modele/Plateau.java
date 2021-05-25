@@ -1,7 +1,6 @@
 package Modele;
 
 import java.awt.*;
-import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -42,7 +41,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     static ArrayList<Integer> orientationsRues;
     static ArrayList<Suspect> suspects;
     static ArrayList<Suspect> suspectsInnoncete;
-    static ArrayList<Enqueteur> enqueteurs;
+    public static ArrayList<Enqueteur> enqueteurs;
 
 
     public static final int NSEO = 0b1111; //15
@@ -56,9 +55,9 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     static final int E = 0b0010;
     static final int O = 0b0001;
 
-    static final int SHERLOCK = 0;
-    static final int WATSON = 1;
-    static final int TOBBY = 2;
+    public static final int SHERLOCK = 0;
+    public static final int WATSON = 1;
+    public static final int TOBBY = 2;
 
     public Plateau(){
         rd = new Random();

@@ -26,7 +26,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     private DistrictGraphique district;
     private PiocheGraphique pioche;
     private JetonsGraphique jetons;
-    IdentiteGraphique identite;
+    private IdentiteGraphique identite;
     private MainGraphique main;
     Box boiteBas, boiteBasG, boiteInfo, boiteUnReDo, boiteCentreD, courant;
 
@@ -251,11 +251,11 @@ public class InterfaceGraphique implements Observer, Runnable {
 
         Box boiteCentre = Box.createHorizontalBox();
 
-        identite.setPreferredSize(new Dimension((int) (0.223*width),boiteCentre.getHeight()));
+        getIdentite().setPreferredSize(new Dimension((int) (0.223*width),boiteCentre.getHeight()));
         getDistrict().setPreferredSize(new Dimension( (int) (0.4*width),(int) (0.4*width) ));
 
         boiteCentre.add(Box.createHorizontalGlue());
-        boiteCentre.add(identite);
+        boiteCentre.add(getIdentite());
         boiteCentre.add(Box.createHorizontalGlue());
         boiteCentre.add(getDistrict());
         boiteCentre.add(Box.createHorizontalGlue());
@@ -307,7 +307,7 @@ public class InterfaceGraphique implements Observer, Runnable {
 
         getVoirJack().setEnabled(isJack);
         getVoirJack().setVisible(isJack);
-        identite.repaint();
+        getIdentite().repaint();
         getDistrict().repaint();
         getPioche().repaint();
         getMain().repaint();
@@ -461,5 +461,9 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     public PiocheGraphique getPioche() {
         return pioche;
+    }
+
+    public IdentiteGraphique getIdentite() {
+        return identite;
     }
 }

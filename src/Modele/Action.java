@@ -65,6 +65,12 @@ public class Action {
 
     public void setAction(Actions action){
         this.action = action;
+        this.position1 = null;
+        this.position2 = null;
+        this.orientationOld = -1;
+        this.orientationNew = -1;
+        this.deplacement = -1;
+        this.joueur = null;
     }
 
     public Joueur getJoueur(){

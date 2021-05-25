@@ -16,7 +16,7 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
     Jeu jeu;
     Image quartier1, quartier2, quartier3, quartier4, quartierX, quartier1S, quartier2S, quartier3S, quartier4S,
             quartierXS, cible, suspectBla, suspectBle, suspectJau, suspectNoi, suspectOra, suspectRos, suspectVer,
-            suspectVio, suspectGri, sherlock, watson, chien;
+            suspectVio, suspectGri, sherlock, watson, chien, sherlockNB, watsonNB, chienNB;
     private int offsetX=0,offsetY=0;
 
     //TODO Previsualisation de l'action
@@ -49,6 +49,9 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
         sherlock = Configuration.chargeImage("Sherlock");
         watson = Configuration.chargeImage("Watson");
         chien = Configuration.chargeImage("Chien");
+        sherlockNB = Configuration.chargeImage("Jeton-4-A-NB");
+        watsonNB = Configuration.chargeImage("Jeton-1-A-NB");
+        chienNB = Configuration.chargeImage("Jeton-1-b-NB");
     }
 
     public void dessinerCarte(int l, int c, CarteRue rue,boolean isSelectionne, int orientation){
@@ -168,6 +171,10 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
     public void dessinerFeedback(){
         Point pos1 = actionTemp.getPosition1();
         Point pos2 = actionTemp.getPosition2();
+        Point s;
+        int tailleE = (int) (0.8*tailleC);
+        int offsetE = (int) (0.1*tailleC);
+        if(actionTemp.getAction() == null) return;
         switch (actionTemp.getAction()){
             case ECHANGER_DISTRICT:
                 if (pos1 != null)dessinerCarte(pos1.y+1,pos1.x+1,jeu.plateau().grille[pos1.y][pos1.x],true);
@@ -176,7 +183,79 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
             case ROTATION_DISTRICT:
                 if (pos1 != null)dessinerCarte(pos1.y+1,pos1.x+1,jeu.plateau().grille[pos1.y][pos1.x],true, actionTemp.getOrientationNew());
                 break;
+            case DEPLACER_SHERLOCK:
+                s = calculPosition(Plateau.enqueteurs.get(Plateau.SHERLOCK).getPosition(),Plateau.enqueteurs.get(Plateau.SHERLOCK).getPositionSurCarte());
+                if(actionTemp.getDeplacement()>0)drawable.drawImage(sherlockNB, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                s = suivant(s);
+                if(actionTemp.getDeplacement()==1) drawable.drawImage(sherlock, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                else drawable.drawImage(cible, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                s = suivant(s);
+                if(actionTemp.getDeplacement()==2) drawable.drawImage(sherlock, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                else drawable.drawImage(cible, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                break;
+            case DEPLACER_WATSON:
+                s = calculPosition(Plateau.enqueteurs.get(Plateau.WATSON).getPosition(),Plateau.enqueteurs.get(Plateau.WATSON).getPositionSurCarte());
+                if(actionTemp.getDeplacement()>0)drawable.drawImage(watsonNB, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                s = suivant(s);
+                if(actionTemp.getDeplacement()==1) drawable.drawImage(watson, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                else drawable.drawImage(cible, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                s = suivant(s);
+                if(actionTemp.getDeplacement()==2) drawable.drawImage(watson, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                else drawable.drawImage(cible, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                break;
+            case DEPLACER_TOBBY:
+                s = calculPosition(Plateau.enqueteurs.get(Plateau.TOBBY).getPosition(),Plateau.enqueteurs.get(Plateau.TOBBY).getPositionSurCarte());
+                if(actionTemp.getDeplacement()>0)drawable.drawImage(chienNB, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                s = suivant(s);
+                if(actionTemp.getDeplacement()==1) drawable.drawImage(chien, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                else drawable.drawImage(cible, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                s = suivant(s);
+                if(actionTemp.getDeplacement()==2) drawable.drawImage(chien, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                else drawable.drawImage(cible, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                break;
+            case DEPLACER_JOKER:
+                for (Enqueteur enqueteur : Plateau.enqueteurs) {
+                    s = calculPosition(enqueteur.getPosition(),enqueteur.getPositionSurCarte());
+                    Point dep = (Point) s.clone();
+                    s = suivant(s);
+                    drawable.drawImage(cible, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                    if(actionTemp.getNumEnqueteur() == Plateau.SHERLOCK && enqueteur.getNumEnqueteur() == Plateau.SHERLOCK) {
+                        drawable.drawImage(sherlockNB, (dep.x)*tailleC+offsetE, (dep.y)*tailleC+offsetE, tailleE, tailleE, null);
+                        drawable.drawImage(sherlock, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                    }
+                    if(actionTemp.getNumEnqueteur() == Plateau.WATSON && enqueteur.getNumEnqueteur() == Plateau.WATSON) {
+                        drawable.drawImage(watsonNB, (dep.x)*tailleC+offsetE, (dep.y)*tailleC+offsetE, tailleE, tailleE, null);
+                        drawable.drawImage(watson, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                    }
+                    if(actionTemp.getNumEnqueteur() == Plateau.TOBBY && enqueteur.getNumEnqueteur() == Plateau.TOBBY){
+                        drawable.drawImage(chienNB, (dep.x)*tailleC+offsetE, (dep.y)*tailleC+offsetE, tailleE, tailleE, null);
+                        drawable.drawImage(chien, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
+                    }
+                }
+                break;
         }
+    }
+
+    Point calculPosition(Point pos, int orientation){
+        Point res = (Point) pos.clone();
+        res.x = res.x+1;
+        res.y = res.y+1;
+        if(orientation == Enqueteur.EST) res.x = res.x+1;
+        if(orientation == Enqueteur.OUEST) res.x = res.x-1;
+        if(orientation == Enqueteur.SUD) res.y = res.y+1;
+        if(orientation == Enqueteur.NORD) res.y = res.y-1;
+        return res;
+    }
+
+    Point suivant(Point p){
+        if(p.y==0) p.x = p.x+1;
+        if(p.x==4) p.y = p.y+1;
+        if(p.y==4) p.x = p.x-1;
+        if(p.x==0) {
+            p.y = p.y-1;
+            if(p.y==0) p.x = p.x+1;
+        }
+        return p;
     }
 
     @Override

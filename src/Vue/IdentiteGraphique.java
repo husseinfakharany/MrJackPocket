@@ -12,6 +12,7 @@ public class IdentiteGraphique extends JComponent {
     int largeur,hauteur,tailleC;
     Jeu jeu;
     Image jack,sherlock, pioche, sablier;
+    boolean afficherCaches;
 
     IdentiteGraphique(Jeu j){
         jeu=j;
@@ -23,7 +24,10 @@ public class IdentiteGraphique extends JComponent {
     public void dessinerIdentite(){
         Image personnage;
         Joueur personnageCourant = jeu.plateau().joueurCourant;
-        int taillePiocheAdv, nbSabliers = jeu.plateau().jack.getSablier();
+        int taillePiocheAdv;
+        int nbSabliers;
+        if(afficherCaches) nbSabliers = jeu.plateau().jack.getSablier();
+        else nbSabliers = jeu.plateau().jack.getSablierVisibles();
         boolean isJack = personnageCourant.isJack();
         //isJack = !isJack;
 
@@ -61,10 +65,10 @@ public class IdentiteGraphique extends JComponent {
 
         if(isJack){
             personnage = jack;
-            taillePiocheAdv = jeu.plateau().jack.getCardList().size();
+            taillePiocheAdv = jeu.plateau().enqueteur.getCardList().size();
         } else {
             personnage = sherlock;
-            taillePiocheAdv = jeu.plateau().enqueteur.getCardList().size();
+            taillePiocheAdv = jeu.plateau().jack.getCardList().size();
         }
 
         drawable.setFont(new Font("default", Font.BOLD, 25));
@@ -110,5 +114,9 @@ public class IdentiteGraphique extends JComponent {
 
         dessinerIdentite();
 
+    }
+
+    public void switchAfficherCaches(){
+        afficherCaches = !afficherCaches;
     }
 }
