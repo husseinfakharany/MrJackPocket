@@ -31,7 +31,7 @@ public class Action {
         switch (action){
             case DEPLACER_JOKER:
                 if (joueur.isJack()) {
-                    return (deplacement == 0 || deplacement == 1 || deplacement == 2) && numEnqueteur >= 0 && numEnqueteur <= 2;
+                    return (deplacement == -1 ||deplacement == 0 || deplacement == 1 || deplacement == 2) && numEnqueteur >= 0 && numEnqueteur <= 2;
                 } else {
                     return (deplacement == 1 || deplacement == 2) && numEnqueteur >= 0 && numEnqueteur <= 2;
                 }

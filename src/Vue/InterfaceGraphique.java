@@ -1,5 +1,6 @@
 package Vue;
 
+import Controle.CollecteurEvenements;
 import Modele.Jeu;
 
 import javax.swing.*;
@@ -15,15 +16,18 @@ public class InterfaceGraphique implements Observer, Runnable {
     private Box boiteMenu = null,boiteTitre  = null,boiteBoutons = null, boiteJeu = null, boiteAvantPartie = null,
             boiteCharger = null;
     boolean ia,isJack;
-    JButton voirJack, undo, redo, menu;
+    private JButton voirJack;
+    JButton undo;
+    JButton redo;
+    JButton menu;
     JLabel info,tour;
     CollecteurEvenements controle;
     JComboBox<String> commencer, boutonIA;
     DistrictGraphique district;
     PiocheGraphique pioche;
-    JetonsGraphique jetons;
+    private JetonsGraphique jetons;
     IdentiteGraphique identite;
-    MainGraphique main;
+    private MainGraphique main;
     Box boiteBas, boiteBasG, boiteInfo, boiteUnReDo, boiteCentreD, courant;
 
     // TODO Implémentation Tutoriel
@@ -35,7 +39,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         controle.fixerInterfaceUtilisateur(this);
         district = new DistrictGraphique(jeu);
         pioche = new PiocheGraphique(jeu);
-        jetons = new JetonsGraphique(jeu);
+        setJetons(new JetonsGraphique(jeu));
         identite = new IdentiteGraphique(jeu);
         main = new MainGraphique(jeu);
     }
@@ -188,7 +192,7 @@ public class InterfaceGraphique implements Observer, Runnable {
 
         tour = new JLabel();
         tour.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-        tour.setText("  Tour n°X");
+        tour.setText("  Tour n°"+jeu.plateau().getNumTour());
         tour.setFont(new Font("default", Font.PLAIN, (int) (0.034*height) ));
 
         info = new JLabel("Explications",SwingConstants.CENTER);
@@ -210,8 +214,8 @@ public class InterfaceGraphique implements Observer, Runnable {
             undo.addActionListener(new AdaptateurCommande(controle,"annuler"));
             redo = new JButton("⏩");
             redo.addActionListener(new AdaptateurCommande(controle,"refaire"));
-            voirJack = new JButton("Voir mes cartes");
-            voirJack.addActionListener(new AdaptateurCommande(controle,"main"));
+            setVoirJack(new JButton("Voir mes cartes"));
+            getVoirJack().addActionListener(new AdaptateurCommande(controle,"main"));
         }
         else boiteUnReDo.removeAll();
 
@@ -224,11 +228,11 @@ public class InterfaceGraphique implements Observer, Runnable {
         redo.setMaximumSize(new Dimension((int) (0.093*width), (int) (0.056*height)));
 
 
-        voirJack.setFont(new Font("default", Font.PLAIN, 20));
-        voirJack.setPreferredSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
-        voirJack.setMaximumSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
+        getVoirJack().setFont(new Font("default", Font.PLAIN, 16));
+        getVoirJack().setPreferredSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
+        getVoirJack().setMaximumSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
 
-        voirJack.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+        getVoirJack().setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
 
         boiteUnReDo.add(Box.createHorizontalGlue());
@@ -240,9 +244,9 @@ public class InterfaceGraphique implements Observer, Runnable {
         if(boiteCentreD == null) boiteCentreD = Box.createVerticalBox();
         else boiteCentreD.removeAll();
 
-        jetons.setPreferredSize(new Dimension((int) (0.223*width),(int) (0.334*height)));
+        getJetons().setPreferredSize(new Dimension((int) (0.223*width),(int) (0.334*height)));
         boiteCentreD.add(Box.createVerticalGlue());
-        boiteCentreD.add(jetons);
+        boiteCentreD.add(getJetons());
         boiteCentreD.add(Box.createVerticalGlue());
 
         Box boiteCentre = Box.createHorizontalBox();
@@ -262,7 +266,7 @@ public class InterfaceGraphique implements Observer, Runnable {
 
         boiteBasG.setMaximumSize(new Dimension((int) (0.37*width),(int) (0.278*height) ));
 
-        boiteBasG.add(voirJack);
+        boiteBasG.add(getVoirJack());
         boiteBasG.add(Box.createVerticalGlue());
         boiteBasG.add(boiteUnReDo);
         boiteBasG.add(Box.createVerticalGlue());
@@ -274,19 +278,19 @@ public class InterfaceGraphique implements Observer, Runnable {
         boiteBas.setMaximumSize(new Dimension(width,(int) (0.243*height) ));
         boiteBas.setPreferredSize(new Dimension(width,(int) (0.243*height)));
         boiteBasG.setPreferredSize(new Dimension((int) (0.175*width),boiteBas.getHeight()));
-        main.setPreferredSize(new Dimension((int) (0.8*width),(int) (0.243*height) ));
+        getMain().setPreferredSize(new Dimension((int) (0.8*width),(int) (0.243*height) ));
         pioche.setPreferredSize(new Dimension((int) (0.175*width),(int) (0.243*height)));
         pioche.setMaximumSize(new Dimension((int) (0.175*width),(int) (0.243*height)));
 
         boiteBas.add(boiteBasG);
         boiteBas.add(Box.createHorizontalGlue());
-        boiteBas.add(main);
+        boiteBas.add(getMain());
         boiteBas.add(Box.createHorizontalGlue());
         boiteBas.add(pioche);
 
         if(boiteJeu == null) {
             district.addMouseListener(new AdaptateurSouris(district, controle));
-            jetons.addMouseListener(new AdaptateurSouris(jetons, controle));
+            getJetons().addMouseListener(new AdaptateurSouris(getJetons(), controle));
             pioche.addMouseListener(new AdaptateurSouris(pioche, controle));
         }
 
@@ -301,13 +305,14 @@ public class InterfaceGraphique implements Observer, Runnable {
         boiteJeu.setOpaque(true);
         boiteJeu.setBackground(Color.WHITE);
 
-        voirJack.setEnabled(isJack);
-        voirJack.setVisible(isJack);
+        getVoirJack().setEnabled(isJack);
+        getVoirJack().setVisible(isJack);
         identite.repaint();
         district.repaint();
         pioche.repaint();
-        main.repaint();
-        jetons.repaint();
+        getMain().repaint();
+        getJetons().repaint();
+        tour.setText("  Tour n°"+jeu.plateau().getNumTour());
 
         return boiteJeu;
     }
@@ -424,5 +429,25 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     public Box getCourant(){
         return courant;
+    }
+
+    public MainGraphique getMain() {
+        return main;
+    }
+
+    public JButton getVoirJack() {
+        return voirJack;
+    }
+
+    public void setVoirJack(JButton voirJack) {
+        this.voirJack = voirJack;
+    }
+
+    public JetonsGraphique getJetons() {
+        return jetons;
+    }
+
+    public void setJetons(JetonsGraphique jetons) {
+        this.jetons = jetons;
     }
 }

@@ -188,4 +188,9 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
     public int getOffsetY() {
         return offsetY;
     }
+
+    @Override
+    public void setSelection(int s) {
+
+    }
 }

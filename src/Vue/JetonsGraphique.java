@@ -10,7 +10,9 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
     Graphics2D drawable;
     int largeur,hauteur,tailleC,offsetX,offsetY;
     Jeu jeu;
-    Image jeton1A , jeton1B , jeton2A , jeton2B, jeton3A , jeton3B, jeton4A , jeton4B;
+    Image jeton1A , jeton1B , jeton2A , jeton2B, jeton3A , jeton3B, jeton4A , jeton4B,
+            jeton1ANB , jeton1BNB , jeton2ANB , jeton2BNB, jeton3ANB , jeton3BNB, jeton4ANB , jeton4BNB;
+    int selection;
 
     JetonsGraphique(Jeu j){
         jeu=j;
@@ -22,20 +24,29 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         jeton3B = Configuration.chargeImage("Jeton-3-B");
         jeton4A = Configuration.chargeImage("Jeton-4-A");
         jeton4B = Configuration.chargeImage("Jeton-4-B");
+        jeton1ANB = Configuration.chargeImage("Jeton-1-A-NB");
+        jeton1BNB = Configuration.chargeImage("Jeton-1-B-NB");
+        jeton2ANB = Configuration.chargeImage("Jeton-2-A-NB");
+        jeton2BNB = Configuration.chargeImage("Jeton-2-B-NB");
+        jeton3ANB = Configuration.chargeImage("Jeton-3-A-NB");
+        jeton3BNB = Configuration.chargeImage("Jeton-3-B-NB");
+        jeton4ANB = Configuration.chargeImage("Jeton-4-A-NB");
+        jeton4BNB = Configuration.chargeImage("Jeton-4-B-NB");
         offsetX = 20;
         offsetY = 30;
+        selection = -1;
     }
 
     public void dessinerJetons(){
         Image jeton1, jeton2, jeton3, jeton4;
-        if(jeu.plateau().getJeton(0).estRecto())jeton1 = jeton1A;
-        else jeton1 = jeton1B;
-        if(jeu.plateau().getJeton(1).estRecto())jeton2 = jeton2A;
-        else jeton2 = jeton2B;
-        if(jeu.plateau().getJeton(2).estRecto())jeton3 = jeton3A;
-        else jeton3 = jeton3B;
-        if(jeu.plateau().getJeton(3).estRecto())jeton4 = jeton4A;
-        else jeton4 = jeton4B;
+        if(jeu.plateau().getJeton(0).estRecto())  jeton1 = selection==1 || selection == -1? jeton1A : jeton1ANB;
+        else jeton1 = selection==1 || selection == -1? jeton1B : jeton1BNB;
+        if(jeu.plateau().getJeton(1).estRecto())jeton2 = selection==2 || selection == -1? jeton2A : jeton2ANB;
+        else jeton2 = selection==2 || selection == -1? jeton2B : jeton2BNB;
+        if(jeu.plateau().getJeton(2).estRecto())jeton3 = selection==3 || selection == -1? jeton3A : jeton3ANB;
+        else jeton3 = selection==3 || selection == -1? jeton3B : jeton3BNB;
+        if(jeu.plateau().getJeton(3).estRecto())jeton4 = selection==4 || selection == -1? jeton4A : jeton4ANB;
+        else jeton4 = selection==4 || selection == -1? jeton4B : jeton4BNB;
         drawable.setFont(new Font("default", Font.BOLD, 25));
         drawable.drawString("Jetons :",(int) (largeur*0.5)-60,25);
         drawable.setFont(new Font("default", Font.PLAIN, 12));
@@ -69,6 +80,10 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
 
         dessinerJetons();
 
+    }
+
+    public void setSelection(int selection){
+        this.selection = selection;
     }
 
     @Override

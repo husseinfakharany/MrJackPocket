@@ -16,6 +16,7 @@ public class MainGraphique extends JComponent {
     int largeur,hauteur,tailleC;
     Jeu jeu;
     Image suspectBla, suspectBle, suspectJau, suspectNoi, suspectOra, suspectRos, suspectVer, suspectVio, suspectGri;
+    boolean afficherEnqueteur;
 
     MainGraphique(Jeu j){
         jeu=j;
@@ -28,6 +29,7 @@ public class MainGraphique extends JComponent {
         suspectJau = Configuration.chargeImage("Suspect-jauneB");
         suspectOra = Configuration.chargeImage("Suspect-orangeB");
         suspectVio = Configuration.chargeImage("Suspect-violetB");
+        afficherEnqueteur = true;
         /*ArrayList<CarteAlibi> mainFictif = new ArrayList<CarteAlibi>();
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.JEREMY_BERT,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.MADAME,null ) ) );
@@ -71,7 +73,17 @@ public class MainGraphique extends JComponent {
         }
     }
     public void dessinerMain(){
-        Iterator<CarteAlibi> main = jeu.plateau().enqueteur.getCardList().iterator();
+        Iterator<CarteAlibi> main;
+
+        drawable.setFont(new Font("default", Font.BOLD, 25));
+        if(afficherEnqueteur){
+            main = jeu.plateau().enqueteur.getCardList().iterator();
+            drawable.drawString("Main de l'enquêteur :",10,25);
+        }
+        else {
+            main = jeu.plateau().jack.getCardList().iterator();
+            drawable.drawString("Main de Jack :",10,25);
+        }
         int i=0;
         CarteAlibi actuel;
         while(main.hasNext()){
@@ -79,9 +91,6 @@ public class MainGraphique extends JComponent {
             dessinerCarte(actuel.getSuspect().getCouleur(),i* (int) (tailleC*0.85),45);
             i++;
         }
-        drawable.setFont(new Font("default", Font.BOLD, 25));
-        drawable.drawString("Main de l'enquêteur :",10,25);
-        drawable.setFont(new Font("default", Font.PLAIN, 16));
 
     }
 
@@ -104,6 +113,13 @@ public class MainGraphique extends JComponent {
         tailleC=Math.min(hCase,lCase);
 
         dessinerMain();
+    }
 
+    public void changerMain(){
+        afficherEnqueteur = !afficherEnqueteur;
+    }
+
+    public boolean getAfficherEnqueteur(){
+        return afficherEnqueteur;
     }
 }

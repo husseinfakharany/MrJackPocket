@@ -4,7 +4,6 @@ import Modele.Action;
 import Modele.Actions;
 import Modele.Coup;
 import Modele.Jeu;
-import Vue.CollecteurEvenements;
 import Vue.InterfaceGraphique;
 
 //TODO fonctions fixerIA(String com) activeIA(int state) undo() redo()
@@ -35,7 +34,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     }
 
-    @Override
     public void clicSouris(int l, int c) {
         System.out.println("Clic en ( l : " +l+" , c : "+c+" )" );
     }
@@ -65,6 +63,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     @Override
     public boolean commandeJeu(String c){
+        action.setJoueur(jeu.plateau().joueurCourant);
         switch (c){
             case "jetonA":
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(0)) )
@@ -91,12 +90,12 @@ public class ControleurMediateur implements CollecteurEvenements {
                     jouerCoup();
                 break;
         }
+        ig.getJetons().repaint();
         return true;
     }
 
     public void jouerCoup(){
         System.out.println("Coup joué");
-        action.setJoueur(jeu.plateau().joueurCourant);
         jeu.jouerCoup(cp);
         cp.reinitialiser();
         ig.getBoiteJeu().repaint();
@@ -121,11 +120,13 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "Difficile":
                 ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
                 jeu.plateau().reinitialiser();
+                ig.getJetons().setSelection(-1);
                 fixerIA(c);
                 break;
             case "local":
                 ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
                 jeu.plateau().reinitialiser();
+                ig.getJetons().setSelection(-1);
                 break;
             case "reseau":
                 System.out.println("Attente d'une partie .");
@@ -150,6 +151,11 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
             case "refaire":
                 refaire();
+                break;
+            case "main":
+                ig.getMain().changerMain();
+                if(ig.getMain().getAfficherEnqueteur()) ig.getVoirJack().setText("Voir mes cartes");
+                else ig.getVoirJack().setText("Cacher mes cartes");
                 break;
             default:
                 return false;

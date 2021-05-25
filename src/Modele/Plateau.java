@@ -357,6 +357,10 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         return jetonsActions.get(num);
     }
 
+    public int getNumTour(){
+        return numTour;
+    }
+
 
     void setNumTour(int numTour){
         this.numTour = numTour;

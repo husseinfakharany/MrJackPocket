@@ -78,10 +78,6 @@ public class Coup extends Commande{
 		return res;
 	}
 
-	public boolean deplacer(int numEnqueteur, int deplacement){
-		return deplacer(numEnqueteur,deplacement,1);
-	}
-
 	//TODO Factorise code if possible
 	private boolean avancer(int numEnqueteur, int sens) {
 		Enqueteur enqueteur = plateau.enqueteurs.get(numEnqueteur);

@@ -1,5 +1,7 @@
 package Vue;
 
+import Controle.CollecteurEvenements;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -28,12 +30,24 @@ public class AdaptateurSouris extends MouseAdapter {
 			case jetons:
 				System.out.println("Jetons : ( " +l +" , "+c+" )");
 				if(l==0){
-					if(c==0) controle.commandeJeu("jetonA");
-					if(c==1) controle.commandeJeu("jetonB");
+					if(c==0) {
+						controle.commandeJeu("jetonA");
+						elementG.setSelection(1);
+					}
+					if(c==1){
+						controle.commandeJeu("jetonB");
+						elementG.setSelection(2);
+					}
 				}
 				if(l==1){
-					if(c==0) controle.commandeJeu("jetonC");
-					if(c==1) controle.commandeJeu("jetonD");
+					if(c==0) {
+						controle.commandeJeu("jetonC");
+						elementG.setSelection(3);
+					}
+					if(c==1){
+						controle.commandeJeu("jetonD");
+						elementG.setSelection(4);
+					}
 				}
 				break;
 			case pioche:
