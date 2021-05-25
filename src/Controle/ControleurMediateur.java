@@ -12,6 +12,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     Jeu jeu;
     boolean iaActive;
     boolean iaPeutJouer;
+    int selectionne = -1;
 
     Action action;
     Coup cp;
@@ -72,21 +73,25 @@ public class ControleurMediateur implements CollecteurEvenements {
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(0)) )
                     jouerCoup();
                 action.setAction(jeu.plateau().getActionJeton(0));
+                selectionne=0;
                 break;
             case "jetonB":
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(1)) )
                     jouerCoup();
                 action.setAction(jeu.plateau().getActionJeton(1));
+                selectionne=1;
                 break;
             case "jetonC":
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(2)) )
                     jouerCoup();
                 action.setAction(jeu.plateau().getActionJeton(2));
+                selectionne=2;
                 break;
             case "jetonD":
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(3)) && !action.getAction().equals(Actions.INNOCENTER_CARD))
                     jouerCoup();
                 action.setAction(jeu.plateau().getActionJeton(3));
+                selectionne=3;
                 break;
             case "pioche":
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(3)) && action.getAction().equals(Actions.INNOCENTER_CARD))
@@ -102,9 +107,11 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void jouerCoup(){
         System.out.println("Coup joué");
         jeu.jouerCoup(cp);
+        //jeu.plateau().getActionJeton( selectionne ).setDejaJoue(true/false)
         ig.getJetons().setJouable(false);
         cp.reinitialiser();
         ig.getBoiteJeu().repaint();
+
     }
 
     @Override
