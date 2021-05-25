@@ -93,6 +93,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                     jouerCoup();
                 break;
         }
+        ig.getJetons().setJouable(action.estValide());
         ig.getJetons().repaint();
         ig.getPioche().setPiocheActive(action.getAction().equals(Actions.INNOCENTER_CARD));
         return true;
