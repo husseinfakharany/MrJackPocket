@@ -8,18 +8,15 @@ Boolean dejaJoue
  */
 public class JetonActions {
 
-	//TODO implement dejaJoue
-
 	Actions action1; //action face 1 
 	Actions action2;  // action face 2
 	boolean estRecto = true;
-	
-	
+	boolean dejaJoue;
+
 	public JetonActions(Actions action1, Actions action2) {
 		this.action1 = action1;
 		this.action2 = action2;
 	}
-
 
 	public Actions getAction1() {
 		return action1;
@@ -45,5 +42,11 @@ public class JetonActions {
 		this.estRecto = estRecto;
 	}
 
-	
+	public boolean getDejaJoue(){
+		return dejaJoue;
+	}
+
+	public void setDejaJoue(boolean b) {
+		this.dejaJoue = b;
+	}
 }

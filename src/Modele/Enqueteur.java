@@ -28,7 +28,7 @@ public class Enqueteur {
         this.positionSurCarte = positionSurCarte;
     }
 
-    ArrayList<Suspect> Visible(CarteRue [][] grille){
+    ArrayList<Suspect> visible(CarteRue [][] grille){
         ArrayList<Suspect> resultat = new ArrayList<>();
         int i = position.y;
         int j = position.x;

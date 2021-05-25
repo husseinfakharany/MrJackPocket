@@ -1,6 +1,7 @@
 package Modele;
 
 import java.awt.*;
+import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -28,14 +29,14 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     public Joueur jack;
     public Joueur enqueteur;
     public Joueur joueurCourant;
+    public boolean jackVisible;
     int numTour;
     int numAction;
     public SuspectCouleur idJack;
 
 
-    public CarteRue [][] grille;
+    public static CarteRue [][] grille;
 
-    //TODO static may cause error?
     static ArrayList<JetonActions> jetonsActions;
     static ArrayList<CarteAlibi> cartesAlibis;
     static ArrayList<Integer> orientationsRues;
@@ -61,8 +62,8 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
     public Plateau(){
         rd = new Random();
-        jack = new Joueur(true, "Hussein", 0,false,false);
-        enqueteur = new Joueur(false, "Fabien", 0, false, true);
+        jack = new Joueur(true, "Hussein", 0,0,false,false);
+        enqueteur = new Joueur(false, "Fabien", 0,0, false, true);
         numTour = 0;
         grille = new CarteRue[3][3];
         joueurCourant = enqueteur;
@@ -106,10 +107,10 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     private void initialiseJetonsActions(){
         jetonsActions = new ArrayList<>();
         //Création des 4 jetons actions en dûr
-        jetonsActions.add(new JetonActions(Actions.DEPLACER_WATSON,Actions.DEPLACER_TOBBY));
-        jetonsActions.add(new JetonActions(Actions.DEPLACER_JOKER,Actions.ROTATION_DISTRICT));
-        jetonsActions.add(new JetonActions(Actions.ECHANGER_DISTRICT,Actions.ROTATION_DISTRICT));
-        jetonsActions.add(new JetonActions(Actions.DEPLACER_SHERLOCK,Actions.INNOCENTER_CARD));
+        jetonsActions.add(0,new JetonActions(Actions.DEPLACER_WATSON,Actions.DEPLACER_TOBBY));
+        jetonsActions.add(1,new JetonActions(Actions.DEPLACER_JOKER,Actions.ROTATION_DISTRICT));
+        jetonsActions.add(2,new JetonActions(Actions.ECHANGER_DISTRICT,Actions.ROTATION_DISTRICT));
+        jetonsActions.add(3,new JetonActions(Actions.DEPLACER_SHERLOCK,Actions.INNOCENTER_CARD));
     }
 
     private void initialiseCarteAlibis(){
@@ -138,6 +139,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
 
         //Orientations initiaux (enqueteurs face aux murs)
+        jackVisible = false;
         grille[0][0].setOrientation(NSE);
         enqueteurs.get(SHERLOCK).setPositionSurCarte(O);
         grille[0][0].setEnqueteur(enqueteurs.get(SHERLOCK)); //Modified for test (original = [0][0],E)
@@ -162,6 +164,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     void initialiseTour(){
         numTour++;
         numAction = 0;
+        jackVisible = false;
         melangeJetonsActions();
     }
 
@@ -188,15 +191,18 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         else jetJetons();
     }
 
-    void jetJetons() { ;
+    void jetJetons() {
         for(JetonActions act:jetonsActions){
             act.setEstRecto(rd.nextBoolean()); //Lancement de chaque jeton
+            act.setDejaJoue(false);
         }
     }
 
     void inverserJetons() {
         for(JetonActions act:jetonsActions){
-            act.setEstRecto(!act.estRecto());
+            Boolean estRecto = !act.estRecto();
+            act.setEstRecto(estRecto);
+            act.setDejaJoue(false);
         }
     }
 
@@ -233,35 +239,35 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         return card;
     }
 
-    public boolean jackVisible(Enqueteur e){
-        for(Suspect s:e.Visible(grille)){
-            if (s.getIsJack()){
-                return true;
+    public ArrayList<Suspect> visibles(){
+        ArrayList<Suspect> res = new ArrayList<>();
+        for(Enqueteur e:enqueteurs){
+            for(Suspect s:e.visible(grille)){
+                if (s.getIsJack()){
+                    jackVisible = true;
+                }
+                res.add(s);
             }
         }
-        return false;
+        return res;
     }
 
-    //TODO fix non visible by detective who sees Jack but visible by other detectives flipped
     //Cet fonction retourne vrai s'il reste qu'une seule carte non innonctée (Jack)
     public boolean verdictTour(){
-        for(Enqueteur e:enqueteurs){
-            if (!jackVisible(e)){
-                //Si Jack n'est pas visible, tous les suspects visibles sont innoncentés
-                for(Suspect s:e.Visible(grille)){
-                    s.setInnocente(true);
-                    s.retournerCarteRue(grille);
-                    suspectsInnoncete.add(s);
+        ArrayList<Suspect> res = visibles();
+        //Si jack est visible par un des trois enqueteurs
+        if(jackVisible){
+            enqueteur.setSablierVisibles(enqueteur.getSablierVisibles()+1);
+            for(Suspect s:suspects){
+                if(!res.contains(s)){
+                    //Innonceter retourne la carte rue du suspect
+                    s.innonceter(grille,suspectsInnoncete);
                 }
-            } else {
-                //Pour chaque suspect sur la grille, s'il n'est pas visible pas cet enqueteur, il est innocenté
-                for(Suspect s:suspects){
-                    if (!e.Visible(grille).contains(s)){
-                        s.setInnocente(true);
-                        s.retournerCarteRue(grille);
-                        suspectsInnoncete.add(s);
-                    }
-                }
+            }
+        } else {
+            jack.setSablierCaches(jack.getSablierCaches()+1);
+            for (Suspect s:res) {
+                s.innonceter(grille,suspectsInnoncete);
             }
         }
         if (suspectsInnoncete.size()==8){
@@ -279,11 +285,6 @@ public class Plateau extends Historique<Coup> implements Cloneable{
             if (jack.getSablier()==6){
                 jack.setWinner(true);
                 return true;
-            } else {
-                if (enqueteur.getSablier()==3){
-                    enqueteur.setWinner(true);
-                    return true;
-                }
             }
         }
         return verdictTour();
@@ -291,10 +292,10 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
     public void reinitialiser(){
 
-        jack.setSablier(0);
+        jack.setSablier(0,0);
         jack.setTurn(false);
         jack.setWinner(false);
-        enqueteur.setSablier(0);
+        enqueteur.setSablier(0,0);
         enqueteur.setTurn(true);
         enqueteur.setWinner(false);
         joueurCourant = enqueteur;
@@ -343,7 +344,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     }
 
     public Actions getActionJeton(int num){
-        if(num < 0 || num > 3) throw new IllegalStateException("Indice des jetons non comprises entre 0 et 4");
+        if(num < 0 || num > 3) throw new IllegalStateException("Indice des jetons non comprises entre 0 et 3");
         JetonActions jeton = jetonsActions.get(num);
         if(jeton.estRecto()){
             return jeton.getAction1();
@@ -353,7 +354,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     }
 
     public JetonActions getJeton(int num){
-        if(num < 0 || num > 3) throw new IllegalStateException("Indice des jetons non comprises entre 0 et 4");
+        if(num < 0 || num > 3) throw new IllegalStateException("Indice des jetons non comprises entre 0 et 3");
         return jetonsActions.get(num);
     }
 
@@ -372,5 +373,16 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
     static ArrayList<Integer> getOrientationsRues(){
         return orientationsRues;
+    }
+
+    public void setNumAction(int numAction){
+        this.numAction = numAction;
+    }
+    public int getNumAction() {
+        return this.numAction;
+    }
+
+    public ArrayList<Suspect> getSuspectsInnoncete(){
+        return suspectsInnoncete;
     }
 }

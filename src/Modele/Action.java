@@ -12,7 +12,6 @@ public class Action {
     int orientationOld;
     int numEnqueteur;
     int deplacement;
-    boolean dejaJoue;
 
     public Action(Joueur joueur){
         this.action = null;
@@ -22,7 +21,6 @@ public class Action {
         this.orientationNew = -1;
         this.deplacement = -1;
         this.joueur = joueur;
-        this.dejaJoue = false;
     }
 
     public boolean estValide(){
@@ -123,14 +121,6 @@ public class Action {
 
     public void setDeplacement(int deplacement){
         this.deplacement = deplacement;
-    }
-
-    public boolean getDejaJoue(){
-        return dejaJoue;
-    }
-
-    public void setDejaJoue(boolean dejaJoue){
-        this.dejaJoue = dejaJoue;
     }
 
 }

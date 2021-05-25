@@ -8,6 +8,8 @@ import java.util.logging.Logger;
 
 public class Configuration {
 
+    private static Configuration instance = null;
+
     public static Image chargeImage(String nom) {
         Image img = null;
         InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream( "PNG/" + nom + ".png" );
@@ -19,6 +21,13 @@ public class Configuration {
             System .exit(1);
         }
         return img;
+    }
+
+    public static Configuration instance() {
+        if (instance == null) {
+            instance = new Configuration();
+        }
+        return instance;
     }
 
     public Logger logger() {

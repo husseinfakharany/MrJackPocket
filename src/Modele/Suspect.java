@@ -1,6 +1,7 @@
 package Modele;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import static Modele.SuspectCouleur.*;
 
@@ -57,7 +58,7 @@ public class Suspect {
 		}
 		isJack = false;
     }
-    
+
    public SuspectNom getNomPersonnage(){
     	return nomPersonnage;
     }
@@ -104,6 +105,14 @@ public class Suspect {
 
 	public void retournerCarteRue(CarteRue[][] grille) {
 		if(grille[position.y][position.x].getSuspect().getCouleur() == GRIS) grille[position.y][position.x].setOrientation(Plateau.NSEO);
+	}
+
+	public void innonceter(CarteRue[][] grille, ArrayList<Suspect> suspectsInnoncete){
+		setInnocente(true);
+		retournerCarteRue(grille);
+		if (!suspectsInnoncete.contains(this)){
+			suspectsInnoncete.add(this);
+		}
 	}
 
 }

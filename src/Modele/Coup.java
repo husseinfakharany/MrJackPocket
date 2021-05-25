@@ -1,5 +1,7 @@
 package Modele;
 
+import Global.Configuration;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -23,17 +25,21 @@ public class Coup extends Commande{
 		CarteAlibi card = plateau.piocher();
 		Suspect s = card.getSuspect();
 		Joueur j = action.getJoueur();
-		int sabliersJoueur = action.getJoueur().getSablier();
 		int sabliersCarte = card.getSablier();
-		s.setInnocente(true);
-		s.retournerCarteRue(plateau.grille);
-		j.setSablier(sabliersJoueur+sabliersCarte);
+		if (!j.isJack()) {
+			s.innonceter(plateau.grille,plateau.getSuspectsInnoncete());
+			j.setSablierVisibles(j.getSablierVisibles()+sabliersCarte);
+		} else {
+			j.setSablierCaches(j.getSablierCaches()+sabliersCarte);
+		}
 		j.ajouterCarte(card);
 		return true;
 	}
 
 	public boolean rotation(Point position1, int orientation) {
 		if (plateau.grille[position1.y][position1.x].getDejaTourne()){
+			//TODO Fix error counting as action played
+			Configuration.instance().logger().warning("Carte déjà tournée");
 			return false;
 		}
 		action.setOrientationOld(plateau.grille[position1.y][position1.x].getOrientation());
@@ -279,8 +285,6 @@ public class Coup extends Commande{
 
 	@Override
 	boolean execute() {
-		plateau.numAction++;
-		plateau.actionJouee();
 		switch(action.getAction()){
 			case DEPLACER_JOKER:
 				return deplacer(action.getNumEnqueteur(),action.getDeplacement(),1);

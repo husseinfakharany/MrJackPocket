@@ -19,6 +19,8 @@ public class Joueur {
 	
 	private ArrayList<CarteAlibi> cardList;
 	private int sablier;
+	private int sablierVisibles;
+	private int sablierCaches;
 	private boolean isJack = false;
 	private boolean win = false;
 	private boolean turn = false;
@@ -28,13 +30,13 @@ public class Joueur {
     //	name: nom du joueur soit jack soit dectective
 	//  isJack
 	//sablier
-	public Joueur(boolean isJack, String name, int sablier,boolean win,boolean turn) {
+	public Joueur(boolean isJack, String name, int sabliersCaches, int sabliersVisibles, boolean win,boolean turn) {
 		cardList = new ArrayList<>();
 		setJack(isJack);
 		setName(name);
-		setSablier(sablier);
 		setWinner(win);
 		setTurn(turn);
+		setSablier(sablierCaches,sablierVisibles);
 	}
 
 	public void ajouterCarte(CarteAlibi card) {
@@ -60,9 +62,30 @@ public class Joueur {
 		return sablier;
 	}
 
-	public void setSablier(int sablier) {
-		this.sablier = sablier;
+	public int getSablierVisibles(){
+		return sablierVisibles;
 	}
+
+	public int getSablierCaches(){
+		return sablierCaches;
+	}
+
+	public void setSablier(int sablierCaches, int sablierVisibles) {
+		this.sablier = sablierCaches+sablierVisibles;
+		this.sablierCaches = sablierCaches;
+		this.sablierVisibles = sablierVisibles;
+	}
+
+	public void setSablierCaches(int sabliersCaches) {
+		this.sablierCaches = sabliersCaches;
+		this.sablier = this.sablier+sabliersCaches;
+	}
+
+	public void setSablierVisibles(int sabliersVisibles) {
+		this.sablierVisibles = sabliersVisibles;
+		this.sablier = this.sablier+sabliersVisibles;
+	}
+
 
 	public boolean isJack() {
 		return isJack;
