@@ -3,6 +3,8 @@ package Global;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Configuration {
 
@@ -19,4 +21,9 @@ public class Configuration {
         return img;
     }
 
+    public Logger logger() {
+        Logger log = Logger.getLogger("MrJackPocket.Logger");
+        log.setLevel(Level.INFO);
+        return log;
+    }
 }
