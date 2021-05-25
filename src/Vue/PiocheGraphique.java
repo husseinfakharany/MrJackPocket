@@ -70,11 +70,6 @@ public class PiocheGraphique extends JComponent implements ElementPlateauG{
         return offsetY;
     }
 
-    @Override
-    public void setSelection(int s) {
-
-    }
-
     public void setPiocheActive(boolean piocheA){
         piocheActive = piocheA;
         repaint();

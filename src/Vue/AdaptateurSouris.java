@@ -30,24 +30,13 @@ public class AdaptateurSouris extends MouseAdapter {
 			case jetons:
 				System.out.println("Jetons : ( " +l +" , "+c+" )");
 				if(l==0){
-					if(c==0) {
-						elementG.setSelection(1);
-						controle.commandeJeu("jetonA");
-					}
-					if(c==1){
-						elementG.setSelection(2);
-						controle.commandeJeu("jetonB");
-					}
+					if(c==0) controle.commandeJeu("jetonA");
+
+					if(c==1)controle.commandeJeu("jetonB");
 				}
 				if(l==1){
-					if(c==0) {
-						elementG.setSelection(3);
-						controle.commandeJeu("jetonC");
-					}
-					if(c==1){
-						elementG.setSelection(4);
-						controle.commandeJeu("jetonD");
-					}
+					if(c==0)controle.commandeJeu("jetonC");
+					if(c==1) controle.commandeJeu("jetonD");
 				}
 				break;
 			case pioche:

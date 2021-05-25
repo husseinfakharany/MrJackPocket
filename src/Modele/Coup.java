@@ -162,7 +162,7 @@ public class Coup extends Commande{
 			System.out.println("Impossible d'ajouter un argument");
 			return;
 		}
-		switch (action.action){
+		switch (action.getAction()){
 			case DEPLACER_JOKER:
 				action.setDeplacement(1);
 				action.setNumEnqueteur(calculEnqueteur(l,c));

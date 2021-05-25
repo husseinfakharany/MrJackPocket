@@ -5,5 +5,4 @@ public interface ElementPlateauG {
     int getType();
     int getOffsetX();
     int getOffsetY();
-    void setSelection(int s);
 }

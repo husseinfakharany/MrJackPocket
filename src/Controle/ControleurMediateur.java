@@ -75,8 +75,11 @@ public class ControleurMediateur implements CollecteurEvenements {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
                 }
-                action.setAction(jeu.plateau().getActionJeton(0));
-                selectionne=0;
+                if (!jeu.plateau().getJeton(0).getDejaJoue()){
+                    ig.getJetons().setSelection(1);
+                    action.setAction(jeu.plateau().getActionJeton(0));
+                    selectionne=0;
+                }
                 break;
             case "jetonB":
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(1)) ) {
@@ -87,8 +90,11 @@ public class ControleurMediateur implements CollecteurEvenements {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
                 }
-                action.setAction(jeu.plateau().getActionJeton(1));
-                selectionne=1;
+                if (!jeu.plateau().getJeton(1).getDejaJoue()){
+                    ig.getJetons().setSelection(2);
+                    action.setAction(jeu.plateau().getActionJeton(1));
+                    selectionne=1;
+                }
                 break;
             case "jetonC":
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(2)) ){
@@ -99,8 +105,11 @@ public class ControleurMediateur implements CollecteurEvenements {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
                 }
-                action.setAction(jeu.plateau().getActionJeton(2));
-                selectionne=2;
+                if (!jeu.plateau().getJeton(2).getDejaJoue()) {
+                    ig.getJetons().setSelection(3);
+                    action.setAction(jeu.plateau().getActionJeton(2));
+                    selectionne=2;
+                }
                 break;
             case "jetonD":
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(3)) && !action.getAction().equals(Actions.INNOCENTER_CARD)){
@@ -111,8 +120,11 @@ public class ControleurMediateur implements CollecteurEvenements {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
                 }
-                action.setAction(jeu.plateau().getActionJeton(3));
-                selectionne=3;
+                if (!jeu.plateau().getJeton(3).getDejaJoue()){
+                    ig.getJetons().setSelection(4);
+                    action.setAction(jeu.plateau().getActionJeton(3));
+                    selectionne=3;
+                }
                 break;
             case "pioche":
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(3)) && action.getAction().equals(Actions.INNOCENTER_CARD)) {
@@ -128,6 +140,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
         action.setJoueur(jeu.plateau().joueurCourant);
         ig.getJetons().setJouable(action.estValide() && !action.getAction().equals(Actions.INNOCENTER_CARD));
+        ig.getJetons().repaint();
         if(action.getAction() != null) ig.getPioche().setPiocheActive(action.getAction().equals(Actions.INNOCENTER_CARD));
         ig.getDistrict().setActionTemp(action);
         return true;
@@ -136,16 +149,16 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void jouerCoup(){
         System.out.println("Coup joué");
         jeu.jouerCoup(cp);
-        selectionne = 0;
         //TODO to be modified for historique
         jeu.plateau().setNumAction(jeu.plateau().getNumAction()+1);
-        jeu.plateau().actionJouee();
         jeu.plateau().getJeton(selectionne).setDejaJoue(true);
+        jeu.plateau().actionJouee();
         ig.getJetons().setSelection(-1);
         ig.getJetons().setJouable(false);
         ig.getDistrict().setActionTemp(null);
+        selectionne = 0;
         cp.reinitialiser();
-
+        ig.getBoiteJeu().repaint();
     }
 
     @Override

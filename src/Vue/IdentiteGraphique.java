@@ -118,5 +118,6 @@ public class IdentiteGraphique extends JComponent {
 
     public void switchAfficherCaches(){
         afficherCaches = !afficherCaches;
+        repaint();
     }
 }

@@ -20,6 +20,7 @@ public class Action {
         this.orientationOld = -1;
         this.orientationNew = -1;
         this.deplacement = -1;
+        this.numEnqueteur = -1;
         this.joueur = joueur;
     }
 
@@ -55,6 +56,7 @@ public class Action {
         this.orientationOld = -1;
         this.orientationNew = -1;
         this.deplacement = -1;
+        this.numEnqueteur = -1;
         this.joueur = null;
     }
 
@@ -70,6 +72,7 @@ public class Action {
         this.orientationOld = -1;
         this.orientationNew = -1;
         this.deplacement = -1;
+        this.numEnqueteur = -1;
         this.joueur = null;
     }
 

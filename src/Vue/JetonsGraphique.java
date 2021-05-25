@@ -54,14 +54,10 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         drawable.setFont(new Font("default", Font.BOLD, 25));
         drawable.drawString("Jetons :",(int) (largeur*0.5)-60,25);
         drawable.setFont(new Font("default", Font.PLAIN, 12));
-        /*if(!jeu.plateau().getJeton(0).dejaJoue())drawable.drawImage(jeton1, 0, offsetY, tailleC, tailleC, null);
-        if(!jeu.plateau().getJeton(1).dejaJoue())drawable.drawImage(jeton2, tailleC+offsetX, offsetY, tailleC, tailleC, null);
-        if(!jeu.plateau().getJeton(2).dejaJoue())drawable.drawImage(jeton3, 0, tailleC+2*offsetY, tailleC, tailleC, null);
-        if(!jeu.plateau().getJeton(3).dejaJoue())drawable.drawImage(jeton4, tailleC+offsetX, tailleC+2*offsetY, tailleC, tailleC, null);*/
-        drawable.drawImage(jeton1, 0, offsetY, tailleC, tailleC, null);
-        drawable.drawImage(jeton2, tailleC+offsetX, offsetY, tailleC, tailleC, null);
-        drawable.drawImage(jeton3, 0, tailleC+2*offsetY, tailleC, tailleC, null);
-        drawable.drawImage(jeton4, tailleC+offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
+        if(!jeu.plateau().getJeton(0).getDejaJoue())drawable.drawImage(jeton1, 0, offsetY, tailleC, tailleC, null);
+        if(!jeu.plateau().getJeton(1).getDejaJoue())drawable.drawImage(jeton2, tailleC+offsetX, offsetY, tailleC, tailleC, null);
+        if(!jeu.plateau().getJeton(2).getDejaJoue())drawable.drawImage(jeton3, 0, tailleC+2*offsetY, tailleC, tailleC, null);
+        if(!jeu.plateau().getJeton(3).getDejaJoue())drawable.drawImage(jeton4, tailleC+offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
 
         if(estJouable) {
             int posX = (selection-1)%2;
