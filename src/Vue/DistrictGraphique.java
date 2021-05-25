@@ -5,6 +5,7 @@ import Modele.CarteRue;
 import Modele.Enqueteur;
 import Modele.Jeu;
 import Modele.Plateau;
+import Modele.Action;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,14 +14,15 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
     Graphics2D drawable;
     int tailleC;
     Jeu jeu;
-    Image quartier1, quartier2, quartier3, quartier4, quartierX, cible, suspectBla, suspectBle, suspectJau, suspectNoi,
-            suspectOra, suspectRos, suspectVer, suspectVio, suspectGri, sherlock, watson, chien;
+    Image quartier1, quartier2, quartier3, quartier4, quartierX, quartier1S, quartier2S, quartier3S, quartier4S,
+            quartierXS, cible, suspectBla, suspectBle, suspectJau, suspectNoi, suspectOra, suspectRos, suspectVer,
+            suspectVio, suspectGri, sherlock, watson, chien;
     private int offsetX=0,offsetY=0;
 
     //TODO Previsualisation de l'action
     //Mettre a jour après commandeDistrict et commandeJeu
     //reinitialiser après jouerCoup
-    Action actionTemp;
+    private Action actionTemp;
 
     DistrictGraphique(Jeu j){
         jeu=j;
@@ -29,6 +31,11 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
         quartier3 = Configuration.chargeImage("QuartierVide-3");
         quartier4 = Configuration.chargeImage("QuartierVide-4");
         quartierX = Configuration.chargeImage("QuartierVideX");
+        quartier1S = Configuration.chargeImage("QuartierVide-1S");
+        quartier2S = Configuration.chargeImage("QuartierVide-2S");
+        quartier3S = Configuration.chargeImage("QuartierVide-3S");
+        quartier4S = Configuration.chargeImage("QuartierVide-4S");
+        quartierXS = Configuration.chargeImage("QuartierVideXS");
         cible = Configuration.chargeImage("Cible");
         suspectBla = Configuration.chargeImage("Suspect-blancB");
         suspectBle = Configuration.chargeImage("Suspect-bleuB");
@@ -44,7 +51,7 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
         chien = Configuration.chargeImage("Chien");
     }
 
-    public void dessinerCarte(int l, int c, CarteRue rue){
+    public void dessinerCarte(int l, int c, CarteRue rue,boolean isSelectionne, int orientation){
         Image quartier,suspect,enqueteur;
         int tailleE = (int) (0.8*tailleC);
         int offsetE = (int) (0.1*tailleC);
@@ -78,21 +85,26 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
                     break;
             }
         }
-        switch (rue.orientation){
+        switch (orientation){
             case Plateau.NSE:
-                quartier = quartier4;
+                if(isSelectionne) quartier = quartier4S;
+                else quartier = quartier4;
                 break;
             case Plateau.NSO:
-                quartier = quartier3;
+                if(isSelectionne) quartier = quartier3S;
+                else quartier = quartier3;
                 break;
             case Plateau.NEO:
-                quartier = quartier2;
+                if(isSelectionne) quartier = quartier2S;
+                else quartier = quartier2;
                 break;
             case Plateau.SEO:
-                quartier = quartier1;
+                if(isSelectionne) quartier = quartier1S;
+                else quartier = quartier1;
                 break;
             case Plateau.NSEO:
-                quartier = quartierX;
+                if(isSelectionne) quartier = quartierXS;
+                else quartier = quartierX;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + rue.orientation);
@@ -128,9 +140,16 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
             default:
                 throw new IllegalStateException("Unexpected value: " + rue.orientation);
         }
-        //suspect.getScaledInstance(tailleC,tailleC,Image.SCALE_DEFAULT);
         drawable.drawImage(quartier, c*tailleC, l*tailleC,tailleC, tailleC, null);
         if(!rue.getSuspect().getInnocente())drawable.drawImage(suspect, (int) ((c+0.25)*tailleC), (int) ((l+0.25)*tailleC), (int) (tailleC*0.5), (int) (tailleC*0.5), null);
+    }
+
+    public void dessinerCarte(int l, int c, CarteRue rue){
+        dessinerCarte(l, c, rue,false, rue.getOrientation());
+    }
+
+    public void dessinerCarte(int l, int c, CarteRue rue, boolean isSelectionne){
+        dessinerCarte(l, c, rue,isSelectionne, rue.getOrientation());
     }
 
     public void dessinerGrille(){
@@ -143,6 +162,20 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
                 //if(c==2) drawable.drawImage(cible, 4*tailleC, (l+1)*tailleC, tailleC, tailleC, null);
                 dessinerCarte(l+1,c+1,jeu.plateau().grille[l][c]);
             }
+        }
+    }
+
+    public void dessinerFeedback(){
+        Point pos1 = actionTemp.getPosition1();
+        Point pos2 = actionTemp.getPosition2();
+        switch (actionTemp.getAction()){
+            case ECHANGER_DISTRICT:
+                if (pos1 != null)dessinerCarte(pos1.y+1,pos1.x+1,jeu.plateau().grille[pos1.y][pos1.x],true);
+                if (pos2 != null)dessinerCarte(pos2.y+1,pos2.x+1,jeu.plateau().grille[pos2.y][pos2.x],true);
+                break;
+            case ROTATION_DISTRICT:
+                if (pos1 != null)dessinerCarte(pos1.y+1,pos1.x+1,jeu.plateau().grille[pos1.y][pos1.x],true, actionTemp.getOrientationNew());
+                break;
         }
     }
 
@@ -167,6 +200,7 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
 
         dessinerGrille();
 
+        if(actionTemp!=null)dessinerFeedback();
     }
 
     @Override
@@ -192,5 +226,10 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
     @Override
     public void setSelection(int s) {
 
+    }
+
+    public void setActionTemp(Action actionTemp) {
+        this.actionTemp = actionTemp;
+        repaint();
     }
 }

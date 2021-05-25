@@ -14,7 +14,6 @@ public class Action {
     int deplacement;
     boolean dejaJoue;
 
-
     public Action(Joueur joueur){
         this.action = null;
         this.position1 = null;

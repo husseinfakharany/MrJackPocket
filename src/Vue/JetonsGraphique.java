@@ -11,8 +11,9 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
     int largeur,hauteur,tailleC,offsetX,offsetY;
     Jeu jeu;
     Image jeton1A , jeton1B , jeton2A , jeton2B, jeton3A , jeton3B, jeton4A , jeton4B,
-            jeton1ANB , jeton1BNB , jeton2ANB , jeton2BNB, jeton3ANB , jeton3BNB, jeton4ANB , jeton4BNB;
+            jeton1ANB , jeton1BNB , jeton2ANB , jeton2BNB, jeton3ANB , jeton3BNB, jeton4ANB , jeton4BNB , jetonV;
     int selection;
+    private boolean estJouable;
 
     JetonsGraphique(Jeu j){
         jeu=j;
@@ -32,9 +33,11 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         jeton3BNB = Configuration.chargeImage("Jeton-3-B-NB");
         jeton4ANB = Configuration.chargeImage("Jeton-4-A-NB");
         jeton4BNB = Configuration.chargeImage("Jeton-4-B-NB");
+        jetonV = Configuration.chargeImage("JetonV");
         offsetX = 20;
         offsetY = 30;
         selection = -1;
+        setJouable(false);
     }
 
     public void dessinerJetons(){
@@ -47,6 +50,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         else jeton3 = selection==3 || selection == -1? jeton3B : jeton3BNB;
         if(jeu.plateau().getJeton(3).estRecto())jeton4 = selection==4 || selection == -1? jeton4A : jeton4ANB;
         else jeton4 = selection==4 || selection == -1? jeton4B : jeton4BNB;
+
         drawable.setFont(new Font("default", Font.BOLD, 25));
         drawable.drawString("Jetons :",(int) (largeur*0.5)-60,25);
         drawable.setFont(new Font("default", Font.PLAIN, 12));
@@ -58,6 +62,12 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         drawable.drawImage(jeton2, tailleC+offsetX, offsetY, tailleC, tailleC, null);
         drawable.drawImage(jeton3, 0, tailleC+2*offsetY, tailleC, tailleC, null);
         drawable.drawImage(jeton4, tailleC+offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
+
+        if(estJouable) {
+            int posX = (selection-1)%2;
+            int posY = (selection-1)/2;
+            drawable.drawImage(jetonV, posX*(tailleC+offsetX) , posY*tailleC+(posY+1)*offsetY, tailleC, tailleC, null);
+        }
     }
 
     @Override
@@ -104,5 +114,10 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
     @Override
     public int getOffsetY() {
         return offsetY;
+    }
+
+    public void setJouable(boolean estJouable) {
+        this.estJouable = estJouable;
+        repaint();
     }
 }

@@ -59,6 +59,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         else{
             cp.ajouterArguments(l,c);
         }
+        action.setJoueur(jeu.plateau().joueurCourant);
+        ig.getJetons().setJouable(action.estValide());
+        ig.getDistrict().setActionTemp(action);
     }
 
     @Override
@@ -91,12 +94,14 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
         }
         ig.getJetons().repaint();
+        ig.getPioche().setPiocheActive(action.getAction().equals(Actions.INNOCENTER_CARD));
         return true;
     }
 
     public void jouerCoup(){
         System.out.println("Coup joué");
         jeu.jouerCoup(cp);
+        ig.getJetons().setJouable(false);
         cp.reinitialiser();
         ig.getBoiteJeu().repaint();
     }

@@ -366,6 +366,10 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         this.numTour = numTour;
     }
 
+    public int getTaillePioche(){
+        return cartesAlibis.size();
+    }
+
     static ArrayList<Integer> getOrientationsRues(){
         return orientationsRues;
     }

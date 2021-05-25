@@ -23,8 +23,8 @@ public class InterfaceGraphique implements Observer, Runnable {
     JLabel info,tour;
     CollecteurEvenements controle;
     JComboBox<String> commencer, boutonIA;
-    DistrictGraphique district;
-    PiocheGraphique pioche;
+    private DistrictGraphique district;
+    private PiocheGraphique pioche;
     private JetonsGraphique jetons;
     IdentiteGraphique identite;
     private MainGraphique main;
@@ -37,7 +37,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         jeu.addObserver(this);
         controle = c;
         controle.fixerInterfaceUtilisateur(this);
-        district = new DistrictGraphique(jeu);
+        setDistrict(new DistrictGraphique(jeu));
         pioche = new PiocheGraphique(jeu);
         setJetons(new JetonsGraphique(jeu));
         identite = new IdentiteGraphique(jeu);
@@ -252,12 +252,12 @@ public class InterfaceGraphique implements Observer, Runnable {
         Box boiteCentre = Box.createHorizontalBox();
 
         identite.setPreferredSize(new Dimension((int) (0.223*width),boiteCentre.getHeight()));
-        district.setPreferredSize(new Dimension( (int) (0.4*width),(int) (0.4*width) ));
+        getDistrict().setPreferredSize(new Dimension( (int) (0.4*width),(int) (0.4*width) ));
 
         boiteCentre.add(Box.createHorizontalGlue());
         boiteCentre.add(identite);
         boiteCentre.add(Box.createHorizontalGlue());
-        boiteCentre.add(district);
+        boiteCentre.add(getDistrict());
         boiteCentre.add(Box.createHorizontalGlue());
         boiteCentre.add(boiteCentreD);
         boiteCentre.add(Box.createHorizontalGlue());
@@ -279,19 +279,19 @@ public class InterfaceGraphique implements Observer, Runnable {
         boiteBas.setPreferredSize(new Dimension(width,(int) (0.243*height)));
         boiteBasG.setPreferredSize(new Dimension((int) (0.175*width),boiteBas.getHeight()));
         getMain().setPreferredSize(new Dimension((int) (0.8*width),(int) (0.243*height) ));
-        pioche.setPreferredSize(new Dimension((int) (0.175*width),(int) (0.243*height)));
-        pioche.setMaximumSize(new Dimension((int) (0.175*width),(int) (0.243*height)));
+        getPioche().setPreferredSize(new Dimension((int) (0.175*width),(int) (0.243*height)));
+        getPioche().setMaximumSize(new Dimension((int) (0.175*width),(int) (0.243*height)));
 
         boiteBas.add(boiteBasG);
         boiteBas.add(Box.createHorizontalGlue());
         boiteBas.add(getMain());
         boiteBas.add(Box.createHorizontalGlue());
-        boiteBas.add(pioche);
+        boiteBas.add(getPioche());
 
         if(boiteJeu == null) {
-            district.addMouseListener(new AdaptateurSouris(district, controle));
+            getDistrict().addMouseListener(new AdaptateurSouris(getDistrict(), controle));
             getJetons().addMouseListener(new AdaptateurSouris(getJetons(), controle));
-            pioche.addMouseListener(new AdaptateurSouris(pioche, controle));
+            getPioche().addMouseListener(new AdaptateurSouris(getPioche(), controle));
         }
 
 
@@ -308,8 +308,8 @@ public class InterfaceGraphique implements Observer, Runnable {
         getVoirJack().setEnabled(isJack);
         getVoirJack().setVisible(isJack);
         identite.repaint();
-        district.repaint();
-        pioche.repaint();
+        getDistrict().repaint();
+        getPioche().repaint();
         getMain().repaint();
         getJetons().repaint();
         tour.setText("  Tour n°"+jeu.plateau().getNumTour());
@@ -449,5 +449,17 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     public void setJetons(JetonsGraphique jetons) {
         this.jetons = jetons;
+    }
+
+    public DistrictGraphique getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(DistrictGraphique district) {
+        this.district = district;
+    }
+
+    public PiocheGraphique getPioche() {
+        return pioche;
     }
 }
