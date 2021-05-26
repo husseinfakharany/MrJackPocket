@@ -318,7 +318,7 @@ public class Coup extends Commande{
 				return deplacer(action.getNumEnqueteur(), action.getDeplacement(),-1);
 			case INNOCENTER_CARD:
 				//On n'a pas le droit de desexecuter innoncenter_card
-				//TODO print in logger error
+				//TODO reactivate desexecute/execute
 				return false;
 			case ECHANGER_DISTRICT:
 				//L'ordre des parametres est purement esthetique

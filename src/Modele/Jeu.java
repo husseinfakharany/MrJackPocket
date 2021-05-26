@@ -19,14 +19,15 @@ public class Jeu extends Observable{
 
     public Plateau plateau(){return plateau;}
 
-    public void jouerCoup(Coup cp) {
+    public boolean jouerCoup(Coup cp) {
+        boolean res;
         if (cp == null) {
             throw new IllegalStateException("Coup Impossible");
         } else {
-            plateau.jouerCoup(cp);
-            //TODO check with Fabien
+            res = plateau.jouerCoup(cp);
             notifyObservers();
         }
+        return res;
     }
 
     public Coup annule() {

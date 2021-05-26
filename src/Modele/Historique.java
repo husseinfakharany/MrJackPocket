@@ -11,12 +11,14 @@ public class Historique<E extends Commande> {
 		futur = new ArrayList<>();
 	}
 
-	public void nouveau(E c) {
+	public boolean nouveau(E c) {
 		if(c.execute()){
 			passe.add(0,c);
 			while (!futur.isEmpty())
 				futur.remove(0);
+			return true;
 		}
+		return false;
 	}
 
 
