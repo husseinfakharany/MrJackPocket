@@ -37,7 +37,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         offsetX = 20;
         offsetY = 30;
         selection = -1;
-        setJouable(false);
+        dessinerValide(false);
     }
 
     public void dessinerJetons(){
@@ -88,7 +88,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
 
     }
 
-    public void setSelection(int selection){
+    public void dessinerSelection(int selection){
         this.selection = selection;
         repaint();
     }
@@ -113,7 +113,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         return offsetY;
     }
 
-    public void setJouable(boolean estJouable) {
+    public void dessinerValide(boolean estJouable) {
         this.estJouable = estJouable;
         repaint();
     }

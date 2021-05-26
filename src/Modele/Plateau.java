@@ -1,5 +1,7 @@
 package Modele;
 
+import Global.Configuration;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +26,7 @@ Attribuer le sablier du tour courant
 
 public class Plateau extends Historique<Coup> implements Cloneable{
 
-    Random rd ;
+    Random rand;
     public Joueur jack;
     public Joueur enqueteur;
     public Joueur joueurCourant;
@@ -60,7 +62,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     public static final int TOBBY = 2;
 
     public Plateau(){
-        rd = new Random();
+        rand = new Random(Jeu.getSeed());
         jack = new Joueur(true, "Hussein", 0,0,false,false);
         enqueteur = new Joueur(false, "Fabien", 0,0, false, true);
         numTour = 0;
@@ -175,7 +177,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
             changerJoueur();
         } else if (numAction == 4){
             if (finJeu()){
-                System.out.println("Fin du jeu");
+                Configuration.instance().logger().info("Fin du Jeu");
                 return true;
             } else {
                 initialiseTour();
@@ -186,13 +188,13 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
     //Mélange ou inverse les cartes actions (depend du numéro du tour)
     void melangeJetonsActions(){
-        if (numTour%2 == 1) inverserJetons();
-        else jetJetons();
+        if (numTour%2 == 1) jetJetons();
+        else inverserJetons();
     }
 
     void jetJetons() {
         for(JetonActions act:jetonsActions){
-            act.setEstRecto(rd.nextBoolean()); //Lancement de chaque jeton
+            act.setEstRecto(rand.nextBoolean()); //Lancement de chaque jeton
             act.setDejaJoue(false);
         }
     }
@@ -222,7 +224,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
 
     public void piocherJack(){
-        int index = rd.nextInt(cartesAlibis.size());
+        int index = rand.nextInt(cartesAlibis.size());
         CarteAlibi JackCard = cartesAlibis.get(index);
         cartesAlibis.remove(index);
         JackCard.getSuspect().setIsJack(true);
@@ -231,7 +233,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     }
 
     public CarteAlibi piocher(){
-        int index = rd.nextInt(cartesAlibis.size());
+        int index = rand.nextInt(cartesAlibis.size());
         CarteAlibi card = cartesAlibis.get(index);
         cartesAlibis.remove(index);
         card.getSuspect().setPioche(true);
@@ -264,7 +266,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
                 }
             }
         } else {
-            jack.setSablierCaches(jack.getSablierCaches()+1);
+            jack.setSablierVisibles(jack.getSablierVisibles()+1);
             for (Suspect s:res) {
                 s.innonceter(grille,suspectsInnoncete);
             }

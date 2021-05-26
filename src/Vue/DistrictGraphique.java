@@ -302,7 +302,7 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
         return offsetY;
     }
 
-    public void setActionTemp(Action actionTemp) {
+    public void dessinerFeedback(Action actionTemp) {
         this.actionTemp = actionTemp;
         repaint();
     }

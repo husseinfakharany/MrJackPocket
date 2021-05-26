@@ -21,7 +21,7 @@ public class CarteRue {
     public boolean dejaTourne;
 
     public CarteRue(Point position, Suspect suspect){
-        Random rand = new Random();
+        Random rand = new Random(Jeu.getSeed());
         //On choisi une orientation des orientations possibles
         orientation = Plateau.getOrientationsRues().get(rand.nextInt(Plateau.getOrientationsRues().size()));
         enqueteurs = new ArrayList<>();

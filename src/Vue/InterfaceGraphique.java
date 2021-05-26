@@ -214,7 +214,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             undo.addActionListener(new AdaptateurCommande(controle,"annuler"));
             redo = new JButton("⏩");
             redo.addActionListener(new AdaptateurCommande(controle,"refaire"));
-            setVoirJack(new JButton("Voir mes cartes"));
+            setVoirJack(new JButton("Voir mes \uD83D\uDD0D et ⏳"));
             getVoirJack().addActionListener(new AdaptateurCommande(controle,"main"));
         }
         else boiteUnReDo.removeAll();
@@ -228,7 +228,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         redo.setMaximumSize(new Dimension((int) (0.093*width), (int) (0.056*height)));
 
 
-        getVoirJack().setFont(new Font("default", Font.PLAIN, 16));
+        getVoirJack().setFont(new Font("default", Font.PLAIN, 20));
         getVoirJack().setPreferredSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
         getVoirJack().setMaximumSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
 
