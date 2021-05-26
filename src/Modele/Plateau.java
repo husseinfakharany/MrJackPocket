@@ -1,5 +1,7 @@
 package Modele;
 
+import Global.Configuration;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -175,7 +177,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
             changerJoueur();
         } else if (numAction == 4){
             if (finJeu()){
-                System.out.println("Fin du jeu");
+                Configuration.instance().logger().info("Fin du Jeu");
                 return true;
             } else {
                 initialiseTour();
@@ -186,8 +188,8 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
     //Mélange ou inverse les cartes actions (depend du numéro du tour)
     void melangeJetonsActions(){
-        if (numTour%2 == 1) inverserJetons();
-        else jetJetons();
+        if (numTour%2 == 1) jetJetons();
+        else inverserJetons();
     }
 
     void jetJetons() {
