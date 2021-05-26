@@ -236,46 +236,52 @@ public class Coup extends Commande{
 
 	public int calculEnqueteur(int l, int c){
 		ArrayList<Enqueteur> enqueteurs;
-		if(l==4) l--;
-		if(c==4) c--;
-		l--;c--;
 
-		if(l==2 && c==0) {
-			enqueteurs = plateau.grille[l][c].getEnqueteurs();
-			if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.SUD)
-				return enqueteurs.get(0).getNumEnqueteur();
+		if (l==4){
+			if (c==3){
+				enqueteurs = plateau.grille[l-2][c-1].getEnqueteurs();
+				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.EST)
+					return enqueteurs.get(0).getNumEnqueteur();
+			} else {
+				enqueteurs = plateau.grille[l-2][c].getEnqueteurs();
+				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.SUD)
+					return enqueteurs.get(0).getNumEnqueteur();
+			}
 		}
-		if(l==0 && c==2) {
-			enqueteurs = plateau.grille[l][c].getEnqueteurs();
-			if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.NORD)
-				return enqueteurs.get(0).getNumEnqueteur();
+		if (c==4){
+			if (l==1){
+				enqueteurs = plateau.grille[l-1][c-2].getEnqueteurs();
+				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.NORD)
+					return enqueteurs.get(0).getNumEnqueteur();
+			} else {
+				enqueteurs = plateau.grille[l-2][c-2].getEnqueteurs();
+				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.EST)
+					return enqueteurs.get(0).getNumEnqueteur();
+			}
 		}
-		if(l==0 && c==0) {
-			enqueteurs = plateau.grille[l][c].getEnqueteurs();
-			if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.OUEST)
-				return enqueteurs.get(0).getNumEnqueteur();
+		if (l==0){
+			if (c==1){
+				enqueteurs = plateau.grille[l][c-1].getEnqueteurs();
+				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.OUEST)
+					return enqueteurs.get(0).getNumEnqueteur();
+			} else {
+				enqueteurs = plateau.grille[l][c-2].getEnqueteurs();
+				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.NORD)
+					return enqueteurs.get(0).getNumEnqueteur();
+			}
 		}
-		if(l==2 && c==2) {
-			enqueteurs = plateau.grille[l][c].getEnqueteurs();
-			if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.EST)
-				return enqueteurs.get(0).getNumEnqueteur();
-		} //TODO Verifier orientation
-		if(l==0 && c > 0){
-			enqueteurs = plateau.grille[l][c-1].getEnqueteurs();
-			if(!enqueteurs.isEmpty()) return enqueteurs.get(0).getNumEnqueteur();
+		if (c==0){
+			if (l==3){
+				enqueteurs = plateau.grille[l-1][c].getEnqueteurs();
+				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.SUD)
+					return enqueteurs.get(0).getNumEnqueteur();
+			} else {
+				enqueteurs = plateau.grille[l][c].getEnqueteurs();
+				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.OUEST)
+					return enqueteurs.get(0).getNumEnqueteur();
+			}
 		}
-		if(l==2 && c < 2){
-			enqueteurs = plateau.grille[l][c+1].getEnqueteurs();
-			if(!enqueteurs.isEmpty()) return enqueteurs.get(0).getNumEnqueteur();
-		}
-		if(c==0 && l < 2){
-			enqueteurs = plateau.grille[l+1][c].getEnqueteurs();
-			if(!enqueteurs.isEmpty()) return enqueteurs.get(0).getNumEnqueteur();
-		}
-		if(c==2 && l > 0){
-			enqueteurs = plateau.grille[l-1][c].getEnqueteurs();
-			if(!enqueteurs.isEmpty()) return enqueteurs.get(0).getNumEnqueteur();
-		}
+
 		return -1;
 	}
 
