@@ -2,19 +2,25 @@ package Controle;
 
 import Modele.*;
 
+import java.util.Random;
+
 
 public class IaAleatoire extends IA{
-    @Override
+    Random r;
+    Jeu j;
+    IaAleatoire(Jeu j) {
+        r = new Random();
+        this.j=j;
+    }
+
     Coup coupIA(Jeu j) {
 
         Joueur joueurCourant = j.plateau().joueurCourant;
+        Coup coup;
+        int numJetonAction =r.nextInt(4);
 
-        if(joueurCourant.isJack()){
-            //traitement Jack
-        }else{
-            //Traitement Enqueteur
-        }
-
-        return null;
+        Action action = new Action(joueurCourant);
+        action.setAction( j.plateau().getActionJeton(numJetonAction));
+        return new Coup(j.plateau(),action);
     }
 }
