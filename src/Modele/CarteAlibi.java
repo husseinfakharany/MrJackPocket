@@ -1,7 +1,5 @@
 package Modele;
 
-import sun.applet.resources.MsgAppletViewer_es;
-
 /*
 **Carte Alibi**:
 Nombre de sabliers (0, 1, 2)

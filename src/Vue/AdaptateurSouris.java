@@ -31,7 +31,6 @@ public class AdaptateurSouris extends MouseAdapter {
 				System.out.println("Jetons : ( " +l +" , "+c+" )");
 				if(l==0){
 					if(c==0) controle.commandeJeu("jetonA");
-
 					if(c==1)controle.commandeJeu("jetonB");
 				}
 				if(l==1){

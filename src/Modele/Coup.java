@@ -158,8 +158,8 @@ public class Coup extends Commande{
 	}
 
 	public void ajouterArguments(int l, int c){
-		if(action == null) {
-			System.out.println("Impossible d'ajouter un argument");
+		if(action == null || action.getAction() == null) {
+			Configuration.instance().logger().warning("Impossible d'ajouter un argument à une action pas initialise");
 			return;
 		}
 		switch (action.getAction()){
