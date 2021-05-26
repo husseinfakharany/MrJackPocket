@@ -264,7 +264,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
                 }
             }
         } else {
-            jack.setSablierCaches(jack.getSablierCaches()+1);
+            jack.setSablierVisibles(jack.getSablierVisibles()+1);
             for (Suspect s:res) {
                 s.innonceter(grille,suspectsInnoncete);
             }

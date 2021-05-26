@@ -150,7 +150,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         jeu.jouerCoup(cp);
 
         //TODO to be modified for historique
-        jeu.plateau().setNumAction(jeu.plateau().getNumAction()+1);
+        jeu.plateau().setNumAction(jeu.plateau().getNumAction()+1); //si coup valide
         jeu.plateau().getJeton(selectionne).setDejaJoue(true);
         jeu.plateau().actionJouee();
 
