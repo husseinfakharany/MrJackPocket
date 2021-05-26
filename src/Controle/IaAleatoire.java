@@ -8,7 +8,7 @@ import java.util.Random;
 public class IaAleatoire extends IA{
     Random r;
     Jeu j;
-   public IaAleatoire(Jeu j) {
+    public IaAleatoire(Jeu j) {
         r = new Random();
         this.j=j;
     }

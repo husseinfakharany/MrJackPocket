@@ -52,7 +52,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void clicSouris(int l, int c) {
-        System.out.println("Clic en ( l : " +l+" , c : "+c+" )" );
+        Configuration.instance().logger().info("Clic en ( l : " +l+" , c : "+c+" )" );
     }
 
     public void jouerCoupIA(Coup cp){
@@ -202,7 +202,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 ig.changerMenu(ig.getBoiteMenu(),ig.getBoiteAvantPartie());
                 break;
             case "Ordi Vs Ordi":
-                System.out.println("Partie Ordi Vs Ordi");
+                Configuration.instance().logger().info("Partie Ordi Vs Ordi");
                 break;
             case "Facile":
             case "Moyenne":
@@ -218,9 +218,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                 this.reinitialiser();
                 break;
             case "reseau":
-                System.out.println("Attente d'une partie .");
-                System.out.println("Attente d'une partie ..");
-                System.out.println("Attente d'une partie ...");
+                Configuration.instance().logger().info("Attente d'une partie .");
+                Configuration.instance().logger().info("Attente d'une partie ..");
+                Configuration.instance().logger().info("Attente d'une partie ...");
                 ig.changerMenu(ig.getBoiteAvantPartie(), ig.getBoiteJeu());
                 jeu.plateau().reinitialiser();
                 this.reinitialiser();
@@ -235,7 +235,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 ig.changerMenu(ig.getBoiteMenu(), ig.getBoiteCharger() );
                 break;
             case "charger":
-                System.out.println("Chargement de la partie...");
+                Configuration.instance().logger().info("Chargement de la partie...");
                 break;
             case "annuler":
                 annuler();
@@ -248,6 +248,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                 ig.getIdentite().switchAfficherCaches();
                 if(ig.getMain().getAfficherEnqueteur()) ig.getVoirJack().setText("Voir mes \uD83D\uDD0D et ⏳");
                 else ig.getVoirJack().setText("Cacher mes \uD83D\uDD0D et ⏳");
+                break;
+            case "tuto":
+                ig.changerMenu(ig.getBoiteMenu(),ig.getBoiteTuto());
                 break;
             default:
                 return false;

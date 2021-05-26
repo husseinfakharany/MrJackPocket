@@ -28,7 +28,8 @@ public class InterfaceGraphique implements Observer, Runnable {
     private JetonsGraphique jetons;
     private IdentiteGraphique identite;
     private MainGraphique main;
-    Box boiteBas, boiteBasG, boiteInfo, boiteUnReDo, boiteCentreD, courant;
+    private TutoGraphique tuto;
+    Box boiteBas, boiteBasG, boiteInfo, boiteUnReDo, boiteCentreD, boiteTuto, courant;
 
     // TODO Implémentation Tutoriel
 
@@ -41,6 +42,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         pioche = new PiocheGraphique(jeu);
         setJetons(new JetonsGraphique(jeu));
         identite = new IdentiteGraphique(jeu);
+        tuto = new TutoGraphique();
         main = new MainGraphique(jeu);
     }
 
@@ -425,6 +427,17 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteCharger.add(boiteTitre);
         }
         return boiteCharger;
+    }
+
+    //Boite tuto
+    public Box getBoiteTuto(){
+        if (boiteTuto == null){
+            boiteTuto = Box.createVerticalBox();
+
+            boiteMenu.add(tuto);
+        }
+
+        return boiteMenu;
     }
 
     public Box getCourant(){
