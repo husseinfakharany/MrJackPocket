@@ -11,7 +11,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
     int largeur,hauteur,tailleC,offsetX,offsetY;
     Jeu jeu;
     Image jeton1A , jeton1B , jeton2A , jeton2B, jeton3A , jeton3B, jeton4A , jeton4B,
-            jeton1ANB , jeton1BNB , jeton2ANB , jeton2BNB, jeton3ANB , jeton3BNB, jeton4ANB , jeton4BNB , jetonV;
+            jeton1ANB , jeton1BNB , jeton2ANB , jeton2BNB, jeton3ANB , jeton3BNB, jeton4ANB , jeton4BNB , jetonV, tourSuivant;
     int selection;
     private boolean estJouable;
 
@@ -33,6 +33,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         jeton3BNB = Configuration.chargeImage("Jeton-3-B-NB");
         jeton4ANB = Configuration.chargeImage("Jeton-4-A-NB");
         jeton4BNB = Configuration.chargeImage("Jeton-4-B-NB");
+        tourSuivant = Configuration.chargeImage("tourSuivant");
         jetonV = Configuration.chargeImage("JetonV");
         offsetX = 20;
         offsetY = 30;
@@ -58,6 +59,12 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         if(!jeu.plateau().getJeton(1).getDejaJoue())drawable.drawImage(jeton2, tailleC+offsetX, offsetY, tailleC, tailleC, null);
         if(!jeu.plateau().getJeton(2).getDejaJoue())drawable.drawImage(jeton3, 0, tailleC+2*offsetY, tailleC, tailleC, null);
         if(!jeu.plateau().getJeton(3).getDejaJoue())drawable.drawImage(jeton4, tailleC+offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
+
+        if (jeu.plateau().tousJetonsJoues()){
+            int taille = Math.min(largeur,hauteur);
+            drawable.drawImage(tourSuivant, offsetX, offsetX, taille-offsetX , taille-offsetX, null);
+        }
+
 
         if(estJouable) {
             int posX = (selection-1)%2;

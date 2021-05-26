@@ -3,7 +3,6 @@ package Modele;
 import Global.Configuration;
 
 import java.util.Observable;
-import java.util.Random;
 
 public class Jeu extends Observable{
 
@@ -13,7 +12,7 @@ public class Jeu extends Observable{
     Plateau plateau;
 
     public Jeu(){
-        plateau = new Plateau();
+        plateau = new Plateau(this);
         Configuration.instance().logger().info("Seed used: " + seed);
     }
 
@@ -28,6 +27,11 @@ public class Jeu extends Observable{
             notifyObservers();
         }
         return res;
+    }
+
+    void notifierObserveurs(){
+        setChanged();
+        notifyObservers();
     }
 
     public Coup annule() {

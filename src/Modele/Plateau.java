@@ -24,7 +24,7 @@ Cacher/retirer les suspects vus (si Jack pas visible, sinon inverse)
 Attribuer le sablier du tour courant
  */
 
-public class Plateau extends Historique<Coup> implements Cloneable{
+public class Plateau extends Historique<Coup> implements Cloneable {
 
     Random rand;
     public Joueur jack;
@@ -34,6 +34,8 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     int numTour;
     int numAction;
     public SuspectCouleur idJack;
+    Jeu jeu;
+    boolean tourFini;
 
 
     public static CarteRue [][] grille;
@@ -61,13 +63,15 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     public static final int WATSON = 1;
     public static final int TOBBY = 2;
 
-    public Plateau(){
+    public Plateau(Jeu j){
         rand = new Random(Jeu.getSeed());
         jack = new Joueur(true, "Hussein", 0,0,false,false);
         enqueteur = new Joueur(false, "Fabien", 0,0, false, true);
         numTour = 0;
         grille = new CarteRue[3][3];
         joueurCourant = enqueteur;
+        jeu = j;
+        tourFini = false;
 
         initialiseOrientationsRues();
         initialiseSuspects();
@@ -80,6 +84,10 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         initialiseTour();
     }
 
+    public boolean tousJetonsJoues(){
+        return jeu.plateau().getJeton(0).getDejaJoue() && jeu.plateau().getJeton(1).getDejaJoue() &&
+                jeu.plateau().getJeton(2).getDejaJoue() && jeu.plateau().getJeton(3).getDejaJoue();
+    }
 
     private void initialiseOrientationsRues(){
         orientationsRues = new ArrayList<>();
@@ -181,12 +189,19 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         if (numAction==1 || numAction==3){
             changerJoueur();
         } else if (numAction == 4){
-            if (finJeu()){
-                Configuration.instance().logger().info("Fin du Jeu");
-                return true;
-            } else {
-                initialiseTour();
-            }
+            tourFini = true;
+        }
+        return false;
+    }
+
+    public boolean prochainTour(){
+        if (finJeu()){
+            Configuration.instance().logger().info("Fin du Jeu");
+            return true;
+        } else {
+            tourFini = false;
+            initialiseTour();
+            jeu.notifierObserveurs();
         }
         return false;
     }
@@ -259,25 +274,29 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     }
 
     //Cet fonction retourne vrai s'il reste qu'une seule carte non innonctée (Jack)
-    public boolean verdictTour(){
+    public boolean verdictTour(boolean updatePlateau){
         ArrayList<Suspect> res = visibles();
         //Si jack est visible par un des trois enqueteurs
-        if(jackVisible){
-            enqueteur.setSablierVisibles(enqueteur.getSablierVisibles()+1);
-            for(Suspect s:suspects){
-                if(!res.contains(s)){
-                    //Innonceter retourne la carte rue du suspect
-                    s.innonceter(grille,suspectsInnoncete);
+        if(updatePlateau) {
+            if (jackVisible) {
+                enqueteur.setSablierVisibles(enqueteur.getSablierVisibles() + 1);
+                for (Suspect s : suspects) {
+                    if (!res.contains(s)) {
+                        //Innonceter retourne la carte rue du suspect
+                        s.innonceter(grille, suspectsInnoncete);
+                    }
                 }
-            }
-        } else {
-            jack.setSablierVisibles(jack.getSablierVisibles()+1);
-            for (Suspect s:res) {
-                s.innonceter(grille,suspectsInnoncete);
+            } else {
+
+                jack.setSablierVisibles(jack.getSablierVisibles() + 1);
+                for (Suspect s : res) {
+                    s.innonceter(grille, suspectsInnoncete);
+                }
             }
         }
         //TODO add repaint?
         if (suspectsInnoncete.size()==8){
+            jeu.notifierObserveurs();
             enqueteur.setWinner(true);
             return true;
         }
@@ -285,7 +304,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     }
 
     //Fonction appelée apres la fin du tour
-    public boolean finJeu(){
+    public boolean finJeu(boolean updatePlateau){
         if (numTour>=8) {
             return true;
         } else {
@@ -294,7 +313,11 @@ public class Plateau extends Historique<Coup> implements Cloneable{
                 return true;
             }
         }
-        return verdictTour();
+        return verdictTour(updatePlateau);
+    }
+
+    public boolean finJeu(){
+        return finJeu(true);
     }
 
     public void reinitialiser(){
@@ -391,4 +414,5 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     public ArrayList<Suspect> getSuspectsInnoncete(){
         return suspectsInnoncete;
     }
+
 }

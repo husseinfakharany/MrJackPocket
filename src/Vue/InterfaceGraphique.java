@@ -1,6 +1,8 @@
 package Vue;
 
 import Controle.CollecteurEvenements;
+import Global.Configuration;
+import Modele.Action;
 import Modele.Jeu;
 
 import javax.swing.*;
@@ -20,7 +22,8 @@ public class InterfaceGraphique implements Observer, Runnable {
     JButton undo;
     JButton redo;
     JButton menu;
-    JLabel info,tour;
+    private JLabel info;
+    JLabel tour;
     CollecteurEvenements controle;
     JComboBox<String> commencer, boutonIA;
     private DistrictGraphique district;
@@ -48,6 +51,32 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     public static void demarrer(Jeu j, CollecteurEvenements c) {
         SwingUtilities.invokeLater(new InterfaceGraphique(j, c));
+    }
+
+    public static String texteIndicatif(Action action) {
+        if(action.getAction() == null) return "Choisissez un jeton action et cliquez dessus";
+        switch (action.getAction()){
+            case DEPLACER_JOKER:
+                if(action.estValide()) return "Cliquez sur le bouton valider pour continuer";
+                return "Cliquez sur un emplacement indiqué pour y déplacez l'enquêteur le plus proche";
+            case DEPLACER_TOBBY:
+            case DEPLACER_WATSON:
+            case DEPLACER_SHERLOCK:
+                if(action.estValide()) return "Cliquez sur le bouton valider pour continuer";
+                return "Cliquez sur la position où vous souhaitez déplacer l'enquêteur";
+            case INNOCENTER_CARD:
+                return "Cliquez sur la pioche pour piocher une carte Alibi";
+            case ECHANGER_DISTRICT:
+                if(action.getPosition1() == null) return "Cliquez sur deux quartiers pour echanger leurs places";
+                if(action.getPosition2() == null) return "Cliquez sur un second quartier pour échanger sa place avec celui sélectionné";
+                return "Cliquez sur un quartier pour le déselectionné ou validez";
+            case ROTATION_DISTRICT:
+                if(action.getPosition1() == null) return "Cliquez sur une carte pour la faire pivoter";
+                return "Cliquez sur la même carte pour faire un quart de tour en plus ou validez";
+            default:
+                return "Choisissez un jeton action et cliquez dessus";
+        }
+
     }
 
     public void run() {
@@ -80,7 +109,7 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     @Override
     public void update(Observable o, Object arg) {
-
+        getBoiteJeu().repaint();
     }
 
     public JButton nouveauBouton(String text){
@@ -197,8 +226,10 @@ public class InterfaceGraphique implements Observer, Runnable {
         tour.setText("  Tour n°"+jeu.plateau().getNumTour());
         tour.setFont(new Font("default", Font.PLAIN, (int) (0.034*height) ));
 
-        info = new JLabel("Explications",SwingConstants.CENTER);
-        info.setFont(new Font("default", Font.PLAIN, (int) (0.028*height) ));
+        if(boiteJeu==null) {
+            setInfo(new JLabel("Explications",SwingConstants.CENTER));
+            info.setFont(new Font("default", Font.PLAIN, (int) (0.028*height) ));
+        }
 
         menu = nouveauBouton("Retour au Menu", (int) (0.231*width) , (int) (0.056*height) );
         menu.addActionListener(new AdaptateurCommande(controle,"menuJ"));
@@ -315,6 +346,16 @@ public class InterfaceGraphique implements Observer, Runnable {
         getMain().repaint();
         getJetons().repaint();
         tour.setText("  Tour n°"+jeu.plateau().getNumTour());
+
+        if(jeu.plateau().tousJetonsJoues() ) dessinerInfo("Passez au prochain tour");
+
+        //TODO Dessiner une nouvelle boite
+        if(jeu.plateau().finJeu(false)){
+            if(jeu.plateau().enqueteur.getWinner()) dessinerInfo("Sherlock à gagné !");
+            if(jeu.plateau().jack.getWinner()) dessinerInfo("Jack à gagné !");
+            if(!jeu.plateau().enqueteur.getWinner() && !jeu.plateau().jack.getWinner())
+                Configuration.instance().logger().severe("Partie fini sans vainqueur !");
+        }
 
         return boiteJeu;
     }
@@ -478,5 +519,14 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     public IdentiteGraphique getIdentite() {
         return identite;
+    }
+
+    public void dessinerInfo(String text) {
+        info.setText(text);
+        info.repaint();
+    }
+
+    public void setInfo(JLabel text) {
+        info = text;
     }
 }

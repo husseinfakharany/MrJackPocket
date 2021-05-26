@@ -11,7 +11,7 @@ public class Action {
     int orientationNew;
     int orientationOld;
     int numEnqueteur;
-    int deplacement;
+    private int deplacement;
 
     public Action(Joueur joueur){
         this.action = null;
@@ -29,14 +29,14 @@ public class Action {
         switch (action){
             case DEPLACER_JOKER:
                 if (joueur.isJack()) {
-                    return (deplacement == -1 ||deplacement == 0 || deplacement == 1 || deplacement == 2) && numEnqueteur >= 0 && numEnqueteur <= 2;
+                    return (getDeplacement() == -1 || getDeplacement() == 0 || getDeplacement() == 1 || getDeplacement() == 2) && numEnqueteur >= 0 && numEnqueteur <= 2;
                 } else {
-                    return (deplacement == 1 || deplacement == 2) && numEnqueteur >= 0 && numEnqueteur <= 2;
+                    return (getDeplacement() == 1 || getDeplacement() == 2) && numEnqueteur >= 0 && numEnqueteur <= 2;
                 }
             case DEPLACER_TOBBY:
             case DEPLACER_WATSON:
             case DEPLACER_SHERLOCK:
-                return deplacement==1 || deplacement==2;
+                return getDeplacement() ==1 || getDeplacement() ==2;
             case INNOCENTER_CARD:
                 return true;
             case ECHANGER_DISTRICT:

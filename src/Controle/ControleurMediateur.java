@@ -1,10 +1,11 @@
 package Controle;
 
 import Global.Configuration;
-import Modele.*;
+import Modele.Action;
+import Modele.Actions;
+import Modele.Coup;
+import Modele.Jeu;
 import Vue.InterfaceGraphique;
-
-import java.util.NoSuchElementException;
 
 //TODO fonctions fixerIA(String com) activeIA(int state) undo() redo()
 public class ControleurMediateur implements CollecteurEvenements {
@@ -79,10 +80,18 @@ public class ControleurMediateur implements CollecteurEvenements {
         action.setJoueur(jeu.plateau().joueurCourant);
         ig.getJetons().dessinerValide(action.estValide());
         ig.getDistrict().dessinerFeedback(action);
+        ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
     }
 
     @Override
     public boolean commandeJeu(String c){
+        if(jeu.plateau().tousJetonsJoues() ){
+            if(!jeu.plateau().finJeu()) {
+                jeu.plateau().prochainTour();
+                ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
+            }
+            return true;
+        }
         switch (c){
             case "jetonA":
                 if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(0)) ){
@@ -160,12 +169,14 @@ public class ControleurMediateur implements CollecteurEvenements {
         ig.getJetons().dessinerValide(action.estValide() && !action.getAction().equals(Actions.INNOCENTER_CARD));
         if(action.getAction() != null) ig.getPioche().setPiocheActive(action.getAction().equals(Actions.INNOCENTER_CARD));
         ig.getDistrict().dessinerFeedback(action);
+        ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
         return true;
     }
 
     public void jouerCoup(){
         if (jeu.jouerCoup(cp)){
             Configuration.instance().logger().info("Coup joué");
+
             //TODO to be modified for historique
             jeu.plateau().setNumAction(jeu.plateau().getNumAction()+1);
             jeu.plateau().getJeton(selectionne).setDejaJoue(true);
@@ -179,7 +190,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         } else {
             Configuration.instance().logger().warning("Coup invalide");
         }
-
     }
 
     void reinitialiser(){
@@ -188,6 +198,11 @@ public class ControleurMediateur implements CollecteurEvenements {
         ig.getDistrict().dessinerFeedback(null);
         selectionne = 0;
         cp.reinitialiser();
+        if(jeu.plateau().tousJetonsJoues()) {
+            if(jeu.plateau().jackVisible) ig.dessinerInfo("Jack est visible.");
+            if(jeu.plateau().jackVisible) ig.dessinerInfo("Jack n'est pas visible.");
+        }
+        else ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
     }
 
     @Override
