@@ -434,10 +434,10 @@ public class InterfaceGraphique implements Observer, Runnable {
         if (boiteTuto == null){
             boiteTuto = Box.createVerticalBox();
 
-            boiteMenu.add(tuto);
+            boiteTuto.add(tuto);
         }
 
-        return boiteMenu;
+        return boiteTuto;
     }
 
     public Box getCourant(){
