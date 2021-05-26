@@ -1,6 +1,5 @@
 package Modele;
 
-import sun.applet.resources.MsgAppletViewer_es;
 
 /*
 **Carte Alibi**:
