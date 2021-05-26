@@ -4,10 +4,13 @@ import Global.Configuration;
 import Modele.*;
 import Vue.InterfaceGraphique;
 
+import java.util.NoSuchElementException;
+
 //TODO fonctions fixerIA(String com) activeIA(int state) undo() redo()
 public class ControleurMediateur implements CollecteurEvenements {
     InterfaceGraphique ig;
     Jeu jeu;
+    IA ia;
     boolean iaActive;
     boolean iaPeutJouer;
     int selectionne = -1;
@@ -26,6 +29,21 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void fixerIA(String com){
+        iaActive = true;
+        switch (com){
+            case "facile":
+                ia = new IaAleatoire(jeu);
+                //activation à faire
+                break;
+            case "moyen":
+
+                break;
+            case "difficile":
+
+                break;
+            default:
+                throw new NoSuchElementException();
+        }
 
     }
 
