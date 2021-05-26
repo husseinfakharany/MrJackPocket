@@ -12,7 +12,7 @@ public class IaAleatoire extends IA{
         r = new Random();
         this.j=j;
     }
-
+    @Override
     Coup coupIA(Jeu j) {
 
         Joueur joueurCourant = j.plateau().joueurCourant;
