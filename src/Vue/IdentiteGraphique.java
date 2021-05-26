@@ -11,14 +11,17 @@ public class IdentiteGraphique extends JComponent {
     Graphics2D drawable;
     int largeur,hauteur,tailleC;
     Jeu jeu;
-    Image jack,sherlock, pioche, sablier;
+    Image jack,sherlock, pioche, sablier, mystere;
     boolean afficherCaches;
+    boolean estCache;
 
     IdentiteGraphique(Jeu j){
         jeu=j;
         sherlock = Configuration.chargeImage("Sherlock");
         pioche = Configuration.chargeImage("PiocheA");
         sablier = Configuration.chargeImage("Sablier");
+        mystere = Configuration.chargeImage("Suspect-inconnu");
+        estCache = true;
     }
 
     public void dessinerIdentite(){
@@ -64,7 +67,8 @@ public class IdentiteGraphique extends JComponent {
         }
 
         if(isJack){
-            personnage = jack;
+            if(estCache) personnage = mystere;
+            else personnage = jack;
             taillePiocheAdv = jeu.plateau().enqueteur.getCardList().size();
         } else {
             personnage = sherlock;
@@ -118,6 +122,11 @@ public class IdentiteGraphique extends JComponent {
 
     public void switchAfficherCaches(){
         afficherCaches = !afficherCaches;
+        repaint();
+    }
+
+    public void swapImageJack() {
+        estCache = !estCache;
         repaint();
     }
 }

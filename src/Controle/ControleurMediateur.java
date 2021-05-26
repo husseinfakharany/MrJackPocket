@@ -198,11 +198,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         ig.getDistrict().dessinerFeedback(null);
         selectionne = 0;
         cp.reinitialiser();
-        if(jeu.plateau().tousJetonsJoues()) {
-            if(jeu.plateau().jackVisible) ig.dessinerInfo("Jack est visible.");
-            if(jeu.plateau().jackVisible) ig.dessinerInfo("Jack n'est pas visible.");
-        }
-        else ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
+        if(!jeu.plateau().tousJetonsJoues()) ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
     }
 
     @Override
@@ -261,8 +257,9 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "main":
                 ig.getMain().changerMain();
                 ig.getIdentite().switchAfficherCaches();
-                if(ig.getMain().getAfficherEnqueteur()) ig.getVoirJack().setText("Voir mes \uD83D\uDD0D et ⏳");
-                else ig.getVoirJack().setText("Cacher mes \uD83D\uDD0D et ⏳");
+                if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack))ig.getIdentite().swapImageJack();
+                if(ig.getMain().getAfficherEnqueteur()) ig.getVoirJack().setText("Voir mes cartes et ⏳");
+                else ig.getVoirJack().setText("Cacher mes cartes et ⏳");
                 break;
             case "tuto":
                 ig.changerMenu(ig.getBoiteMenu(),ig.getBoiteTuto());

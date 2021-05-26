@@ -247,7 +247,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             undo.addActionListener(new AdaptateurCommande(controle,"annuler"));
             redo = new JButton("⏩");
             redo.addActionListener(new AdaptateurCommande(controle,"refaire"));
-            setVoirJack(new JButton("Voir mes \uD83D\uDD0D et ⏳"));
+            setVoirJack(new JButton("Voir mes cartes et ⏳"));
             getVoirJack().addActionListener(new AdaptateurCommande(controle,"main"));
         }
         else boiteUnReDo.removeAll();
@@ -261,7 +261,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         redo.setMaximumSize(new Dimension((int) (0.093*width), (int) (0.056*height)));
 
 
-        getVoirJack().setFont(new Font("default", Font.PLAIN, 20));
+        getVoirJack().setFont(new Font("default", Font.PLAIN, (int) (getIdentite().getWidth()*0.06) ));
         getVoirJack().setPreferredSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
         getVoirJack().setMaximumSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
 
@@ -347,7 +347,10 @@ public class InterfaceGraphique implements Observer, Runnable {
         getJetons().repaint();
         tour.setText("  Tour n°"+jeu.plateau().getNumTour());
 
-        if(jeu.plateau().tousJetonsJoues() ) dessinerInfo("Passez au prochain tour");
+        if(jeu.plateau().tousJetonsJoues() ) {
+            if(jeu.plateau().jackVisible) dessinerInfo("<html>Jack est visible.<br/>Passez au prochain tour</html>");
+            if(!jeu.plateau().jackVisible) dessinerInfo("<html>Jack n'est pas visible.<br/>Passez au prochain tour</html>");
+        }
 
         //TODO Dessiner une nouvelle boite
         if(jeu.plateau().finJeu(false)){
