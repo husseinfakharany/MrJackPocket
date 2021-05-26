@@ -164,19 +164,22 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     public void jouerCoup(){
-        System.out.println("Coup joué");
-        jeu.jouerCoup(cp);
+        if (jeu.jouerCoup(cp)){
+            Configuration.instance().logger().info("Coup joué");
+            //TODO to be modified for historique
+            jeu.plateau().setNumAction(jeu.plateau().getNumAction()+1);
+            jeu.plateau().getJeton(selectionne).setDejaJoue(true);
+            jeu.plateau().actionJouee();
 
-        //TODO to be modified for historique
-        jeu.plateau().setNumAction(jeu.plateau().getNumAction()+1); //si coup valide
-        jeu.plateau().getJeton(selectionne).setDejaJoue(true);
-        jeu.plateau().actionJouee();
+            //Reinitialisation
+            reinitialiser();
 
-        //Reinitialisation
-        reinitialiser();
+            //Désaffichage des feedback précédents
+            ig.getBoiteJeu().repaint();
+        } else {
+            Configuration.instance().logger().warning("Coup invalide");
+        }
 
-        //Désaffichage des feedback précédents
-        ig.getBoiteJeu().repaint();
     }
 
     void reinitialiser(){

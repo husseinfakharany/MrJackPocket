@@ -166,6 +166,11 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         numTour++;
         numAction = 0;
         jackVisible = false;
+        for(CarteRue[] ligne:grille){
+            for(CarteRue carte: ligne){
+                carte.setDejaTourne(false);
+            }
+        }
         melangeJetonsActions();
     }
 
@@ -218,8 +223,8 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 		
 	}
 
-    public void jouerCoup(Coup cp) {
-        nouveau(cp);
+    public boolean jouerCoup(Coup cp) {
+        return nouveau(cp);
     }
 
 
@@ -271,6 +276,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
                 s.innonceter(grille,suspectsInnoncete);
             }
         }
+        //TODO add repaint?
         if (suspectsInnoncete.size()==8){
             enqueteur.setWinner(true);
             return true;
@@ -307,7 +313,6 @@ public class Plateau extends Historique<Coup> implements Cloneable{
         piocherJack();
         jetJetons();
         initialiseTour();
-
         afficherConfig();
     }
 
