@@ -24,7 +24,7 @@ Attribuer le sablier du tour courant
 
 public class Plateau extends Historique<Coup> implements Cloneable{
 
-    Random rd ;
+    Random rand;
     public Joueur jack;
     public Joueur enqueteur;
     public Joueur joueurCourant;
@@ -60,7 +60,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     public static final int TOBBY = 2;
 
     public Plateau(){
-        rd = new Random();
+        rand = new Random(Jeu.getSeed());
         jack = new Joueur(true, "Hussein", 0,0,false,false);
         enqueteur = new Joueur(false, "Fabien", 0,0, false, true);
         numTour = 0;
@@ -192,7 +192,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
     void jetJetons() {
         for(JetonActions act:jetonsActions){
-            act.setEstRecto(rd.nextBoolean()); //Lancement de chaque jeton
+            act.setEstRecto(rand.nextBoolean()); //Lancement de chaque jeton
             act.setDejaJoue(false);
         }
     }
@@ -222,7 +222,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
 
 
     public void piocherJack(){
-        int index = rd.nextInt(cartesAlibis.size());
+        int index = rand.nextInt(cartesAlibis.size());
         CarteAlibi JackCard = cartesAlibis.get(index);
         cartesAlibis.remove(index);
         JackCard.getSuspect().setIsJack(true);
@@ -231,7 +231,7 @@ public class Plateau extends Historique<Coup> implements Cloneable{
     }
 
     public CarteAlibi piocher(){
-        int index = rd.nextInt(cartesAlibis.size());
+        int index = rand.nextInt(cartesAlibis.size());
         CarteAlibi card = cartesAlibis.get(index);
         cartesAlibis.remove(index);
         card.getSuspect().setPioche(true);
