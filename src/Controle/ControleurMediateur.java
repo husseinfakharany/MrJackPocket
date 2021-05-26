@@ -42,7 +42,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
                 break;
             default:
-                throw new NoSuchElementException();
+                //throw new NoSuchElementException();
         }
 
     }
