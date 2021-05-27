@@ -95,12 +95,11 @@ public class Coup extends Commande{
 		switch(posSurCarte){
 			case 1:
 				//CAS carte rue sur 1 des 4 coins de la grille
-				if (positionX==0 && positionY==0){
-					if (sens==-1){
-						enqueteur.setPositionSurCarte(4);
-						return true;
-					}
+				if (positionX==0 && positionY==0 && sens==1){
 					enqueteur.setPositionSurCarte(8);
+					return true;
+				} else if (positionX==0 && positionY==2 && sens==-1){
+					enqueteur.setPositionSurCarte(4);
 					return true;
 				} else {
 					plateau.grille[positionY][positionX].removeEnqueteur(enqueteur);
@@ -108,12 +107,11 @@ public class Coup extends Commande{
 					return true;
 				}
 			case 2:
-				if (positionX==2 && positionY==2){
-					if (sens==-1){
-						enqueteur.setPositionSurCarte(8);
-						return true;
-					}
+				if (positionX==2 && positionY==2 && sens==1){
 					enqueteur.setPositionSurCarte(4);
+					return true;
+				} else if (positionX==2 && positionY==0 && sens==-1){
+					enqueteur.setPositionSurCarte(8);
 					return true;
 				} else {
 					plateau.grille[positionY][positionX].removeEnqueteur(enqueteur);
@@ -121,12 +119,11 @@ public class Coup extends Commande{
 					return true;
 				}
 			case 4:
-				if (positionX==0 && positionY==2){
-					if (sens==-1){
-						enqueteur.setPositionSurCarte(2);
-						return true;
-					}
+				if (positionX==0 && positionY==2 && sens==1){
 					enqueteur.setPositionSurCarte(1);
+					return true;
+				} else if (positionX==2 && positionY==2 && sens==-1){
+					enqueteur.setPositionSurCarte(2);
 					return true;
 				} else {
 					plateau.grille[positionY][positionX].removeEnqueteur(enqueteur);
@@ -134,14 +131,14 @@ public class Coup extends Commande{
 					return true;
 				}
 			case 8:
-				if (positionX==2 && positionY==0){
-					if (sens==-1){
-						enqueteur.setPositionSurCarte(1);
-						return true;
-					}
+				if (positionX==2 && positionY==0 && sens==1){
 					enqueteur.setPositionSurCarte(2);
 					return true;
-				} else {
+				} else if (positionX==0 && positionY==0 && sens==-1){
+					enqueteur.setPositionSurCarte(1);
+					return true;
+				}
+				else {
 					plateau.grille[positionY][positionX].removeEnqueteur(enqueteur);
 					plateau.grille[positionY][positionX+sens].setEnqueteur(enqueteur);
 					return true;

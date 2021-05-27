@@ -63,12 +63,14 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     @Override
     public void annuler() {
-        jeu.annule();
+        cp = jeu.annule();
+        appliquerCoup(-1);
     }
 
     @Override
     public void refaire() {
-        jeu.refaire();
+        cp = jeu.refaire();
+        appliquerCoup(1);
     }
 
     @Override
@@ -173,20 +175,28 @@ public class ControleurMediateur implements CollecteurEvenements {
         return true;
     }
 
+    public void appliquerCoup(int i){
+        jeu.plateau().setNumAction(jeu.plateau().getNumAction()+i);
+        if (i==1){
+            jeu.plateau().getJeton(selectionne).setDejaJoue(true);
+            jeu.plateau().actionJouee();
+        } else {
+            jeu.plateau().getJeton(selectionne).setDejaJoue(false);
+        }
+
+        //Reinitialisation
+        reinitialiser();
+
+        //Désaffichage des feedback précédents
+        ig.getBoiteJeu().repaint();
+
+    }
     public void jouerCoup(){
         if (jeu.jouerCoup(cp)){
             Configuration.instance().logger().info("Coup joué");
 
-            //TODO to be modified for historique
-            jeu.plateau().setNumAction(jeu.plateau().getNumAction()+1);
-            jeu.plateau().getJeton(selectionne).setDejaJoue(true);
-            jeu.plateau().actionJouee();
+            appliquerCoup(1);
 
-            //Reinitialisation
-            reinitialiser();
-
-            //Désaffichage des feedback précédents
-            ig.getBoiteJeu().repaint();
         } else {
             Configuration.instance().logger().warning("Coup invalide");
         }
@@ -197,7 +207,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         ig.getJetons().dessinerValide(false);
         ig.getDistrict().dessinerFeedback(null);
         selectionne = 0;
-        cp.reinitialiser();
+        //cp.reinitialiser();
         if(!jeu.plateau().tousJetonsJoues()) ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
     }
 
