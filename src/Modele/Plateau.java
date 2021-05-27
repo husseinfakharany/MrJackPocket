@@ -325,6 +325,11 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     public void reinitialiser(){
 
+        rand = new Random(Jeu.getSeed());
+        jack = new Joueur(true, "Hussein", 0,0,false,false);
+        enqueteur = new Joueur(false, "Fabien", 0,0, false, true);
+        tourFini = false;
+
         jack.setSablier(0,0);
         jack.setTurn(false);
         jack.setWinner(false);
