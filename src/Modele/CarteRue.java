@@ -37,9 +37,9 @@ public class CarteRue {
 		return orientation;
 	}
 
-
 	void setOrientation(int orientation) {
 		this.orientation = orientation;
+		this.suspect.setOrientation(this.orientation);
 	}
 
 	public ArrayList<Enqueteur> getEnqueteurs() {
@@ -83,6 +83,7 @@ public class CarteRue {
 
 	public void setSuspect(Suspect suspect) {
 		this.suspect = suspect;
+		this.suspect.setOrientation(this.orientation);
 	}
 
 	public boolean getDejaTourne(){

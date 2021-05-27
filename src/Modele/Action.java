@@ -1,5 +1,7 @@
 package Modele;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.awt.*;
 
 public class Action {
@@ -12,6 +14,8 @@ public class Action {
     int orientationOld;
     int numEnqueteur;
     private int deplacement;
+    CarteAlibi cartePioche;
+    int orientationSuspect;
 
     public Action(Joueur joueur){
         this.action = null;
@@ -22,6 +26,8 @@ public class Action {
         this.deplacement = -1;
         this.numEnqueteur = -1;
         this.joueur = joueur;
+        this.cartePioche = null;
+        this.orientationSuspect = -1;
     }
 
     public boolean estValide(){
@@ -38,7 +44,9 @@ public class Action {
             case DEPLACER_SHERLOCK:
                 return getDeplacement() ==1 || getDeplacement() ==2;
             case INNOCENTER_CARD:
-                return true;
+                if (cartePioche!=null && orientationSuspect!=-1)
+                    return true;
+                else return false;
             case ECHANGER_DISTRICT:
                 return getPosition1() != null && getPosition2() !=null;
             case ROTATION_DISTRICT:
@@ -58,6 +66,7 @@ public class Action {
         this.deplacement = -1;
         this.numEnqueteur = -1;
         this.joueur = null;
+        this.cartePioche = null;
     }
 
     //Getters and setters
@@ -74,6 +83,7 @@ public class Action {
         this.deplacement = -1;
         this.numEnqueteur = -1;
         this.joueur = null;
+        this.cartePioche = null;
     }
 
     public Joueur getJoueur(){
@@ -132,4 +142,33 @@ public class Action {
         this.deplacement = deplacement;
     }
 
+    public CarteAlibi getCartePioche() {
+        return cartePioche;
+    }
+
+    public void setCartePioche(CarteAlibi cartePioche){
+        this.cartePioche = cartePioche;
+    }
+
+    public void setOrientationSuspect(int orientationSuspect){
+        this.orientationSuspect = orientationSuspect;
+    }
+
+    public int getOrientationSuspect(){
+        return orientationSuspect;
+    }
+
+    public int getNumAction(){
+        if (action==Actions.DEPLACER_TOBBY || action==Actions.DEPLACER_WATSON)
+            return 0;
+        if (action==Actions.DEPLACER_JOKER || action==Actions.ROTATION_DISTRICT)
+            return 1;
+        if (action==Actions.ROTATION_DISTRICT || action==Actions.ECHANGER_DISTRICT)
+            return 2;
+        if (action==Actions.INNOCENTER_CARD || action==Actions.DEPLACER_SHERLOCK)
+            return 3;
+        else{
+            throw new IllegalStateException("Action inconnue");
+        }
+    }
 }

@@ -21,19 +21,39 @@ public class Coup extends Commande{
 	}
 
 
-	public boolean innocenter(){
-		CarteAlibi card = plateau.piocher();
-		Suspect s = card.getSuspect();
+	public boolean innocenter(int i){
+		CarteAlibi card;
 		Joueur j = action.getJoueur();
-		int sabliersCarte = card.getSablier();
-		if (!j.isJack()) {
-			s.innoceter(plateau.grille,plateau.getSuspectsInnocete());
-			j.setSablierVisibles(j.getSablierVisibles()+sabliersCarte);
+		int sabliersCarte;
+
+		if(i==1){
+			card = plateau.piocher();
+			action.setCartePioche(card);
+			sabliersCarte = card.getSablier();
+			if (!j.isJack()) {
+				action.setOrientationSuspect(card.getSuspect().getOrientation());
+				card.getSuspect().innoceter(plateau.grille,plateau.getSuspectsInnocete());
+				j.setSablierVisibles(j.getSablierVisibles()+sabliersCarte);
+			} else {
+				j.setSablierCaches(j.getSablierCaches()+sabliersCarte);
+			}
+			j.ajouterCarte(card);
+			return true;
+		} else if (i==-1){
+			card = action.getCartePioche();
+			plateau.addToPioche(card);
+			sabliersCarte = card.getSablier();
+			if (!j.isJack()) {
+				card.getSuspect().rendreSuspect(plateau.grille,plateau.getSuspectsInnocete(),action.getOrientationSuspect());
+				j.setSablierVisibles(j.getSablierVisibles()-sabliersCarte);
+			} else {
+				j.setSablierCaches(j.getSablierCaches()-sabliersCarte);
+			}
+			j.supprimerCarte(card);
+			return true;
 		} else {
-			j.setSablierCaches(j.getSablierCaches()+sabliersCarte);
+			return false;
 		}
-		j.ajouterCarte(card);
-		return true;
 	}
 
 	public boolean rotation(Point position1, int orientation) {
@@ -85,7 +105,6 @@ public class Coup extends Commande{
 		return res;
 	}
 
-	//TODO Factorise code if possible
 	private boolean avancer(int numEnqueteur, int sens) {
 		Enqueteur enqueteur = plateau.enqueteurs.get(numEnqueteur);
 		int positionX = enqueteur.getPosition().x;
@@ -299,7 +318,7 @@ public class Coup extends Commande{
 			case DEPLACER_TOBBY:
 				return deplacer(Plateau.TOBBY,action.getDeplacement(),1);
 			case INNOCENTER_CARD:
-				return innocenter();
+				return innocenter(1);
 			case ECHANGER_DISTRICT:
 				//L'ordre des parametres est purement esthetique
 				if(action.getPosition1().equals(action.getPosition2())) return false;
@@ -322,9 +341,7 @@ public class Coup extends Commande{
 			case DEPLACER_TOBBY:
 				return deplacer(action.getNumEnqueteur(), action.getDeplacement(),-1);
 			case INNOCENTER_CARD:
-				//On n'a pas le droit de desexecuter innocenter
-				//TODO reactivate desexecute/execute
-				return false;
+				return innocenter(-1);
 			case ECHANGER_DISTRICT:
 				//L'ordre des parametres est purement esthetique
 				return echanger(action.getPosition2(), action.getPosition1());

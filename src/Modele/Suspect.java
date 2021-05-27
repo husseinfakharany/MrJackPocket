@@ -16,6 +16,7 @@ public class Suspect {
     private SuspectNom nomPersonnage;
     private SuspectCouleur couleur;
     private Point position; //position sur la grille
+	private int orientation; //orientation sur la grille
     private Boolean innocente;
     private Boolean pioche;
     private Boolean isJack;
@@ -74,6 +75,14 @@ public class Suspect {
 	public void setPosition(Point position) {
 		this.position = position;
 	}
+
+	public int getOrientation() {
+		return orientation;
+	}
+
+	public void setOrientation(int orientation){
+    	this.orientation = orientation;
+	}
 	
 	public Boolean getInnocente() {
 		return innocente;
@@ -103,15 +112,24 @@ public class Suspect {
     	return isJack;
 	}
 
-	public void retournerCarteRue(CarteRue[][] grille) {
-		if(grille[position.y][position.x].getSuspect().getCouleur() == GRIS) grille[position.y][position.x].setOrientation(Plateau.NSEO);
+	public void retournerCarteRue(CarteRue[][] grille, int type, int orientation) {
+		if(grille[position.y][position.x].getSuspect().getCouleur() == GRIS && type==1) grille[position.y][position.x].setOrientation(Plateau.NSEO);
+		if(grille[position.y][position.x].getSuspect().getCouleur() == GRIS && type==-1) grille[position.y][position.x].setOrientation(orientation);
 	}
 
 	public void innoceter(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocete){
 		setInnocente(true);
-		retournerCarteRue(grille);
+		retournerCarteRue(grille,1,this.orientation);
 		if (!suspectsInnocete.contains(this)){
 			suspectsInnocete.add(this);
+		}
+	}
+
+	public void rendreSuspect(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocete, int orientation){
+    	setInnocente(false);
+    	retournerCarteRue(grille,-1,orientation);
+		while(suspectsInnocete.contains(this)){
+			suspectsInnocete.remove(this);
 		}
 	}
 

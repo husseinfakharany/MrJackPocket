@@ -3,6 +3,7 @@ package Modele;
 import Global.Configuration;
 
 import java.awt.*;
+import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -259,6 +260,11 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         cartesAlibis.remove(index);
         card.getSuspect().setPioche(true);
         return card;
+    }
+
+    public void addToPioche(CarteAlibi card){
+        cartesAlibis.add(card);
+        card.getSuspect().setPioche(false);
     }
 
     public ArrayList<Suspect> visibles(){
