@@ -174,6 +174,11 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         numTour++;
         numAction = 0;
         jackVisible = false;
+        if (numTour%2==1){
+            changerJoueur(enqueteur);
+        } else {
+            changerJoueur(jack);
+        }
         for(CarteRue[] ligne:grille){
             for(CarteRue carte: ligne){
                 carte.setDejaTourne(false);
@@ -237,6 +242,11 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 		}
 		
 	}
+
+	public void changerJoueur(Joueur j){
+        j.setTurn(true);
+        joueurCourant = j;
+    }
 
     public boolean jouerCoup(Coup cp) {
         return nouveau(cp);
