@@ -1,6 +1,7 @@
 package Vue;
 
 import Controle.CollecteurEvenements;
+import Global.Configuration;
 import Modele.Action;
 import Modele.Jeu;
 
@@ -353,10 +354,10 @@ public class InterfaceGraphique implements Observer, Runnable {
 
         //TODO Dessiner une nouvelle boite
         if(jeu.plateau().finJeu(false)){
-            if(jeu.plateau().enqueteur.getWinner()) dessinerInfo("<html>Sherlock à gagné !<br/>Retournez au menu </html>");
-            if(jeu.plateau().jack.getWinner()) dessinerInfo("<html>Jack à gagné !<br/>Retournez au menu </html>");
+            if(jeu.plateau().enqueteur.getWinner()) dessinerInfo("<html>Sherlock à gagné !<br/> Retournez au menu </html>");
+            if(jeu.plateau().jack.getWinner()) dessinerInfo("<html>Jack à gagné !<br/> Retournez au menu </html>");
             if(!jeu.plateau().enqueteur.getWinner() && !jeu.plateau().jack.getWinner())
-                dessinerInfo("<html>Partie fini sans vainqueur (Cas d'égalité pas implémenté) !<br/>Retournez au menu </html>");
+                Configuration.instance().logger().severe("Partie fini sans vainqueur !");
         }
 
         return boiteJeu;

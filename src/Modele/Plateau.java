@@ -302,12 +302,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
                 else if (!suspectsInnocete.contains(s)) nbInnocent++;
             }
         }
-        if((numTour>=8 && suspectsInnocete.size()<8 && nbInnocent<8) || jack.getSablier()==6){
-            jack.setWinner(true);
-            jeu.notifierObserveurs();
-            return true;
-        }
-        if (suspectsInnocete.size()==8 && numTour <8){
+        if (suspectsInnocete.size()==8){
             jeu.notifierObserveurs();
             enqueteur.setWinner(true);
             return true;
@@ -318,6 +313,15 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     //Fonction appelée apres la fin du tour
     public boolean finJeu(boolean updatePlateau){
+        if (numTour>=8) {
+            return true;
+        } else {
+            if (jack.getSablier()==6){
+                jack.setWinner(true);
+                jeu.notifierObserveurs();
+                return true;
+            }
+        }
         return verdictTour(updatePlateau);
     }
 
