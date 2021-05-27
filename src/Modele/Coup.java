@@ -26,7 +26,7 @@ public class Coup extends Commande{
 		Joueur j = action.getJoueur();
 		int sabliersCarte;
 
-		if(i==1){
+		//if(i==1){
 			card = plateau.piocher();
 			action.setCartePioche(card);
 			sabliersCarte = card.getSablier();
@@ -39,7 +39,7 @@ public class Coup extends Commande{
 			}
 			j.ajouterCarte(card);
 			return true;
-		} else if (i==-1){
+		/*} else if (i==-1){
 			card = action.getCartePioche();
 			plateau.addToPioche(card);
 			sabliersCarte = card.getSablier();
@@ -53,7 +53,7 @@ public class Coup extends Commande{
 			return true;
 		} else {
 			return false;
-		}
+		}*/
 	}
 
 	public boolean rotation(Point position1, int orientation) {
@@ -341,7 +341,8 @@ public class Coup extends Commande{
 			case DEPLACER_TOBBY:
 				return deplacer(action.getNumEnqueteur(), action.getDeplacement(),-1);
 			case INNOCENTER_CARD:
-				return innocenter(-1);
+				return false;
+				//return innocenter(-1);
 			case ECHANGER_DISTRICT:
 				//L'ordre des parametres est purement esthetique
 				return echanger(action.getPosition2(), action.getPosition1());
