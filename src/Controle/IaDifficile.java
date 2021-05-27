@@ -6,7 +6,7 @@ import Modele.Jeu;
 public class IaDifficile extends IA{
 
     @Override
-    Coup coupIA(Jeu j) {
+    public Coup coupIA(Jeu j) {
         return null;
     }
 }

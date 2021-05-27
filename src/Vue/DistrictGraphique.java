@@ -219,15 +219,15 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
                     Point dep = (Point) s.clone();
                     s = suivant(s);
                     drawable.drawImage(cible, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
-                    if(actionTemp.getNumEnqueteur() == Plateau.SHERLOCK && enqueteur.getNumEnqueteur() == Plateau.SHERLOCK) {
+                    if(actionTemp.getNumEnqueteur() == Plateau.SHERLOCK && enqueteur.getNumEnqueteur() == Plateau.SHERLOCK && actionTemp.getDeplacement()==1) {
                         drawable.drawImage(sherlockNB, (dep.x)*tailleC+offsetE, (dep.y)*tailleC+offsetE, tailleE, tailleE, null);
                         drawable.drawImage(sherlock, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
                     }
-                    if(actionTemp.getNumEnqueteur() == Plateau.WATSON && enqueteur.getNumEnqueteur() == Plateau.WATSON) {
+                    if(actionTemp.getNumEnqueteur() == Plateau.WATSON && enqueteur.getNumEnqueteur() == Plateau.WATSON && actionTemp.getDeplacement()==1) {
                         drawable.drawImage(watsonNB, (dep.x)*tailleC+offsetE, (dep.y)*tailleC+offsetE, tailleE, tailleE, null);
                         drawable.drawImage(watson, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
                     }
-                    if(actionTemp.getNumEnqueteur() == Plateau.TOBBY && enqueteur.getNumEnqueteur() == Plateau.TOBBY){
+                    if(actionTemp.getNumEnqueteur() == Plateau.TOBBY && enqueteur.getNumEnqueteur() == Plateau.TOBBY && actionTemp.getDeplacement()==1){
                         drawable.drawImage(chienNB, (dep.x)*tailleC+offsetE, (dep.y)*tailleC+offsetE, tailleE, tailleE, null);
                         drawable.drawImage(chien, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
                     }

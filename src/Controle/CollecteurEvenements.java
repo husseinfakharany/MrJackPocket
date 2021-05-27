@@ -1,5 +1,6 @@
 package Controle;
 
+import Modele.Coup;
 import Vue.InterfaceGraphique;
 
 public interface CollecteurEvenements {
@@ -13,5 +14,6 @@ public interface CollecteurEvenements {
 		void activeIA(int state);
 		void annuler();
 		void refaire();
-	}
+		void jouerCoupIA(Coup cp);
+}
 

@@ -1,7 +1,5 @@
 package Modele;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.awt.*;
 
 public class Action {
@@ -13,6 +11,7 @@ public class Action {
     int orientationNew;
     int orientationOld;
     int numEnqueteur;
+    private int numAction;
     private int deplacement;
     CarteAlibi cartePioche;
     int orientationSuspect;
@@ -158,17 +157,12 @@ public class Action {
         return orientationSuspect;
     }
 
-    public int getNumAction(){
-        if (action==Actions.DEPLACER_TOBBY || action==Actions.DEPLACER_WATSON)
-            return 0;
-        if (action==Actions.DEPLACER_JOKER || action==Actions.ROTATION_DISTRICT)
-            return 1;
-        if (action==Actions.ROTATION_DISTRICT || action==Actions.ECHANGER_DISTRICT)
-            return 2;
-        if (action==Actions.INNOCENTER_CARD || action==Actions.DEPLACER_SHERLOCK)
-            return 3;
-        else{
-            throw new IllegalStateException("Action inconnue");
-        }
+
+    public int getNumAction() {
+        return numAction;
+    }
+
+    public void setNumAction(int numAction) {
+        this.numAction = numAction;
     }
 }

@@ -54,7 +54,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     }
 
     public static String texteIndicatif(Action action) {
-        if(action.getAction() == null) return "Choisissez un jeton action et cliquez dessus";
+        if(action == null || action.getAction() == null) return "Choisissez un jeton action et cliquez dessus";
         switch (action.getAction()){
             case DEPLACER_JOKER:
                 if(action.estValide()) return "Cliquez sur le bouton valider pour continuer";
@@ -168,7 +168,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             JButton charger,tuto,quitter;
 
             //Lancer la partie
-            String [] menuListe = {"Enquêteur", "Meurtrier", "Ordi Vs Ordi"};
+            String [] menuListe = {"Contre un ami", "Contre une IA", "IA contre IA"};
             commencer = new JComboBox<>(menuListe);
             commencer.setMaximumSize(new Dimension(400, 40));
             commencer.setPreferredSize(new Dimension(400, 40));
@@ -363,51 +363,96 @@ public class InterfaceGraphique implements Observer, Runnable {
         return boiteJeu;
     }
 
-    public Box getBoiteAvantPartie(){
+    public Box getBoiteAvantPartieIA(){
         if (boiteAvantPartie == null){
-            boiteAvantPartie = Box.createHorizontalBox();
+            boiteAvantPartie = Box.createVerticalBox();
+            Box boiteParam = Box.createHorizontalBox();
 
-            //Lancer la partie
-            String [] menuListe = {"Facile", "Moyenne", "Difficile"};
-            boutonIA = new JComboBox<>(menuListe);
-            boutonIA.setPreferredSize(new Dimension(400, 40));
-            boutonIA.setMaximumSize(new Dimension(400, 40));
-            boutonIA.setFont(new Font("default",Font.PLAIN,25));
-            DefaultListCellRenderer listRenderer = new DefaultListCellRenderer();
-            listRenderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER); // center-aligned items
-            boutonIA.setRenderer(listRenderer);
-            boutonIA.addActionListener(new AdaptateurCombobox(controle));
-            boutonIA.setAlignmentX(Component.CENTER_ALIGNMENT);
+            Box boitePersonnage = Box.createVerticalBox();
 
-            //Charger partie
-            JButton local = nouveauBouton("Joueur contre un ami");
-            local.addActionListener(new AdaptateurCommande(controle,"local"));
-            local.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JRadioButton sherlock = new JRadioButton();
 
-            //Charger partie
-            JButton reseau = nouveauBouton("Joueur en réseau");
-            reseau.addActionListener(new AdaptateurCommande(controle,"reseau"));
-            reseau.setAlignmentX(Component.CENTER_ALIGNMENT);
+            JRadioButton jack = new JRadioButton();
+
+            ButtonGroup G1 = new ButtonGroup();
+
+            JLabel L1 = new JLabel("Choix du personnage : ");
+            L1.setFont(new Font("default", Font.PLAIN, 20));
+
+
+            sherlock.setText("Sherlock");
+            sherlock.addActionListener(new AdaptateurCommande(controle,"sherlock"));
+            sherlock.setFont(new Font("default", Font.PLAIN, 20));
+            jack.setText("Jack");
+            jack.addActionListener(new AdaptateurCommande(controle,"jack"));
+            jack.setFont(new Font("default", Font.PLAIN, 20));
+
+            G1.add(sherlock);
+            G1.add(jack);
+
+            boitePersonnage.add(Box.createVerticalGlue());
+            boitePersonnage.add(L1);
+            boitePersonnage.add(sherlock);
+            boitePersonnage.add(jack);
+            boitePersonnage.add(Box.createVerticalGlue());
+            boitePersonnage.setPreferredSize(new Dimension(400, 200));
+
+            Box boiteDifficulte = Box.createVerticalBox();
+
+            JRadioButton facileB = new JRadioButton();
+            JRadioButton moyenB = new JRadioButton();
+            JRadioButton difficileB = new JRadioButton();
+
+            ButtonGroup G2 = new ButtonGroup();
+
+            JLabel difficulte = new JLabel("Difficulte de l'IA : ");
+            difficulte.setFont(new Font("default", Font.PLAIN, 20));
+
+            facileB.setText("Facile");
+            facileB.addActionListener(new AdaptateurCommande(controle,"facile"));
+            moyenB.setText("Moyen");
+            moyenB.setEnabled(false);
+            moyenB.addActionListener(new AdaptateurCommande(controle,"moyen"));
+            difficileB.setText("Difficile");
+            difficileB.setEnabled(false);
+            difficileB.addActionListener(new AdaptateurCommande(controle,"difficile"));
+            facileB.setFont(new Font("default", Font.PLAIN, 20));
+            moyenB.setFont(new Font("default", Font.PLAIN, 20));
+            difficileB.setFont(new Font("default", Font.PLAIN, 20));
+
+            G2.add(facileB);
+            G2.add(moyenB);
+            G2.add(difficileB);
+
+            boiteDifficulte.add(Box.createVerticalGlue());
+            boiteDifficulte.add(difficulte);
+            boiteDifficulte.add(facileB);
+            boiteDifficulte.add(moyenB);
+            boiteDifficulte.add(difficileB);
+            boiteDifficulte.add(Box.createVerticalGlue());
+            boiteDifficulte.setPreferredSize(new Dimension(400, 200));
+
+            JButton lancerPartie = new JButton("Commencer");
+            lancerPartie.setFont(new Font("default", Font.PLAIN, 20));
+            lancerPartie.addActionListener(new AdaptateurCommande(controle,"commencerIA"));
+
+            boiteParam.add(Box.createHorizontalGlue());
+            boiteParam.add(boitePersonnage);
+            boiteParam.add(Box.createHorizontalGlue());
+            boiteParam.add(boiteDifficulte);
+            boiteParam.add(Box.createHorizontalGlue());
+            boiteParam.add(lancerPartie);
+            boiteParam.add(Box.createHorizontalGlue());
 
             JLabel titre = new JLabel("Mr Jack Pocket");
             titre.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 50));
-            titre.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-            boiteAvantPartie = Box.createVerticalBox();
 
             boiteAvantPartie.add(Box.createVerticalGlue());
             boiteAvantPartie.add(titre);
             boiteAvantPartie.add(Box.createVerticalGlue());
-            boiteAvantPartie.add(boutonIA);
-            boiteAvantPartie.add(Box.createVerticalGlue());
-            boiteAvantPartie.add(local);
-            boiteAvantPartie.add(Box.createVerticalGlue());
-            boiteAvantPartie.add(reseau);
+            boiteAvantPartie.add(boiteParam);
             boiteAvantPartie.add(Box.createVerticalGlue());
         }
-        boutonIA.setEditable(true);
-        boutonIA.setSelectedItem("Joueur contre une IA");
-        boutonIA.setEditable(false);
         return boiteAvantPartie;
     }
 
