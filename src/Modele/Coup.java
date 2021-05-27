@@ -37,6 +37,7 @@ public class Coup extends Commande{
 	}
 
 	public boolean rotation(Point position1, int orientation) {
+		if(plateau.grille[position1.y][position1.x].getOrientation() == orientation) return false;
 		if (plateau.grille[position1.y][position1.x].getDejaTourne()){
 			Configuration.instance().logger().warning("Carte déjà tournée");
 			return false;
@@ -61,9 +62,10 @@ public class Coup extends Commande{
 		int tmpOrientation = orientation1;
 		Suspect tmpSuspect = suspect1;
 
-		if (carteRue1.getInnocente() || carteRue2.getInnocente()){
+		//On peux echanger des quartiers retournés il n'ya pas de contraintes je crois
+		/*if (carteRue1.getInnocente() || carteRue2.getInnocente()){
 			return false;
-		}
+		}*/
 
 		//On échange que l'orientation et le suspect
 		carteRue1.setOrientation(orientation2);
@@ -303,6 +305,7 @@ public class Coup extends Commande{
 				return innocenter();
 			case ECHANGER_DISTRICT:
 				//L'ordre des parametres est purement esthetique
+				if(action.getPosition1().equals(action.getPosition2())) return false;
 				return echanger(action.getPosition1(), action.getPosition2());
 			case ROTATION_DISTRICT:
 				return rotation(action.getPosition1(),action.getOrientationNew());

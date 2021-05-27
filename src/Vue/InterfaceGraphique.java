@@ -354,8 +354,8 @@ public class InterfaceGraphique implements Observer, Runnable {
 
         //TODO Dessiner une nouvelle boite
         if(jeu.plateau().finJeu(false)){
-            if(jeu.plateau().enqueteur.getWinner()) dessinerInfo("Sherlock à gagné !");
-            if(jeu.plateau().jack.getWinner()) dessinerInfo("Jack à gagné !");
+            if(jeu.plateau().enqueteur.getWinner()) dessinerInfo("<html>Sherlock à gagné !<br/> Retournez au menu </html>");
+            if(jeu.plateau().jack.getWinner()) dessinerInfo("<html>Jack à gagné !<br/> Retournez au menu </html>");
             if(!jeu.plateau().enqueteur.getWinner() && !jeu.plateau().jack.getWinner())
                 Configuration.instance().logger().severe("Partie fini sans vainqueur !");
         }

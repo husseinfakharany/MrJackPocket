@@ -86,7 +86,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public boolean commandeJeu(String c){
         if(jeu.plateau().tousJetonsJoues() ){
-            if(!jeu.plateau().finJeu()) {
+            if(!jeu.plateau().finJeu(false)) {
                 jeu.plateau().prochainTour();
                 ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
             }

@@ -6,8 +6,8 @@ import java.util.Observable;
 
 public class Jeu extends Observable{
 
-    public static final long seed = System.currentTimeMillis();
-    //public static final long seed = 3141; //Testing seed
+    //public static final long seed = System.currentTimeMillis();
+    public static final long seed = 1622103187820L; //Testing seed
 
     Plateau plateau;
 

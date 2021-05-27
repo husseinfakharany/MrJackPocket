@@ -174,6 +174,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         numTour++;
         numAction = 0;
         jackVisible = false;
+        if(numTour>=2)changerJoueur();
         for(CarteRue[] ligne:grille){
             for(CarteRue carte: ligne){
                 carte.setDejaTourne(false);
@@ -262,37 +263,37 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     public ArrayList<Suspect> visibles(){
         ArrayList<Suspect> res = new ArrayList<>();
+        boolean jackSeen = false;
         for(Enqueteur e:enqueteurs){
             for(Suspect s:e.visible(grille)){
                 if (s.getIsJack()){
-                    jackVisible = true;
+                    jackSeen = true;
                 }
                 res.add(s);
             }
         }
+        jackVisible = jackSeen;
         return res;
     }
 
     //Cet fonction retourne vrai s'il reste qu'une seule carte non innonctée (Jack)
     public boolean verdictTour(boolean updatePlateau){
         ArrayList<Suspect> res = visibles();
-        System.out.println("Visible size" + visibles().size());
         //Si jack est visible par un des trois enqueteurs
-        if(updatePlateau) {
-            if (jackVisible) {
-                enqueteur.setSablierVisibles(enqueteur.getSablierVisibles() + 1);
-                for (Suspect s : suspects) {
-                    if (!res.contains(s)) {
-                        //Innonceter retourne la carte rue du suspect
-                        s.innoceter(grille, suspectsInnocete);
-                    }
+        int nbInnocent = suspectsInnocete.size();
+        if (jackVisible) {
+            for (Suspect s : suspects) {
+                if (!res.contains(s)) {
+                    //Innonceter retourne la carte rue du suspect
+                    if(updatePlateau) s.innoceter(grille, suspectsInnocete);
+                    else if (!suspectsInnocete.contains(s)) nbInnocent++;
                 }
-            } else {
-
-                jack.setSablierVisibles(jack.getSablierVisibles() + 1);
-                for (Suspect s : res) {
-                    s.innoceter(grille, suspectsInnocete);
-                }
+            }
+        } else {
+            if(updatePlateau) jack.setSablierVisibles(jack.getSablierVisibles() + 1);
+            for (Suspect s : res) {
+                if(updatePlateau) s.innoceter(grille, suspectsInnocete);
+                else if (!suspectsInnocete.contains(s)) nbInnocent++;
             }
         }
         if (suspectsInnocete.size()==8){
@@ -300,6 +301,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
             enqueteur.setWinner(true);
             return true;
         }
+        if(nbInnocent >= 8) return true;
         return false;
     }
 
@@ -310,6 +312,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         } else {
             if (jack.getSablier()==6){
                 jack.setWinner(true);
+                jeu.notifierObserveurs();
                 return true;
             }
         }
