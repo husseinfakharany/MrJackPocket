@@ -44,7 +44,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     static ArrayList<CarteAlibi> cartesAlibis;
     static ArrayList<Integer> orientationsRues;
     static ArrayList<Suspect> suspects;
-    static ArrayList<Suspect> suspectsInnoncete;
+    static ArrayList<Suspect> suspectsInnocete;
     public static ArrayList<Enqueteur> enqueteurs;
 
 
@@ -99,7 +99,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     private void initialiseSuspects(){
         suspects = new ArrayList<>();
-        suspectsInnoncete = new ArrayList<>();
+        suspectsInnocete = new ArrayList<>();
         for(SuspectNom e:SuspectNom.values()){
             suspects.add(new Suspect(e,null));
         }
@@ -293,19 +293,18 @@ public class Plateau extends Historique<Coup> implements Cloneable {
                 for (Suspect s : suspects) {
                     if (!res.contains(s)) {
                         //Innonceter retourne la carte rue du suspect
-                        s.innonceter(grille, suspectsInnoncete);
+                        s.innoceter(grille, suspectsInnocete);
                     }
                 }
             } else {
 
                 jack.setSablierVisibles(jack.getSablierVisibles() + 1);
                 for (Suspect s : res) {
-                    s.innonceter(grille, suspectsInnoncete);
+                    s.innoceter(grille, suspectsInnocete);
                 }
             }
         }
-        //TODO add repaint?
-        if (suspectsInnoncete.size()==8){
+        if (suspectsInnocete.size()==8){
             jeu.notifierObserveurs();
             enqueteur.setWinner(true);
             return true;
@@ -421,8 +420,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return this.numAction;
     }
 
-    public ArrayList<Suspect> getSuspectsInnoncete(){
-        return suspectsInnoncete;
+    public ArrayList<Suspect> getSuspectsInnocete(){
+        return suspectsInnocete;
     }
 
 }

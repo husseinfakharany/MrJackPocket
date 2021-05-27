@@ -21,13 +21,13 @@ public class Coup extends Commande{
 	}
 
 
-	public boolean innoncenter(){
+	public boolean innocenter(){
 		CarteAlibi card = plateau.piocher();
 		Suspect s = card.getSuspect();
 		Joueur j = action.getJoueur();
 		int sabliersCarte = card.getSablier();
 		if (!j.isJack()) {
-			s.innonceter(plateau.grille,plateau.getSuspectsInnoncete());
+			s.innoceter(plateau.grille,plateau.getSuspectsInnocete());
 			j.setSablierVisibles(j.getSablierVisibles()+sabliersCarte);
 		} else {
 			j.setSablierCaches(j.getSablierCaches()+sabliersCarte);
@@ -38,7 +38,6 @@ public class Coup extends Commande{
 
 	public boolean rotation(Point position1, int orientation) {
 		if (plateau.grille[position1.y][position1.x].getDejaTourne()){
-			//TODO Fix error counting as action played
 			Configuration.instance().logger().warning("Carte déjà tournée");
 			return false;
 		}
@@ -301,7 +300,7 @@ public class Coup extends Commande{
 			case DEPLACER_TOBBY:
 				return deplacer(Plateau.TOBBY,action.getDeplacement(),1);
 			case INNOCENTER_CARD:
-				return innoncenter();
+				return innocenter();
 			case ECHANGER_DISTRICT:
 				//L'ordre des parametres est purement esthetique
 				return echanger(action.getPosition1(), action.getPosition2());
@@ -323,7 +322,7 @@ public class Coup extends Commande{
 			case DEPLACER_TOBBY:
 				return deplacer(action.getNumEnqueteur(), action.getDeplacement(),-1);
 			case INNOCENTER_CARD:
-				//On n'a pas le droit de desexecuter innoncenter_card
+				//On n'a pas le droit de desexecuter innocenter
 				//TODO reactivate desexecute/execute
 				return false;
 			case ECHANGER_DISTRICT:

@@ -107,11 +107,11 @@ public class Suspect {
 		if(grille[position.y][position.x].getSuspect().getCouleur() == GRIS) grille[position.y][position.x].setOrientation(Plateau.NSEO);
 	}
 
-	public void innonceter(CarteRue[][] grille, ArrayList<Suspect> suspectsInnoncete){
+	public void innoceter(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocete){
 		setInnocente(true);
 		retournerCarteRue(grille);
-		if (!suspectsInnoncete.contains(this)){
-			suspectsInnoncete.add(this);
+		if (!suspectsInnocete.contains(this)){
+			suspectsInnocete.add(this);
 		}
 	}
 
