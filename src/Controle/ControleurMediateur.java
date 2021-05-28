@@ -69,12 +69,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         if(iaActive){
 
             this.cp = cp;
+            action = cp.getAction();
             int i=0;
-            while(i<4 && !jeu.plateau().getActionJeton(i).equals(cp.getAction().getAction()) ) {
-                i++;
-            }
-            if(i==4)throw new IllegalStateException("Jeton et action de l'IA incohérente");
-            else selectionne = i;
+            selectionne = cp.getAction().getNumAction();
             tempsIA.stop();
             iaJoue = false;
             jouerCoup();

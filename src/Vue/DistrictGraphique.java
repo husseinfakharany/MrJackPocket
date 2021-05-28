@@ -51,7 +51,7 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
         chien = Configuration.chargeImage("Chien");
         sherlockNB = Configuration.chargeImage("Jeton-4-A-NB");
         watsonNB = Configuration.chargeImage("Jeton-1-A-NB");
-        chienNB = Configuration.chargeImage("Jeton-1-b-NB");
+        chienNB = Configuration.chargeImage("Jeton-1-B-NB");
     }
 
     public void dessinerCarte(int l, int c, CarteRue rue,boolean isSelectionne, int orientation){

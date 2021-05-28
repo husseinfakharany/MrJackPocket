@@ -12,7 +12,8 @@ public class Configuration {
 
     public static Image chargeImage(String nom) {
         Image img = null;
-        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream( "PNG/" + nom + ".png" );
+        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream( nom+".png" );
+        if(in==null)System.out.println("Caca");
         try {
             // Chargement d'une image
             img = ImageIO.read (in);
