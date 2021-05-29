@@ -102,6 +102,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void annuler() {
         cp = jeu.annule();
+        action = cp.getAction();
         selectionne = action.getNumAction();
         appliquer(-1);
     }
@@ -109,6 +110,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void refaire() {
         cp = jeu.refaire();
+        action = cp.getAction();
         selectionne = action.getNumAction();
         appliquer(1);
     }
