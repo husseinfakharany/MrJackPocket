@@ -85,6 +85,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void annuler() {
         cp = jeu.annule();
+        action = cp.getAction();
         selectionne = action.getNumAction();
         appliquer(-1);
     }
@@ -92,6 +93,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void refaire() {
         cp = jeu.refaire();
+        action = cp.getAction();
         selectionne = action.getNumAction();
         appliquer(1);
     }
@@ -191,7 +193,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 }
                 break;
             case "pioche":
-                if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(3)) && action.getAction().equals(Actions.INNOCENTER_CARD)) {
+                if(action.getAction().equals(jeu.plateau().getActionJeton(3)) && action.getAction().equals(Actions.INNOCENTER_CARD)) {
                     if (!jeu.plateau().getJeton(3).getDejaJoue()) {
                         jouerCoup();
                         return true;
@@ -199,7 +201,6 @@ public class ControleurMediateur implements CollecteurEvenements {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
                 }
-                selectionne = action.getNumAction();
                 break;
         }
         action.setJoueur(jeu.plateau().joueurCourant);
