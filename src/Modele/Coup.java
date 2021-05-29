@@ -56,15 +56,19 @@ public class Coup extends Commande{
 		}
 	}
 
-	public boolean rotation(Point position1, int orientation) {
+	public boolean rotation(Point position1, int orientation, int type) {
 		if(plateau.grille[position1.y][position1.x].getOrientation() == orientation) return false;
-		if (plateau.grille[position1.y][position1.x].getDejaTourne()){
+		if (plateau.grille[position1.y][position1.x].getDejaTourne() && type==1){
 			Configuration.instance().logger().warning("Carte déjà tournée");
 			return false;
 		}
 		action.setOrientationOld(plateau.grille[position1.y][position1.x].getOrientation());
 		plateau.grille[position1.y][position1.x].setOrientation(orientation);
-		plateau.grille[position1.y][position1.x].setDejaTourne(true);
+		if (type==1){
+			plateau.grille[position1.y][position1.x].setDejaTourne(true);
+		} else if (type==-1){
+			plateau.grille[position1.y][position1.x].setDejaTourne(false);
+		}
 		return true;
 	}
 
@@ -324,7 +328,7 @@ public class Coup extends Commande{
 				if(action.getPosition1().equals(action.getPosition2())) return false;
 				return echanger(action.getPosition1(), action.getPosition2());
 			case ROTATION_DISTRICT:
-				return rotation(action.getPosition1(),action.getOrientationNew());
+				return rotation(action.getPosition1(),action.getOrientationNew(),1);
 			default:
 				throw new IllegalStateException("Unexpected action");
 		}
@@ -346,7 +350,7 @@ public class Coup extends Commande{
 				//L'ordre des parametres est purement esthetique
 				return echanger(action.getPosition2(), action.getPosition1());
 			case ROTATION_DISTRICT:
-				return rotation(action.getPosition1(),action.getOrientationOld());
+				return rotation(action.getPosition1(),action.getOrientationOld(),-1);
 			default:
 				throw new IllegalStateException("Unexpected action");
 		}
