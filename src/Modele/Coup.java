@@ -10,7 +10,7 @@ import java.util.ArrayList;
 Type Action
 Methode qui execute le coup
  */
-public class Coup extends Commande{
+public class Coup extends Commande implements Cloneable{
 	
 	private Action action;
 	private Plateau plateau;
@@ -355,4 +355,5 @@ public class Coup extends Commande{
 				throw new IllegalStateException("Unexpected action");
 		}
 	}
+
 }

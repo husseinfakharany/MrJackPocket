@@ -9,8 +9,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Iterator;
 
-//TODO agrandir la taille des cartes et recupere la bonne main
-
 public class MainGraphique extends JComponent {
     Graphics2D drawable;
     int largeur,hauteur,tailleC;

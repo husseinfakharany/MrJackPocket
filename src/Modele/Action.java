@@ -1,8 +1,9 @@
 package Modele;
 
 import java.awt.*;
+import java.util.ArrayList;
 
-public class Action {
+public class Action{
 
     Actions action;
     Joueur joueur;
@@ -27,6 +28,78 @@ public class Action {
         this.joueur = joueur;
         this.cartePioche = null;
         this.orientationSuspect = -1;
+    }
+
+    public static Iterable<Action> listeAction(Actions actionJeton, Joueur joueur) {
+        ArrayList<Point> positions = new ArrayList<>();
+        ArrayList<Action> res = new ArrayList<>();
+        Action action;
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                positions.add(new Point(i,j));
+            }
+        }
+        switch (actionJeton){
+            case DEPLACER_JOKER:
+                for(int i = 0; i<3;i++){
+                    action = new Action(joueur);
+                    action.setDeplacement(1);
+                    action.setNumEnqueteur(i);
+                    res.add(action);
+                }
+                break;
+            case DEPLACER_SHERLOCK:
+                for(int i = 1; i<3;i++){
+                    action = new Action(joueur);
+                    action.setDeplacement(i);
+                    action.setNumEnqueteur(Plateau.SHERLOCK);
+                    res.add(action);
+                }
+                break;
+            case DEPLACER_WATSON:
+                for(int i = 1; i<3;i++){
+                    action = new Action(joueur);
+                    action.setDeplacement(i);
+                    action.setNumEnqueteur(Plateau.WATSON);
+                    res.add(action);
+                }
+                break;
+            case DEPLACER_TOBBY:
+                for(int i = 1; i<3;i++){
+                    action = new Action(joueur);
+                    action.setDeplacement(i);
+                    action.setNumEnqueteur(Plateau.TOBBY);
+                    res.add(action);
+                }
+                break;
+            case ECHANGER_DISTRICT:
+                for(Point position1 : positions){
+                    for(Point position2 : positions){
+                        if(!position1.equals(position2)){
+                            action = new Action(joueur);
+                            action.setPosition1(position1);
+                            action.setPosition2(position2);
+                            res.add(action);
+                        }
+                    }
+                }
+                break;
+            case INNOCENTER_CARD:
+                action = new Action(joueur);
+                res.add(action);
+                break;
+            case ROTATION_DISTRICT:
+                for(Point position : positions){
+                    for(int i = 0; i<4;i++){
+                        action = new Action(joueur);
+                        action.setPosition1(position);
+                        action.setOrientationNew((~(1<<i)) & 0b1111);
+                        res.add(action);
+                    }
+                }
+                break;
+        }
+        return res;
     }
 
     public boolean estValide(){

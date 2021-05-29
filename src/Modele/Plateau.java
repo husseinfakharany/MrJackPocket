@@ -43,7 +43,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     ArrayList<JetonActions> jetonsActions;
     ArrayList<CarteAlibi> cartesAlibis;
 
-    ArrayList<Suspect> suspects;
+    private ArrayList<Suspect> suspects;
     ArrayList<Suspect> suspectsInnocete;
     public ArrayList<Enqueteur> enqueteurs;
 
@@ -101,7 +101,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         suspects = new ArrayList<>();
         suspectsInnocete = new ArrayList<>();
         for(SuspectNom e:SuspectNom.values()){
-            suspects.add(new Suspect(e,null));
+            getSuspects().add(new Suspect(e,null));
         }
     }
 
@@ -124,7 +124,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     private void initialiseCarteAlibis(){
         cartesAlibis = new ArrayList<>();
-        for(Suspect s: suspects){
+        for(Suspect s: getSuspects()){
             cartesAlibis.add(new CarteAlibi(s));
         }
     }
@@ -222,7 +222,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     void inverserJetons() {
         for(JetonActions act:jetonsActions){
-            Boolean estRecto = !act.estRecto();
+            boolean estRecto = !act.estRecto();
             act.setEstRecto(estRecto);
             act.setDejaJoue(false);
         }
@@ -287,7 +287,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         //Si jack est visible par un des trois enqueteurs
         int nbInnocent = suspectsInnocete.size();
         if (jackVisible) {
-            for (Suspect s : suspects) {
+            for (Suspect s : getSuspects()) {
                 if (!res.contains(s)) {
                     //Innonceter retourne la carte rue du suspect
                     if(updatePlateau) s.innoceter(grille, suspectsInnocete);
@@ -306,8 +306,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
             enqueteur.setWinner(true);
             return true;
         }
-        if(nbInnocent >= 8) return true;
-        return false;
+        return nbInnocent >= 8;
     }
 
     //Fonction appelée apres la fin du tour
@@ -398,7 +397,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         else copy.joueurCourant = copy.enqueteur;
         copy.numAction = numAction;
         copy.numTour = numTour;
-        copy.rand = new Random(jeu.getSeed());
+        copy.rand = new Random(Jeu.getSeed());
         copy.tourFini = tourFini;
 
         copy.grille = new CarteRue[3][3];
@@ -414,8 +413,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         }
         copy.cartesAlibis = (ArrayList<CarteAlibi>) cartesAlibis.clone();
         copy.suspects = new ArrayList<>();
-        for(Suspect s : suspects) {
-            copy.suspects.add(s.clone());
+        for(Suspect s : getSuspects()) {
+            copy.getSuspects().add(s.clone());
         }
         copy.suspectsInnocete = new ArrayList<>();
         for(Suspect s : suspectsInnocete) {
@@ -430,7 +429,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     //Getters and setters
 
-    ArrayList<Suspect> getSuspects() {
+    public ArrayList<Suspect> getSuspects() {
         return suspects;
     }
 
