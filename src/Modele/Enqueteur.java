@@ -1,5 +1,7 @@
 package Modele;
 
+import Global.Configuration;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -9,7 +11,7 @@ Position
 Nom Personnage (Sherlock, Watson, Tobby)
 Methodes retournant les personnages que l'enqueteur peut voir
  */
-public class Enqueteur {
+public class Enqueteur implements Cloneable{
 
     //positionEnqueteur:
     public final static int ABSENT = 0;
@@ -81,6 +83,22 @@ public class Enqueteur {
                 break;
         }
         return resultat;
+    }
+
+    @Override
+    public Enqueteur clone() throws CloneNotSupportedException {
+        Enqueteur copy;
+        try {
+            copy = (Enqueteur) super.clone();
+
+        } catch (CloneNotSupportedException e) {
+            Configuration.instance().logger().severe("Bug interne: CarteRue non clonable");
+            return null;
+        }
+        copy.position = (Point) position.clone();
+        copy.positionSurCarte = positionSurCarte;
+        copy.nomPersonnage = nomPersonnage;
+        return copy;
     }
 
     public EnqueteurNom getNomPersonnage(){

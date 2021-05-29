@@ -1,4 +1,7 @@
 package Modele;
+
+import Global.Configuration;
+
 /*
 **Jetons Actions**:
 Action face 1
@@ -16,6 +19,21 @@ public class JetonActions {
 	public JetonActions(Actions action1, Actions action2) {
 		this.action1 = action1;
 		this.action2 = action2;
+	}
+
+	@Override
+	public JetonActions clone() throws CloneNotSupportedException {
+		JetonActions copy;
+		try {
+			copy = (JetonActions) super.clone();
+
+		} catch (CloneNotSupportedException e) {
+			Configuration.instance().logger().severe("Bug interne: CarteRue non clonable");
+			return null;
+		}
+		copy.action1 = action1;
+		copy.action2 = action2;
+		return copy;
 	}
 
 	public Actions getAction1() {

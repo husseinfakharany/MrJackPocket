@@ -3,7 +3,6 @@ package Modele;
 import Global.Configuration;
 
 import java.awt.*;
-import java.nio.channels.DatagramChannel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -39,16 +38,16 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     boolean tourFini;
 
 
-    public static CarteRue [][] grille;
+    public CarteRue [][] grille;
 
-    static ArrayList<JetonActions> jetonsActions;
-    static ArrayList<CarteAlibi> cartesAlibis;
+    ArrayList<JetonActions> jetonsActions;
+    ArrayList<CarteAlibi> cartesAlibis;
+
+    ArrayList<Suspect> suspects;
+    ArrayList<Suspect> suspectsInnocete;
+    public ArrayList<Enqueteur> enqueteurs;
+
     static ArrayList<Integer> orientationsRues;
-    static ArrayList<Suspect> suspects;
-    static ArrayList<Suspect> suspectsInnocete;
-    public static ArrayList<Enqueteur> enqueteurs;
-
-
     public static final int NSEO = 0b1111; //15
     public static final int NSE = 0b1110;  //12
     public static final int NSO = 0b1101;  //13
@@ -380,9 +379,58 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         System.out.println( getActionJeton(3) );
     }
 
+    @Override
+    public Plateau clone() throws CloneNotSupportedException {
+        Plateau copy;
+        try {
+            copy = (Plateau) super.clone();
+
+        } catch (CloneNotSupportedException e) {
+            Configuration.instance().logger().severe("Bug interne : Plateau non clonable");
+            return null;
+        }
+
+        copy.enqueteur = enqueteur.clone();
+        copy.idJack = idJack;
+        copy.jack = jack.clone();
+        copy.jackVisible = jackVisible;
+        if(joueurCourant.isJack()) copy.joueurCourant = copy.jack;
+        else copy.joueurCourant = copy.enqueteur;
+        copy.numAction = numAction;
+        copy.numTour = numTour;
+        copy.rand = new Random(jeu.getSeed());
+        copy.tourFini = tourFini;
+
+        copy.grille = new CarteRue[3][3];
+        for (int i = 0; i<3; i++){
+            for (int j = 0; j<3; j++){
+                copy.grille[i][j] = grille[i][j].clone();
+            }
+        }
+
+        copy.jetonsActions = new ArrayList<>();
+        for(JetonActions j : jetonsActions) {
+            copy.jetonsActions.add(j.clone());
+        }
+        copy.cartesAlibis = (ArrayList<CarteAlibi>) cartesAlibis.clone();
+        copy.suspects = new ArrayList<>();
+        for(Suspect s : suspects) {
+            copy.suspects.add(s.clone());
+        }
+        copy.suspectsInnocete = new ArrayList<>();
+        for(Suspect s : suspectsInnocete) {
+            copy.suspectsInnocete.add(s.clone());
+        }
+        copy.enqueteurs = new ArrayList<>();
+        for(Enqueteur e : enqueteurs) {
+            copy.enqueteurs.add(e.clone());
+        }
+        return copy;
+    }
+
     //Getters and setters
 
-    static ArrayList<Suspect> getSuspects() {
+    ArrayList<Suspect> getSuspects() {
         return suspects;
     }
 

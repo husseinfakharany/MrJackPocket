@@ -9,6 +9,8 @@ Methode qui cache le personnage
 Boolean dejaRetourne
 */
 
+import Global.Configuration;
+
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
@@ -30,8 +32,27 @@ public class CarteRue {
         this.suspect.setPosition(this.position);
         this.dejaTourne = false;
     }
-    
-    
+
+	@Override
+	public CarteRue clone() throws CloneNotSupportedException {
+		CarteRue copy;
+		try {
+			copy = (CarteRue) super.clone();
+
+		} catch (CloneNotSupportedException e) {
+			Configuration.instance().logger().severe("Bug interne: CarteRue non clonable");
+			return null;
+		}
+		copy.orientation = orientation;
+		copy.position = (Point) position.clone();
+		copy.enqueteurs = new ArrayList<>();
+		for(Enqueteur e : enqueteurs) {
+			copy.enqueteurs.add(e.clone());
+		}
+		copy.suspect = suspect;
+		copy.dejaTourne = dejaTourne;
+		return copy;
+	}
 
 	public int getOrientation() {
 		return orientation;

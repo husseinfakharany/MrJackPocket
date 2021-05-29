@@ -19,9 +19,6 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
             suspectVio, suspectGri, sherlock, watson, chien, sherlockNB, watsonNB, chienNB;
     private int offsetX=0,offsetY=0;
 
-    //TODO Previsualisation de l'action
-    //Mettre a jour après commandeDistrict et commandeJeu
-    //reinitialiser après jouerCoup
     private Action actionTemp;
 
     DistrictGraphique(Jeu j){
@@ -184,7 +181,7 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
                 if (pos1 != null)dessinerCarte(pos1.y+1,pos1.x+1,jeu.plateau().grille[pos1.y][pos1.x],true, actionTemp.getOrientationNew());
                 break;
             case DEPLACER_SHERLOCK:
-                s = calculPosition(Plateau.enqueteurs.get(Plateau.SHERLOCK).getPosition(),Plateau.enqueteurs.get(Plateau.SHERLOCK).getPositionSurCarte());
+                s = calculPosition(jeu.plateau().enqueteurs.get(Plateau.SHERLOCK).getPosition(),jeu.plateau().enqueteurs.get(Plateau.SHERLOCK).getPositionSurCarte());
                 if(actionTemp.getDeplacement()>0)drawable.drawImage(sherlockNB, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
                 s = suivant(s);
                 if(actionTemp.getDeplacement()==1) drawable.drawImage(sherlock, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
@@ -194,7 +191,7 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
                 else drawable.drawImage(cible, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
                 break;
             case DEPLACER_WATSON:
-                s = calculPosition(Plateau.enqueteurs.get(Plateau.WATSON).getPosition(),Plateau.enqueteurs.get(Plateau.WATSON).getPositionSurCarte());
+                s = calculPosition(jeu.plateau().enqueteurs.get(Plateau.WATSON).getPosition(),jeu.plateau().enqueteurs.get(Plateau.WATSON).getPositionSurCarte());
                 if(actionTemp.getDeplacement()>0)drawable.drawImage(watsonNB, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
                 s = suivant(s);
                 if(actionTemp.getDeplacement()==1) drawable.drawImage(watson, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
@@ -204,7 +201,7 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
                 else drawable.drawImage(cible, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
                 break;
             case DEPLACER_TOBBY:
-                s = calculPosition(Plateau.enqueteurs.get(Plateau.TOBBY).getPosition(),Plateau.enqueteurs.get(Plateau.TOBBY).getPositionSurCarte());
+                s = calculPosition(jeu.plateau().enqueteurs.get(Plateau.TOBBY).getPosition(),jeu.plateau().enqueteurs.get(Plateau.TOBBY).getPositionSurCarte());
                 if(actionTemp.getDeplacement()>0)drawable.drawImage(chienNB, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
                 s = suivant(s);
                 if(actionTemp.getDeplacement()==1) drawable.drawImage(chien, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
@@ -214,7 +211,7 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
                 else drawable.drawImage(cible, (s.x)*tailleC+offsetE, (s.y)*tailleC+offsetE, tailleE, tailleE, null);
                 break;
             case DEPLACER_JOKER:
-                for (Enqueteur enqueteur : Plateau.enqueteurs) {
+                for (Enqueteur enqueteur : jeu.plateau().enqueteurs) {
                     s = calculPosition(enqueteur.getPosition(),enqueteur.getPositionSurCarte());
                     Point dep = (Point) s.clone();
                     s = suivant(s);

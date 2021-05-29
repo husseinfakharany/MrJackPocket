@@ -41,10 +41,14 @@ public class ControleurMediateur implements CollecteurEvenements {
         switch (com){
             case "facile":
                 ia = new IaAleatoire(jeu,iaIsJack);
-                //activation à faire
                 break;
             case "moyen":
-
+                try{
+                    ia = new IAMeilleureProchain(jeu.clone(),iaIsJack);
+                }catch(Exception e){
+                    Configuration.instance().logger().severe("Erreur de clonage du jeu");
+                    System.exit(-1);
+                }
                 break;
             case "difficile":
 

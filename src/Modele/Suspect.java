@@ -1,5 +1,7 @@
 package Modele;
 
+import Global.Configuration;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -59,6 +61,26 @@ public class Suspect {
 		}
 		isJack = false;
     }
+
+	@Override
+	public Suspect clone() throws CloneNotSupportedException {
+		Suspect copy;
+		try {
+			copy = (Suspect) super.clone();
+
+		} catch (CloneNotSupportedException e) {
+			Configuration.instance().logger().severe("Bug interne: CarteRue non clonable");
+			return null;
+		}
+		copy.nomPersonnage = nomPersonnage;
+		copy.couleur = couleur;
+		copy.position = position;
+		copy.orientation = orientation; //orientation sur la grille
+		copy.innocente = innocente;
+		copy.pioche = pioche;
+		copy.isJack = isJack;
+		return copy;
+	}
 
    public SuspectNom getNomPersonnage(){
     	return nomPersonnage;

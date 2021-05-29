@@ -4,7 +4,7 @@ import Global.Configuration;
 
 import java.util.Observable;
 
-public class Jeu extends Observable{
+public class Jeu extends Observable implements Cloneable{
 
     //public static final long seed = System.currentTimeMillis();
     public static final long seed = 1622191690051L; //Testing seed
@@ -27,6 +27,20 @@ public class Jeu extends Observable{
             notifyObservers();
         }
         return res;
+    }
+
+    @Override
+    public Jeu clone() throws CloneNotSupportedException {
+        Jeu copy;
+        try {
+            copy = (Jeu) super.clone();
+
+        } catch (CloneNotSupportedException e) {
+            Configuration.instance().logger().severe("Bug interne : Jeu non clonable");
+            return null;
+        }
+        copy.plateau = plateau.clone();
+        return copy;
     }
 
     void notifierObserveurs(){

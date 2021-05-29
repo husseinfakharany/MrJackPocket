@@ -1,7 +1,8 @@
 package Modele;
 
+import Global.Configuration;
+
 import java.util.ArrayList;
-import java.util.List;
 
 
 /*
@@ -15,7 +16,7 @@ Total sabliers
 Liste cartes alibi piochés
  */
 
-public class Joueur {
+public class Joueur implements Cloneable{
 	
 	private ArrayList<CarteAlibi> cardList;
 	private int sablier;
@@ -47,6 +48,27 @@ public class Joueur {
 	public void supprimerCarte(CarteAlibi card) {
 		System.out.println(" suppression carte : " + card);
 		cardList.remove(card);
+	}
+
+	@Override
+	public Joueur clone() throws CloneNotSupportedException {
+		Joueur copy;
+		try {
+			copy = (Joueur) super.clone();
+
+		} catch (CloneNotSupportedException e) {
+			Configuration.instance().logger().severe("Bug interne : Joueur non clonable");
+			return null;
+		}
+		copy.cardList = (ArrayList<CarteAlibi>) cardList.clone();
+		copy.sablier = sablier;
+		copy.sablierVisibles = sablierVisibles;
+		copy.sablierCaches = sablierCaches;
+		copy.isJack = false;
+		copy.win = false;
+		copy.turn = false;
+		copy.name = name;
+		return copy;
 	}
 
 	// Getters and Setters
