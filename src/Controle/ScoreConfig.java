@@ -3,12 +3,13 @@ package Controle;
 import Modele.*;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 /*
-[Sherlock] Essayer de continuer de voir les personnage sur lesquels on vient de perdre la vision
+//TODO [Sherlock] Essayer de continuer de voir les personnage sur lesquels on vient de perdre la vision
  */
 
-//TODO remélanger la pioche chaque fois
 public class ScoreConfig {
 
     //[Sherlock]Qui disperse les enqueteurs avecsens =1
@@ -70,8 +71,34 @@ public class ScoreConfig {
     }
 
     //[Jack]Gagner le plus de sabliers possible
-    static int scoreSablierJack(Jeu j){
-        return j.plateau().jack.getSablier();
+    static int scoreSablierJack(Jeu j, Actions action){
+        Random r = new Random();
+        int res = 0;
+        if(action == Actions.INNOCENTER_CARD){
+            ArrayList<CarteAlibi> listCarte = new ArrayList<>();
+            while(j.plateau().getTaillePioche() != 0){
+                listCarte.add(j.plateau().piocher());
+            }
+            //Rajouter celle qu'on vient de piocher
+            listCarte.add(0,j.plateau().jack.getCardList().get(j.plateau().jack.getCardList().size()-1));
+            int alea;
+            //Tirer 3 cartes au hasard pour ne pas tenir compte que de la carte au dessu de la pioche
+            for(int i = 0; i<3; i++){
+                alea = r.nextInt(listCarte.size());
+                if(listCarte.get(alea).getSablier()>0) res = 10;
+            }
+            //Enlever la carte qu'on recupère dans notre main
+            listCarte.remove(0);
+            //Restaurer la pioche dans l'état initial du debut de la fonction
+            while(!listCarte.isEmpty()){
+                CarteAlibi carte = listCarte.get(0);
+                j.plateau().addToPioche(carte);
+                listCarte.remove(0);
+            }
+            return res;
+        } else {
+            return scoreSuspectElimine(j);
+        }
     }
 
     //[Jack]Se montre si ça permet d'innoncenter 4 personne de plus

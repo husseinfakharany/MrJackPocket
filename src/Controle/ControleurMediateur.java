@@ -71,7 +71,6 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void jouerCoupIA(Coup cp){
         if(iaActive){
-
             this.cp = cp;
             action = cp.getAction();
             int i=0;
@@ -159,7 +158,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         if(iaJoue)return false;
         switch (c){
             case "jetonA":
-                if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(0)) ){
+                if(action.estValide() && selectionne == 0 && action.getAction().equals(jeu.plateau().getActionJeton(0)) ){
                     if (!jeu.plateau().getJeton(0).getDejaJoue()){
                         jouerCoup();
                         return true;
@@ -174,7 +173,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 }
                 break;
             case "jetonB":
-                if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(1)) ) {
+                if(action.estValide() && selectionne == 1 && action.getAction().equals(jeu.plateau().getActionJeton(1)) ) {
                     if (!jeu.plateau().getJeton(1).getDejaJoue()) {
                         jouerCoup();
                         return true;
@@ -190,7 +189,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 if(action.getAction().equals(Actions.DEPLACER_JOKER))action.setNumEnqueteur(0);
                 break;
             case "jetonC":
-                if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(2)) ){
+                if(action.estValide() && selectionne == 2 && action.getAction().equals(jeu.plateau().getActionJeton(2)) ){
                     if (!jeu.plateau().getJeton(2).getDejaJoue()) {
                         jouerCoup();
                         return true;
@@ -205,7 +204,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 }
                 break;
             case "jetonD":
-                if(action.estValide() && action.getAction().equals(jeu.plateau().getActionJeton(3)) && !action.getAction().equals(Actions.INNOCENTER_CARD)){
+                if(action.estValide() && selectionne == 3 && action.getAction().equals(jeu.plateau().getActionJeton(3)) && !action.getAction().equals(Actions.INNOCENTER_CARD)){
                     if (!jeu.plateau().getJeton(3).getDejaJoue()) {
                         jouerCoup();
                         return true;
@@ -265,6 +264,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         ig.getJetons().dessinerValide(false);
         ig.getDistrict().dessinerFeedback(null);
         selectionne = -1;
+        ia = null;
+        iaActive = false;
         cp = null;
         if(!jeu.plateau().tousJetonsJoues()) ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
     }
