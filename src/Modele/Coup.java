@@ -240,19 +240,13 @@ public class Coup extends Commande implements Cloneable{
 
 	public int calculDepl(int numEnqueteur,int l,int c){
 		Enqueteur enqueteur = plateau.enqueteurs.get(numEnqueteur);
-		if( l!=0 && l!=4 && c!=0 && c!=4) return -1;
-		if( (l==0 && (c==0 || c==4)) || (l==4 && (c==0 || c==4))) return -1;
-		int posC = enqueteur.getPosition().x + 1;
-		int posL = enqueteur.getPosition().y + 1;
-		if (enqueteur.getPositionSurCarte() == Enqueteur.EST) posC ++;
-		if (enqueteur.getPositionSurCarte() == Enqueteur.OUEST) posC--;
-		if (enqueteur.getPositionSurCarte() == Enqueteur.SUD) posL ++;
-		if (enqueteur.getPositionSurCarte() == Enqueteur.NORD) posL--;
-		int moveC = c - posC ;
-		int moveL = l - posL ;
-		int res = Math.abs(moveC) + Math.abs(moveL);
-		if(moveC!=0 && moveL!=0) res-- ;
-		return res;
+		Point positionE = Plateau.calculPosition(enqueteur.position,enqueteur.getPositionSurCarte());
+		Point suivant = Plateau.suivant(positionE);
+		if (suivant.getX() == c && suivant.getY() == l) return 1;
+		suivant = Plateau.suivant(suivant);
+		if (suivant.getX() == c && suivant.getY() == l) return 2;
+		Configuration.instance().logger().info("Position invalide pour l'action en cours");
+		return -1;
 	}
 
 	public int calculEnqueteur(int l, int c){

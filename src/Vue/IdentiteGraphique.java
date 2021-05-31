@@ -39,7 +39,7 @@ public class IdentiteGraphique extends JComponent {
                 jack = Configuration.chargeImage("Suspect-bleuB");
                 break;
             case GRIS:
-                jack = Configuration.chargeImage("Suspect-grisB");
+                jack = Configuration.chargeImage("Suspect-marronB");
                 break;
             case NOIR:
                 jack = Configuration.chargeImage("Suspect-noirB");

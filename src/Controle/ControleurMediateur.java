@@ -73,7 +73,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         if(iaActive){
             this.cp = cp;
             action = cp.getAction();
-            int i=0;
             selectionne = cp.getAction().getNumAction();
             tempsIA.stop();
             iaJoue = false;
@@ -83,7 +82,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     public void appliquer(int i){
 
-        Boolean dejaJoue = false;
+        boolean dejaJoue = false;
         if (i==1){
             dejaJoue = true;
         }
@@ -96,8 +95,10 @@ public class ControleurMediateur implements CollecteurEvenements {
         reinitialiser();
 
         //Désaffichage des feedback précédents
-        ig.dessinerInfo(InterfaceGraphique.texteIndicatif(null));
-        ig.getBoiteJeu().repaint();
+        if(jeu.plateau().finJeu(false)){
+            ig.dessinerInfo(InterfaceGraphique.texteIndicatif(null));
+            ig.getBoiteJeu().repaint();
+        }
     }
 
 
@@ -105,20 +106,23 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void annuler() {
         cp = jeu.annule();
-        action = cp.getAction();
-        selectionne = action.getNumAction();
-        appliquer(-1);
+        if(cp != null){
+            action = cp.getAction();
+            selectionne = action.getNumAction();
+            appliquer(-1);
+        }
+
     }
 
     @Override
     public void refaire() {
         cp = jeu.refaire();
-        action = cp.getAction();
-        selectionne = action.getNumAction();
-        appliquer(1);
+        if(cp != null){
+            action = cp.getAction();
+            selectionne = action.getNumAction();
+            appliquer(1);
+        }
     }
-
-
 
     @Override
     public void commandeDistrict(int l, int c){
@@ -128,10 +132,12 @@ public class ControleurMediateur implements CollecteurEvenements {
             cp = new Coup(jeu.plateau(),action);
         }
 
-        if(l>=1 && l <= 3 && c>=1 && c<=3)cp.ajouterArguments(l-1,c-1);
-        else{
+        if(l>=1 && l <= 3 && c>=1 && c<=3 && (cp.getAction().getAction() == Actions.ROTATION_DISTRICT
+                || cp.getAction().getAction() != Actions.ECHANGER_DISTRICT || cp.getAction().getAction() != Actions.INNOCENTER_CARD) )
+        cp.ajouterArguments(l-1,c-1);
+        else if ( l==0 || l==4 || c==0 || c==4 && (cp.getAction().getAction() == Actions.DEPLACER_JOKER  || cp.getAction().getAction() == Actions.DEPLACER_SHERLOCK
+                || cp.getAction().getAction() == Actions.DEPLACER_WATSON || cp.getAction().getAction() == Actions.DEPLACER_TOBBY) )
             cp.ajouterArguments(l,c);
-        }
         action.setJoueur(jeu.plateau().joueurCourant);
         ig.getJetons().dessinerValide(action.estValide());
         ig.getDistrict().dessinerFeedback(action);
@@ -166,10 +172,14 @@ public class ControleurMediateur implements CollecteurEvenements {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
                 }
-                if (!jeu.plateau().getJeton(0).getDejaJoue()){
+                if (!jeu.plateau().getJeton(0).getDejaJoue() && selectionne != 0){
                     ig.getJetons().dessinerSelection(1);
                     action.setAction(jeu.plateau().getActionJeton(0));
                     selectionne = 0;
+                } else if (!jeu.plateau().getJeton(0).getDejaJoue() && selectionne == 0){
+                    ig.getJetons().dessinerSelection(-1);
+                    action.reinitialiser();
+                    selectionne = -1;
                 }
                 break;
             case "jetonB":
@@ -181,12 +191,17 @@ public class ControleurMediateur implements CollecteurEvenements {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
                 }
-                if (!jeu.plateau().getJeton(1).getDejaJoue()){
+                if (!jeu.plateau().getJeton(1).getDejaJoue() && selectionne != 1){
                     ig.getJetons().dessinerSelection(2);
                     action.setAction(jeu.plateau().getActionJeton(1));
                     selectionne = 1;
+                } else if (!jeu.plateau().getJeton(1).getDejaJoue() && selectionne == 1 ){
+                    ig.getJetons().dessinerSelection(-1);
+                    action.reinitialiser();
+                    selectionne = -1;
                 }
-                if(action.getAction().equals(Actions.DEPLACER_JOKER))action.setNumEnqueteur(0);
+                if(action.getAction() != null && action.getAction().equals(Actions.DEPLACER_JOKER))action.setNumEnqueteur(0);
+
                 break;
             case "jetonC":
                 if(action.estValide() && selectionne == 2 && action.getAction().equals(jeu.plateau().getActionJeton(2)) ){
@@ -197,10 +212,14 @@ public class ControleurMediateur implements CollecteurEvenements {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
                 }
-                if (!jeu.plateau().getJeton(2).getDejaJoue()) {
+                if (!jeu.plateau().getJeton(2).getDejaJoue() && selectionne != 2) {
                     ig.getJetons().dessinerSelection(3);
                     action.setAction(jeu.plateau().getActionJeton(2));
                     selectionne = 2;
+                } else if (!jeu.plateau().getJeton(2).getDejaJoue() && selectionne == 2){
+                    ig.getJetons().dessinerSelection(-1);
+                    action.reinitialiser();
+                    selectionne = -1;
                 }
                 break;
             case "jetonD":
@@ -212,10 +231,14 @@ public class ControleurMediateur implements CollecteurEvenements {
                         Configuration.instance().logger().warning("L'action était déjà jouée");
                     }
                 }
-                if (!jeu.plateau().getJeton(3).getDejaJoue()){
+                if (!jeu.plateau().getJeton(3).getDejaJoue() && selectionne != 3){
                     ig.getJetons().dessinerSelection(4);
                     action.setAction(jeu.plateau().getActionJeton(3));
                     selectionne = 3;
+                }else if (!jeu.plateau().getJeton(3).getDejaJoue() && selectionne == 3 ){
+                    ig.getJetons().dessinerSelection(-1);
+                    action.reinitialiser();
+                    selectionne = -1;
                 }
                 break;
             case "pioche":
@@ -243,17 +266,18 @@ public class ControleurMediateur implements CollecteurEvenements {
         if (jeu.jouerCoup(cp)){
             Configuration.instance().logger().info("Coup joué");
             appliquer(1);
-            if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack) && iaIsJack && jeu.plateau().getNumAction() <4){
+            if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack) && iaIsJack && iaActive && jeu.plateau().getNumAction() <4){
                 tempsIA.restart();
                 iaJoue = true;
                 ig.dessinerInfo("Ia joue son coup");
             }
-            if(jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur) && !iaIsJack && jeu.plateau().getNumAction() <4){
+            if(jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur) && !iaIsJack && iaActive && jeu.plateau().getNumAction() <4){
                 tempsIA.restart();
                 iaJoue = true;
                 ig.dessinerInfo("Ia joue son coup");
             }
-
+            if(!ig.getMain().getAfficherEnqueteur() && jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur ) )
+                commandeMenu("main");
         } else {
             Configuration.instance().logger().warning("Coup invalide");
         }
@@ -267,7 +291,10 @@ public class ControleurMediateur implements CollecteurEvenements {
         ia = null;
         iaActive = false;
         cp = null;
+        if(tempsIA != null)tempsIA.stop();
         if(!jeu.plateau().tousJetonsJoues()) ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
+        if(!ig.getMain().getAfficherEnqueteur() ) commandeMenu("main");
+        ig.getMain().setAfficherEnqueteur(true);
     }
 
     @Override
@@ -285,16 +312,17 @@ public class ControleurMediateur implements CollecteurEvenements {
                 ig.changerMenu(ig.getBoiteMenu(),ig.getBoiteAvantPartieIA());
                 break;
             case "jack":
-                Configuration.instance().logger().info("jack");
+                ig.getBoiteAvantPartieIA();
                 iaIsJack = false;
                 break;
             case "sherlock":
-                Configuration.instance().logger().info("sherlock");
+                ig.getBoiteAvantPartieIA();
                 iaIsJack = true;
                 break;
             case "facile":
                 fixerIA(c);
                 iaActive = true;
+                ig.getBoiteAvantPartieIA();
                 break;
             case "moyen":
                 Configuration.instance().logger().info("Moyenne");
@@ -317,8 +345,14 @@ public class ControleurMediateur implements CollecteurEvenements {
                 jeu.plateau().reinitialiser();
                 this.reinitialiser();
                 break;
+            case "quitterJ":
+                ig.quitterJeu();
+                break;
             case "menuJ":
                 ig.changerMenu(ig.getBoiteJeu(), ig.getBoiteMenu() );
+                break;
+            case "retourMenu":
+                ig.changerMenu(ig.getBoiteAvantPartieIA(), ig.getBoiteMenu() );
                 break;
             case "menuC":
                 ig.changerMenu(ig.getBoiteCharger(), ig.getBoiteMenu() );

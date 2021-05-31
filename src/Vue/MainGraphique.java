@@ -14,12 +14,12 @@ public class MainGraphique extends JComponent {
     int largeur,hauteur,tailleC;
     Jeu jeu;
     Image suspectBla, suspectBle, suspectJau, suspectNoi, suspectOra, suspectRos, suspectVer, suspectVio, suspectGri;
-    boolean afficherEnqueteur;
+    private boolean afficherEnqueteur;
 
     MainGraphique(Jeu j){
         jeu=j;
         suspectBle = Configuration.chargeImage("Suspect-bleuB");
-        suspectGri = Configuration.chargeImage("Suspect-grisB");
+        suspectGri = Configuration.chargeImage("Suspect-marronB");
         suspectNoi = Configuration.chargeImage("Suspect-noirB");
         suspectRos = Configuration.chargeImage("Suspect-roseB");
         suspectVer = Configuration.chargeImage("Suspect-vertB");
@@ -27,7 +27,7 @@ public class MainGraphique extends JComponent {
         suspectJau = Configuration.chargeImage("Suspect-jauneB");
         suspectOra = Configuration.chargeImage("Suspect-orangeB");
         suspectVio = Configuration.chargeImage("Suspect-violetB");
-        afficherEnqueteur = true;
+        setAfficherEnqueteur(true);
         /*ArrayList<CarteAlibi> mainFictif = new ArrayList<CarteAlibi>();
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.JEREMY_BERT,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.MADAME,null ) ) );
@@ -74,7 +74,7 @@ public class MainGraphique extends JComponent {
         Iterator<CarteAlibi> main;
 
         drawable.setFont(new Font("default", Font.BOLD, 25));
-        if(afficherEnqueteur){
+        if(isAfficherEnqueteur()){
             main = jeu.plateau().enqueteur.getCardList().iterator();
             drawable.drawString("Main de l'enquêteur :",10,25);
         }
@@ -114,10 +114,18 @@ public class MainGraphique extends JComponent {
     }
 
     public void changerMain(){
-        afficherEnqueteur = !afficherEnqueteur;
+        setAfficherEnqueteur(!isAfficherEnqueteur());
     }
 
     public boolean getAfficherEnqueteur(){
+        return isAfficherEnqueteur();
+    }
+
+    public boolean isAfficherEnqueteur() {
         return afficherEnqueteur;
+    }
+
+    public void setAfficherEnqueteur(boolean afficherEnqueteur) {
+        this.afficherEnqueteur = afficherEnqueteur;
     }
 }

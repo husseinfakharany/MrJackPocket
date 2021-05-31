@@ -6,8 +6,8 @@ import java.util.Observable;
 
 public class Jeu extends Observable implements Cloneable{
 
-    //public static final long seed = System.currentTimeMillis();
-    public static final long seed = 1622191690051L; //Testing seed
+    public static final long seed = System.currentTimeMillis();
+    //public static final long seed = 1622191690051L; //Testing seed
 
     Plateau plateau;
 

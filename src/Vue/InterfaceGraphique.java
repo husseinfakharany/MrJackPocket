@@ -7,6 +7,7 @@ import Modele.Jeu;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -22,10 +23,12 @@ public class InterfaceGraphique implements Observer, Runnable {
     JButton undo;
     JButton redo;
     JButton menu;
+    JButton lancerPartie;
     private JLabel info;
     JLabel tour;
     CollecteurEvenements controle;
     JComboBox<String> commencer, boutonIA;
+    ButtonGroup GroupePersonnage, GroupeDifficulte;
     private DistrictGraphique district;
     private PiocheGraphique pioche;
     private JetonsGraphique jetons;
@@ -54,11 +57,13 @@ public class InterfaceGraphique implements Observer, Runnable {
     }
 
     public static String texteIndicatif(Action action) {
+        //TODO Dessiner une nouvelle boite
+
         if(action == null || action.getAction() == null) return "Choisissez un jeton action et cliquez dessus";
         switch (action.getAction()){
             case DEPLACER_JOKER:
-                if(action.estValide()) return "Cliquez sur le bouton valider pour continuer";
-                return "Cliquez sur un emplacement indiqué pour y déplacez l'enquêteur le plus proche";
+                if(action.estValide() && !action.getJoueur().isJack() ) return "Cliquez sur le bouton valider pour continuer";
+                return "<html>Cliquez sur un emplacement indiqué pour y déplacez l'enquêteur le plus proche. <br/> <i>Jack a la possibilité de ne déplacer personne</i> </html>";
             case DEPLACER_TOBBY:
             case DEPLACER_WATSON:
             case DEPLACER_SHERLOCK:
@@ -109,6 +114,7 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     @Override
     public void update(Observable o, Object arg) {
+        getJetons().repaint();
         getBoiteJeu().repaint();
     }
 
@@ -224,8 +230,8 @@ public class InterfaceGraphique implements Observer, Runnable {
             setInfo(new JLabel("Explications",SwingConstants.CENTER));
             info.setFont(new Font("default", Font.PLAIN, (int) (0.028*height) ));
 
-            menu = nouveauBouton("Retour au Menu", (int) (0.231*width) , (int) (0.056*height) );
-            menu.addActionListener(new AdaptateurCommande(controle,"menuJ"));
+            menu = nouveauBouton("Quitter", (int) (0.231*width) , (int) (0.056*height) );
+            menu.addActionListener(new AdaptateurCommande(controle,"quitterJ"));
 
             boiteInfo.add(tour);
             boiteInfo.add(Box.createHorizontalGlue());
@@ -360,15 +366,8 @@ public class InterfaceGraphique implements Observer, Runnable {
             if(jeu.plateau().jackVisible) dessinerInfo("<html>Jack est visible.<br/>Passez au prochain tour</html>");
             if(!jeu.plateau().jackVisible) dessinerInfo("<html>Jack n'est pas visible.<br/>Passez au prochain tour</html>");
         }
-
-        //TODO Dessiner une nouvelle boite
-        if(jeu.plateau().finJeu(false) && jeu.plateau().getNumAction() ==4){
-            if(jeu.plateau().enqueteur.getWinner()) dessinerInfo("<html>Sherlock à gagné !<br/> Retournez au menu </html>");
-            if(jeu.plateau().jack.getWinner()) dessinerInfo("<html>Jack à gagné !<br/> Retournez au menu </html>");
-            if(!jeu.plateau().enqueteur.getWinner() && !jeu.plateau().jack.getWinner())
-                Configuration.instance().logger().severe("Partie fini sans vainqueur !");
-        }
-
+        if(jeu.plateau().enqueteur.getWinner()) dessinerInfo("<html>Sherlock a gagné !<br/> Retournez au menu </html>");
+        if(jeu.plateau().jack.getWinner()) dessinerInfo("<html>Jack à gagné !<br/> Retournez au menu </html>");
         return boiteJeu;
     }
 
@@ -383,7 +382,7 @@ public class InterfaceGraphique implements Observer, Runnable {
 
             JRadioButton jack = new JRadioButton();
 
-            ButtonGroup G1 = new ButtonGroup();
+            GroupePersonnage = new ButtonGroup();
 
             JLabel L1 = new JLabel("Choix du personnage : ");
             L1.setFont(new Font("default", Font.PLAIN, 20));
@@ -396,8 +395,8 @@ public class InterfaceGraphique implements Observer, Runnable {
             jack.addActionListener(new AdaptateurCommande(controle,"jack"));
             jack.setFont(new Font("default", Font.PLAIN, 20));
 
-            G1.add(sherlock);
-            G1.add(jack);
+            GroupePersonnage.add(sherlock);
+            GroupePersonnage.add(jack);
 
             boitePersonnage.add(Box.createVerticalGlue());
             boitePersonnage.add(L1);
@@ -412,7 +411,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             JRadioButton moyenB = new JRadioButton();
             JRadioButton difficileB = new JRadioButton();
 
-            ButtonGroup G2 = new ButtonGroup();
+            GroupeDifficulte = new ButtonGroup();
 
             JLabel difficulte = new JLabel("Difficulte de l'IA : ");
             difficulte.setFont(new Font("default", Font.PLAIN, 20));
@@ -429,9 +428,9 @@ public class InterfaceGraphique implements Observer, Runnable {
             moyenB.setFont(new Font("default", Font.PLAIN, 20));
             difficileB.setFont(new Font("default", Font.PLAIN, 20));
 
-            G2.add(facileB);
-            G2.add(moyenB);
-            G2.add(difficileB);
+            GroupeDifficulte.add(facileB);
+            GroupeDifficulte.add(moyenB);
+            GroupeDifficulte.add(difficileB);
 
             boiteDifficulte.add(Box.createVerticalGlue());
             boiteDifficulte.add(difficulte);
@@ -441,9 +440,10 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteDifficulte.add(Box.createVerticalGlue());
             boiteDifficulte.setPreferredSize(new Dimension(400, 200));
 
-            JButton lancerPartie = new JButton("Commencer");
+            lancerPartie = new JButton("Commencer");
             lancerPartie.setFont(new Font("default", Font.PLAIN, 20));
             lancerPartie.addActionListener(new AdaptateurCommande(controle,"commencerIA"));
+            lancerPartie.setEnabled(false);
 
             boiteParam.add(Box.createHorizontalGlue());
             boiteParam.add(boitePersonnage);
@@ -456,12 +456,36 @@ public class InterfaceGraphique implements Observer, Runnable {
             JLabel titre = new JLabel("Mr Jack Pocket");
             titre.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 50));
 
+            Box boiteRetour = Box.createHorizontalBox();
+
+            JButton retourMenu = new JButton("Retour au menu");
+            retourMenu.setFont(new Font("default", Font.PLAIN, 20));
+            retourMenu.addActionListener(new AdaptateurCommande(controle,"retourMenu"));
+
+            boiteRetour.add(Box.createHorizontalGlue());
+            boiteRetour.add(retourMenu);
+
+            boiteAvantPartie.add(boiteRetour);
             boiteAvantPartie.add(Box.createVerticalGlue());
             boiteAvantPartie.add(titre);
             boiteAvantPartie.add(Box.createVerticalGlue());
             boiteAvantPartie.add(boiteParam);
             boiteAvantPartie.add(Box.createVerticalGlue());
         }
+        Enumeration<AbstractButton> boutonsDif = GroupeDifficulte.getElements();
+        AbstractButton bouton;
+        boolean difficulteSet = false;
+        while (boutonsDif.hasMoreElements()){
+            bouton = boutonsDif.nextElement();
+            if(bouton.isSelected()) difficulteSet = true;
+        }
+        Enumeration<AbstractButton> boutonsPers = GroupePersonnage.getElements();
+        boolean personnageSet = false;
+        while (boutonsPers.hasMoreElements()){
+            bouton = boutonsPers.nextElement();
+            if(bouton.isSelected()) personnageSet = true;
+        }
+        lancerPartie.setEnabled(personnageSet && difficulteSet);
         return boiteAvantPartie;
     }
 
@@ -536,6 +560,22 @@ public class InterfaceGraphique implements Observer, Runnable {
         }
 
         return boiteTuto;
+    }
+
+    public void quitterJeu(){
+        Object[] options = {"Sauvegader et quitter", "Sauvegader", "Quitter", "Retour au jeu"};
+        int res = JOptionPane.showOptionDialog(frame, "Que voulez vous faire ?",
+                "Quitter la partie", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+                options, options[3]);
+        switch (res){
+            case 0:
+            case 1:
+                Configuration.instance().logger().info("Sauvegarde pas implémenté");
+                break;
+            case 2:
+                controle.commandeMenu("menuJ");
+                break;
+        }
     }
 
     public Box getCourant(){

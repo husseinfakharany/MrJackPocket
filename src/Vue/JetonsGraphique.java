@@ -11,7 +11,8 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
     int largeur,hauteur,tailleC,offsetX,offsetY;
     Jeu jeu;
     Image jeton1A , jeton1B , jeton2A , jeton2B, jeton3A , jeton3B, jeton4A , jeton4B,
-            jeton1ANB , jeton1BNB , jeton2ANB , jeton2BNB, jeton3ANB , jeton3BNB, jeton4ANB , jeton4BNB , jetonV, tourSuivant;
+            jeton1ANB , jeton1BNB , jeton2ANB , jeton2BNB, jeton3ANB , jeton3BNB, jeton4ANB , jeton4BNB ,
+            jeton1ATra , jeton1BTra , jeton2ATra , jeton2BTra, jeton3ATra , jeton3BTra, jeton4ATra , jeton4BTra, jetonV, tourSuivant;
     int selection;
     private boolean estJouable;
 
@@ -33,6 +34,14 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         jeton3BNB = Configuration.chargeImage("Jeton-3-B-NB");
         jeton4ANB = Configuration.chargeImage("Jeton-4-A-NB");
         jeton4BNB = Configuration.chargeImage("Jeton-4-B-NB");
+        jeton1ATra = Configuration.chargeImage("Jeton-1-A-tra");
+        jeton1BTra = Configuration.chargeImage("Jeton-1-B-tra");
+        jeton2ATra = Configuration.chargeImage("Jeton-1-A-tra");
+        jeton2BTra = Configuration.chargeImage("Jeton-1-B-tra");
+        jeton3ATra = Configuration.chargeImage("Jeton-1-A-tra");
+        jeton3BTra = Configuration.chargeImage("Jeton-1-B-tra");
+        jeton4ATra = Configuration.chargeImage("Jeton-1-A-tra");
+        jeton4BTra = Configuration.chargeImage("Jeton-1-B-tra");
         tourSuivant = Configuration.chargeImage("tourSuivant");
         jetonV = Configuration.chargeImage("JetonV");
         offsetX = 20;
@@ -42,23 +51,51 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
     }
 
     public void dessinerJetons(){
-        Image jeton1, jeton2, jeton3, jeton4;
-        if(jeu.plateau().getJeton(0).estRecto())  jeton1 = selection==1 || selection == -1? jeton1A : jeton1ANB;
-        else jeton1 = selection==1 || selection == -1? jeton1B : jeton1BNB;
-        if(jeu.plateau().getJeton(1).estRecto())jeton2 = selection==2 || selection == -1? jeton2A : jeton2ANB;
-        else jeton2 = selection==2 || selection == -1? jeton2B : jeton2BNB;
-        if(jeu.plateau().getJeton(2).estRecto())jeton3 = selection==3 || selection == -1? jeton3A : jeton3ANB;
-        else jeton3 = selection==3 || selection == -1? jeton3B : jeton3BNB;
-        if(jeu.plateau().getJeton(3).estRecto())jeton4 = selection==4 || selection == -1? jeton4A : jeton4ANB;
-        else jeton4 = selection==4 || selection == -1? jeton4B : jeton4BNB;
+        Image jeton1, jeton2, jeton3, jeton4, jeton1Tra, jeton2Tra, jeton3Tra, jeton4Tra;
+        if(jeu.plateau().getJeton(0).estRecto())  {
+            jeton1 = selection==1 || selection == -1? jeton1A : jeton1ANB;
+            jeton1Tra = jeton1ATra;
+        }
+        else{
+            jeton1 = selection==1 || selection == -1? jeton1B : jeton1BNB;
+            jeton1Tra = jeton1BTra;
+        }
+        if(jeu.plateau().getJeton(1).estRecto()){
+            jeton2 = selection==2 || selection == -1? jeton2A : jeton2ANB;
+            jeton2Tra = jeton2ATra;
+        }
+        else {
+            jeton2 = selection==2 || selection == -1? jeton2B : jeton2BNB;
+            jeton2Tra = jeton2BTra;
+        }
+        if(jeu.plateau().getJeton(2).estRecto()){
+            jeton3 = selection==3 || selection == -1? jeton3A : jeton3ANB;
+            jeton3Tra = jeton3ATra;
+        }
+        else{
+            jeton3 = selection==3 || selection == -1? jeton3B : jeton3BNB;
+            jeton3Tra = jeton3BTra;
+        }
+        if(jeu.plateau().getJeton(3).estRecto()) {
+            jeton4 = selection==4 || selection == -1? jeton4A : jeton4ANB;
+            jeton4Tra = jeton4ATra;
+        }
+        else{
+            jeton4 = selection==4 || selection == -1? jeton4B : jeton4BNB;
+            jeton4Tra = jeton4BTra;
+        }
 
         drawable.setFont(new Font("default", Font.BOLD, 25));
         drawable.drawString("Jetons :",(int) (largeur*0.5)-60,25);
         drawable.setFont(new Font("default", Font.PLAIN, 12));
-        if(!jeu.plateau().getJeton(0).getDejaJoue())drawable.drawImage(jeton1, 0, offsetY, tailleC, tailleC, null);
-        if(!jeu.plateau().getJeton(1).getDejaJoue())drawable.drawImage(jeton2, tailleC+offsetX, offsetY, tailleC, tailleC, null);
-        if(!jeu.plateau().getJeton(2).getDejaJoue())drawable.drawImage(jeton3, 0, tailleC+2*offsetY, tailleC, tailleC, null);
-        if(!jeu.plateau().getJeton(3).getDejaJoue())drawable.drawImage(jeton4, tailleC+offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
+        if(jeu.plateau().getJeton(0).getDejaJoue()) drawable.drawImage(jeton1Tra, 0, offsetY, tailleC, tailleC, null);
+        else drawable.drawImage(jeton1, 0, offsetY, tailleC, tailleC, null);
+        if(jeu.plateau().getJeton(1).getDejaJoue())drawable.drawImage(jeton2Tra, tailleC+offsetX, offsetY, tailleC, tailleC, null);
+        else drawable.drawImage(jeton2, tailleC+offsetX, offsetY, tailleC, tailleC, null);
+        if(jeu.plateau().getJeton(2).getDejaJoue()) drawable.drawImage(jeton3Tra, 0, tailleC+2*offsetY, tailleC, tailleC, null);
+        else drawable.drawImage(jeton3, 0, tailleC+2*offsetY, tailleC, tailleC, null);
+        if(jeu.plateau().getJeton(3).getDejaJoue()) drawable.drawImage(jeton4Tra, tailleC+offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
+        else drawable.drawImage(jeton4, tailleC+offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
 
         if (jeu.plateau().tousJetonsJoues()){
             int taille = Math.min(largeur,hauteur);

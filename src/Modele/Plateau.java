@@ -198,6 +198,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     public boolean prochainTour(){
         if (finJeu()){
             Configuration.instance().logger().info("Fin du Jeu");
+            jeu.notifierObserveurs();
             return true;
         } else {
             tourFini = false;
@@ -281,7 +282,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return res;
     }
 
-    //Cet fonction retourne vrai s'il reste qu'une seule carte non innonctée (Jack)
+    //Cette fonction retourne vrai s'il reste qu'une seule carte non innonctée (Jack)
     public boolean verdictTour(boolean updatePlateau){
         ArrayList<Suspect> res = visibles();
         //Si jack est visible par un des trois enqueteurs
@@ -301,26 +302,25 @@ public class Plateau extends Historique<Coup> implements Cloneable {
                 else if (!suspectsInnocete.contains(s)) nbInnocent++;
             }
         }
-        if (suspectsInnocete.size()==8){
-            jeu.notifierObserveurs();
+        if (suspectsInnocete.size()==8 || nbInnocent >= 8){
             enqueteur.setWinner(true);
             return true;
         }
-        return nbInnocent >= 8;
+        return false;
     }
 
     //Fonction appelée apres la fin du tour
     public boolean finJeu(boolean updatePlateau){
+        boolean res = verdictTour(updatePlateau);
         if (numTour>=8) {
             return true;
-        } else {
-            if (jack.getSablier()==6){
-                jack.setWinner(true);
-                jeu.notifierObserveurs();
-                return true;
-            }
         }
-        return verdictTour(updatePlateau);
+        if (jack.getSablier()>=6){
+            jack.setWinner(true);
+            return true;
+        }
+        jeu.notifierObserveurs();
+        return res;
     }
 
     public boolean finJeu(){
@@ -425,6 +425,39 @@ public class Plateau extends Historique<Coup> implements Cloneable {
             copy.enqueteurs.add(e.clone());
         }
         return copy;
+    }
+
+    public static Point suivant(Point p){
+        if(p.y==0) p.x = p.x+1;
+        if(p.x==4) p.y = p.y+1;
+        if(p.y==4) p.x = p.x-1;
+        if(p.x==0) {
+            p.y = p.y-1;
+            if(p.y==0) p.x = p.x+1;
+        }
+        return p;
+    }
+
+    public static Point suivant(int c, int l){
+        if(l==0) c = c+1;
+        if(c==4) l = l+1;
+        if(l==4) c = c-1;
+        if(c==0) {
+            l = l-1;
+            if(l==0) c = c+1;
+        }
+        return new Point(c,l);
+    }
+
+    public static Point calculPosition(Point pos, int orientation){
+        Point res = (Point) pos.clone();
+        res.x = res.x+1;
+        res.y = res.y+1;
+        if(orientation == Enqueteur.EST) res.x = res.x+1;
+        if(orientation == Enqueteur.OUEST) res.x = res.x-1;
+        if(orientation == Enqueteur.SUD) res.y = res.y+1;
+        if(orientation == Enqueteur.NORD) res.y = res.y-1;
+        return res;
     }
 
     //Getters and setters
