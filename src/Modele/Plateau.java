@@ -175,6 +175,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     void initialiseTour(){
         numTour++;
         numAction = 0;
+        tourFini = false;
         jackVisible = false;
         if(numTour>=2)changerJoueur();
         for(CarteRue[] ligne:grille){
@@ -204,7 +205,6 @@ public class Plateau extends Historique<Coup> implements Cloneable {
             numTour++;
             return true;
         } else {
-            tourFini = false;
             initialiseTour();
             jeu.notifierObserveurs();
         }
@@ -488,8 +488,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return numTour;
     }
 
-
-    void setNumTour(int numTour){
+    public void setNumTour(int numTour){
         this.numTour = numTour;
     }
 

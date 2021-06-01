@@ -229,7 +229,6 @@ public class Action{
         return orientationSuspect;
     }
 
-
     public int getNumAction() {
         return numAction;
     }

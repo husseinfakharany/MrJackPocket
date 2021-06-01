@@ -85,7 +85,12 @@ public class ControleurMediateur implements CollecteurEvenements {
             dejaJoue = true;
         }
 
-        jeu.plateau().setNumAction(jeu.plateau().getNumAction()+i);
+        if (jeu.plateau().getNumAction()==0 && i==-1){
+            jeu.plateau().setNumAction(3);
+            jeu.plateau().setNumTour(jeu.plateau().getNumTour()-1);
+        } else {
+            jeu.plateau().setNumAction(jeu.plateau().getNumAction()+i);
+        }
         jeu.plateau().getJeton(selectionne).setDejaJoue(dejaJoue);
         jeu.plateau().actionJouee();
 
@@ -111,7 +116,6 @@ public class ControleurMediateur implements CollecteurEvenements {
             selectionne = action.getNumAction();
             appliquer(-1);
         }
-
     }
 
     @Override
