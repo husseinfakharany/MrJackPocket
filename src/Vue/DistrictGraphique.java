@@ -204,7 +204,7 @@ public class DistrictGraphique extends JComponent implements ElementPlateauG{
                 if (pos2 != null)dessinerCarte(pos2.y+1,pos2.x+1,jeu.plateau().grille[pos2.y][pos2.x],true);
                 break;
             case ROTATION_DISTRICT:
-                if (pos1 != null)dessinerCarte(pos1.y+1,pos1.x+1,jeu.plateau().grille[pos1.y][pos1.x],true, actionTemp.getOrientationNew());
+                if (pos1 != null && actionTemp.getOrientationNew() != jeu.plateau().grille[pos1.y][pos1.x].getOrientation() )dessinerCarte(pos1.y+1,pos1.x+1,jeu.plateau().grille[pos1.y][pos1.x],true, actionTemp.getOrientationNew());
                 break;
             case DEPLACER_SHERLOCK:
                 s = Plateau.calculPosition(jeu.plateau().enqueteurs.get(Plateau.SHERLOCK).getPosition(),jeu.plateau().enqueteurs.get(Plateau.SHERLOCK).getPositionSurCarte());
@@ -274,7 +274,10 @@ public class DistrictGraphique extends JComponent implements ElementPlateauG{
         hauteur = getSize().height;
 
         // On efface tout
-        drawable.clearRect(0, 0, largeur, hauteur);
+        //drawable.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+        drawable.setBackground(new Color(255,255,255,0));
+        g.setColor(new Color(255,255,255,0));
+        g.fillRect(0, 0, getWidth(),getHeight());
 
         //Calcul de la taille d'une case
         int hCase=hauteur/5; //3 rues + 2 inspecteurs qui l'entourent possiblement

@@ -238,6 +238,7 @@ public class Coup extends Commande implements Cloneable{
 					default:
 						break;
 				}
+				action.setOrientationOld(plateau.grille[action.getPosition1().y][action.getPosition1().x].getOrientation());
 				break;
 		}
 	}

@@ -122,7 +122,8 @@ public class Action{
             case ROTATION_DISTRICT:
                 return getPosition1() != null &&
                     (  getOrientationNew() == Plateau.NSE || getOrientationNew() == Plateau.NSO
-                    || getOrientationNew() == Plateau.SEO || getOrientationNew() == Plateau.NEO);
+                    || getOrientationNew() == Plateau.SEO || getOrientationNew() == Plateau.NEO)
+                        && (getOrientationNew() != getOrientationOld());
         }
         return false;
     }

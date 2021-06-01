@@ -53,7 +53,8 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
     public void dessinerJetons(){
         Image jeton1, jeton2, jeton3, jeton4, jeton1Tra, jeton2Tra, jeton3Tra, jeton4Tra;
 
-        drawable.setFont(new Font("default", Font.BOLD, 25));
+        drawable.setFont(new Font("default", Font.PLAIN, 20));
+        drawable.setColor(Color.WHITE);
         drawable.drawString("Jetons :",0,25);
         drawable.setFont(new Font("default", Font.PLAIN, 12));
 
@@ -120,18 +121,21 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         // Le cast permet d'avoir acces a un peu plus de primitives de dessin
         drawable = (Graphics2D) g;
 
+
         // On recupere quelques infos provenant de la partie JComponent
         largeur = getSize().width;
         hauteur = getSize().height;
 
         // On efface tout
-        drawable.clearRect(0, 0, largeur, hauteur);
+        //drawable.clearRect(0, 0, largeur, hauteur);
+        drawable.setBackground(new Color(255,255,255,0));
+        g.setColor(new Color(255,255,255,0));
+        g.fillRect(0, 0, getWidth(),getHeight());
 
         //Calcul de la taille d'une case
         int hCase=(hauteur-2*offsetY)/2;
         int lCase=(largeur-2*offsetX)/2;
         tailleC=Math.min(hCase,lCase);
-
         dessinerJetons();
 
     }

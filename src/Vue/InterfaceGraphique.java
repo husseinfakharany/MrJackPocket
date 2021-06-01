@@ -228,8 +228,9 @@ public class InterfaceGraphique implements Observer, Runnable {
 
             setInfo(new JLabel("Explications",SwingConstants.CENTER));
             info.setFont(new Font("default", Font.PLAIN, (int) (0.028*height) ));
+            info.setForeground(Color.WHITE);
 
-            menu = nouveauBouton("Quitter", (int) (0.231*width) , (int) (0.056*height) );
+            menu = nouveauBouton("Sauvegarder/quitter", (int) (0.231*width) , (int) (0.056*height) );
             menu.addActionListener(new AdaptateurCommande(controle,"quitterJ"));
 
             boiteInfo.add(tour);
@@ -244,6 +245,7 @@ public class InterfaceGraphique implements Observer, Runnable {
 
         tour.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         tour.setText("  Tour n°"+jeu.plateau().getNumTour());
+        tour.setForeground(Color.WHITE);
         tour.setFont(new Font("default", Font.PLAIN, (int) (0.034*height) ));
 
 
@@ -279,7 +281,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         }
 
         getJetons().setPreferredSize(new Dimension((int) (0.15*width),(int) (0.25*height)));
-        getPioche().setPreferredSize(new Dimension((int) (0.15*width),(int) (0.15*height)));
+        getPioche().setPreferredSize(new Dimension((int) (0.14*width),(int) (0.14*height)));
 
 
         if(boiteCentreD == null){
@@ -293,8 +295,8 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteCentreD.add(boiteUnReDoCartes);
         }
 
-        boiteCentreD.setPreferredSize(new Dimension((int) (0.2*width),height));
-        boiteCentreD.setMaximumSize(new Dimension((int) (0.2*width),height));
+        boiteCentreD.setPreferredSize(new Dimension((int) (0.17*width),height));
+        boiteCentreD.setMaximumSize(new Dimension((int) (0.17*width),height));
 
         if(boiteCentreG == null){
             boiteCentreG = Box.createVerticalBox();
@@ -306,19 +308,22 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteCentreG.add(Box.createVerticalGlue());
         }
 
-        getIdentite().setPreferredSize(new Dimension((int) (0.2*width),(int) (0.60*height) ));
-        getMain().setPreferredSize( new Dimension((int) (0.2*width),(int) (0.40*height)) );
-        boiteCentreG.setPreferredSize( new Dimension((int) (0.2*width),height) );
+        getIdentite().setPreferredSize(new Dimension((int) (0.17*width),(int) (0.60*height) ));
+        getMain().setPreferredSize( new Dimension((int) (0.17*width),(int) (0.40*height)) );
+        boiteCentreG.setPreferredSize( new Dimension((int) (0.17*width),height) );
+        boiteCentreG.setMaximumSize( new Dimension((int) (0.17*width),height) );
         getDistrict().setPreferredSize(new Dimension( (int) (0.4*width),(int) (0.4*width) ));
 
         if(boiteCentre == null) {
             boiteCentre = Box.createHorizontalBox();
 
+            boiteCentre.add(Box.createHorizontalGlue());
             boiteCentre.add(boiteCentreG);
             boiteCentre.add(Box.createHorizontalGlue());
             boiteCentre.add(getDistrict());
             boiteCentre.add(Box.createHorizontalGlue());
             boiteCentre.add(boiteCentreD);
+            boiteCentre.add(Box.createHorizontalGlue());
         }
 
         getVoirJack().setAlignmentX(JComponent.CENTER_ALIGNMENT);
@@ -336,7 +341,7 @@ public class InterfaceGraphique implements Observer, Runnable {
 
 
         if(boiteJeu == null){
-            boiteJeu = Box.createVerticalBox();
+            boiteJeu = BackgroundBox.createVerticalBackgroundBox();
 
             boiteJeu.add(boiteInfo);
             boiteJeu.add(boiteCentre);

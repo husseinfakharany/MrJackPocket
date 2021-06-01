@@ -74,8 +74,10 @@ public class MainGraphique extends JComponent {
     }
     public void dessinerMain(){
         Iterator<CarteAlibi> main;
-        drawable.setFont(new Font("default", Font.BOLD, 20));
-        if(isAfficherEnqueteur() && !jeu.plateau().finJeu(false,false)){
+        //jeu.plateau().enqueteur.setCardList(mainFictif);
+        drawable.setFont(new Font("default", Font.PLAIN, 18));
+        drawable.setColor(Color.WHITE);
+        if(isAfficherEnqueteur() && (!jeu.plateau().finJeu(false,false) || jeu.plateau().getNumAction() != 4) ){
             main = jeu.plateau().enqueteur.getCardList().iterator();
             drawable.drawString("Main de l'enquêteur :",10,25);
         }
@@ -104,7 +106,10 @@ public class MainGraphique extends JComponent {
         hauteur = getSize().height;
 
         // On efface tout
-        drawable.clearRect(0, 0, largeur, hauteur);
+        //drawable.clearRect(0, 0, largeur, hauteur);
+        drawable.setBackground(new Color(255,255,255,0));
+        g.setColor(new Color(255,255,255,0));
+        g.fillRect(0, 0, getWidth(),getHeight());
 
         //Calcul de la taille d'une case
         int hCase=(hauteur-45)/3;

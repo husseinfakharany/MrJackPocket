@@ -75,25 +75,27 @@ public class IdentiteGraphique extends JComponent {
             taillePiocheAdv = jeu.plateau().jack.getCardList().size();
         }
 
-        drawable.setFont(new Font("default", Font.BOLD, 25));
+        drawable.setFont(new Font("default", Font.BOLD, (int) (0.1*largeur)));
+        drawable.setColor(Color.WHITE);
         drawable.drawString("Vous Incarnez :",30,(int) (0.2*tailleC));
         drawable.setFont(new Font("default", Font.ITALIC, 20));
         if(isJack) {
             drawable.drawString("Meurtrier",30,(int) (0.4*tailleC));
-            drawable.setFont(new Font("default", Font.BOLD, 25));
+            drawable.setFont(new Font("default", Font.PLAIN, (int) (0.09*largeur)));
             drawable.drawImage(sablier,(int) (tailleC*0.3),(int) (1.5*tailleC), (int) (0.4*tailleC), (int) (0.4*tailleC), null);
             drawable.drawString(": "+nbSabliers+" / 6",(int) (tailleC*0.7),(int) (1.75*tailleC) );
         }
         else {
             drawable.drawString("Enquêteur",30,(int) (0.4*tailleC));
-            drawable.setFont(new Font("default", Font.BOLD, 25));
+            drawable.setFont(new Font("default", Font.PLAIN, (int) (0.09*largeur)));
             drawable.drawImage(sablier,(int) (tailleC*0.3),(int) (3.2*tailleC), (int) (0.4*tailleC), (int) (0.4*tailleC), null);
             drawable.drawString(": "+nbSabliers+" / 6",(int) (tailleC*0.7),(int) (3.5*tailleC) );
         }
+        drawable.setFont(new Font("default", Font.PLAIN,(int) (0.09*largeur)));
         drawable.drawImage(personnage, (int) (0.2*tailleC), (int) (0.5*tailleC), tailleC, tailleC, null);
         drawable.drawString("Adversaire",(int) (0.5*tailleC)-25,(int) (2.6*tailleC-20));
         drawable.drawImage(pioche,(int) (tailleC*0.3),(int) (2.7*tailleC), (int) (0.4*tailleC), (int) (0.4*tailleC), null);
-        drawable.drawString(": "+taillePiocheAdv+" / 8",(int) (tailleC*0.7),(int) (2.9*tailleC) );
+        drawable.drawString(": "+taillePiocheAdv+" / 8",(int) (tailleC*0.7),(int) (2.95*tailleC) );
         drawable.setFont(new Font("default", Font.PLAIN, 16));
 
     }
@@ -109,7 +111,10 @@ public class IdentiteGraphique extends JComponent {
         hauteur = getSize().height;
 
         // On efface tout
-        drawable.clearRect(0, 0, largeur, hauteur);
+        //drawable.clearRect(0, 0, largeur, hauteur);
+        drawable.setBackground(new Color(255,255,255,0));
+        g.setColor(new Color(255,255,255,0));
+        g.fillRect(0, 0, getWidth(),getHeight());
 
         //Calcul de la taille d'une case
         int hCase=hauteur/4; //texte + Photo + Blanc + Adversaire

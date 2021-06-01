@@ -33,20 +33,23 @@ public class PiocheGraphique extends JComponent implements ElementPlateauG{
         hauteur = getSize().height;
 
         // On efface tout
-        drawable.clearRect(0, 0, largeur, hauteur);
+        //drawable.clearRect(0, 0, largeur, hauteur);
+        drawable.setBackground(new Color(255,255,255,0));
+        g.setColor(new Color(255,255,255,0));
+        g.fillRect(0, 0, getWidth(),getHeight());
 
         //Calcul de la taille d'une case
-        int hCase=hauteur;
+        int hCase=hauteur-offsetY;
         int lCase=largeur;
         tailleC=Math.min(hCase,lCase);
 
         int taillePioche = jeu.plateau().getTaillePioche();
-        drawable.setFont(new Font("default", Font.BOLD, 18));
-        drawable.drawString("Pioche ( " + taillePioche + " / 8 ) :",0,25);
+        drawable.setFont(new Font("default", Font.BOLD, 16));
+        drawable.setColor(Color.WHITE);
+        drawable.drawString("Pioche ( " + taillePioche + " / 8 ) :",(int) ((largeur-0.8*tailleC)/2),25);
         drawable.setFont(new Font("default", Font.PLAIN, 12));
-        if(piocheActive) drawable.drawImage(piocheA,offsetX,offsetY,(int) (0.8*tailleC),(int) (0.8*tailleC),null);
-        else drawable.drawImage(piocheD,offsetX,offsetY,tailleC-offsetY,tailleC-offsetY,null);
-
+        if(piocheActive) drawable.drawImage(piocheA,(int) ((largeur-0.8*tailleC)/2),offsetY,(int) (0.8*tailleC),(int) (0.8*tailleC),null);
+        else drawable.drawImage(piocheD,(int) ((largeur-0.8*tailleC)/2),offsetY,(int) (0.8*tailleC),(int) (0.8*tailleC),null);
 
     }
 
