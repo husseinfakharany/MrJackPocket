@@ -36,6 +36,7 @@ public class IAMeilleureProchain extends IA{
             for(Action a : Action.listeAction(actions,joueurCourant)){
                 cp.setAction(a);
                 j.jouerCoup(cp);
+                //Appel récursif ici pour le minimax
                 if(j.plateau().joueurCourant.isJack()) {
                     int score = ScoreConfig.scoreSuspectVisiblesJackCache(j);
                     if(valeur <= score){

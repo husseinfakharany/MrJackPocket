@@ -201,6 +201,8 @@ public class Coup extends Commande implements Cloneable{
 				action.setNumEnqueteur(Plateau.TOBBY);
 				break;
 			case ECHANGER_DISTRICT:
+				l--;
+				c--;
 				if(action.getPosition1() != null && action.getPosition1().x == c && action.getPosition1().y == l) {
 					action.setPosition1(action.getPosition2());
 					action.setPosition2(null);
@@ -216,6 +218,8 @@ public class Coup extends Commande implements Cloneable{
 			case INNOCENTER_CARD:
 				break;
 			case ROTATION_DISTRICT:
+				l--;
+				c--;
 				action.setPosition1(new Point(c,l));
 				if(action.getOrientationNew() == -1) action.setOrientationNew(plateau.grille[l][c].orientation);
 				switch (action.getOrientationNew()){
@@ -296,7 +300,7 @@ public class Coup extends Commande implements Cloneable{
 					return enqueteurs.get(0).getNumEnqueteur();
 			}
 		}
-
+		Configuration.instance().logger().info("Position invalide pour l'action en cours");
 		return -1;
 	}
 

@@ -36,12 +36,12 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         jeton4BNB = Configuration.chargeImage("Jeton-4-B-NB");
         jeton1ATra = Configuration.chargeImage("Jeton-1-A-tra");
         jeton1BTra = Configuration.chargeImage("Jeton-1-B-tra");
-        jeton2ATra = Configuration.chargeImage("Jeton-1-A-tra");
-        jeton2BTra = Configuration.chargeImage("Jeton-1-B-tra");
-        jeton3ATra = Configuration.chargeImage("Jeton-1-A-tra");
-        jeton3BTra = Configuration.chargeImage("Jeton-1-B-tra");
-        jeton4ATra = Configuration.chargeImage("Jeton-1-A-tra");
-        jeton4BTra = Configuration.chargeImage("Jeton-1-B-tra");
+        jeton2ATra = Configuration.chargeImage("Jeton-2-A-tra");
+        jeton2BTra = Configuration.chargeImage("Jeton-2-B-tra");
+        jeton3ATra = Configuration.chargeImage("Jeton-3-A-tra");
+        jeton3BTra = Configuration.chargeImage("Jeton-3-B-tra");
+        jeton4ATra = Configuration.chargeImage("Jeton-4-A-tra");
+        jeton4BTra = Configuration.chargeImage("Jeton-4-B-tra");
         tourSuivant = Configuration.chargeImage("tourSuivant");
         jetonV = Configuration.chargeImage("JetonV");
         offsetX = 20;
@@ -86,7 +86,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         }
 
         drawable.setFont(new Font("default", Font.BOLD, 25));
-        drawable.drawString("Jetons :",(int) (largeur*0.5)-60,25);
+        drawable.drawString("Jetons :",0,25);
         drawable.setFont(new Font("default", Font.PLAIN, 12));
         if(jeu.plateau().getJeton(0).getDejaJoue()) drawable.drawImage(jeton1Tra, 0, offsetY, tailleC, tailleC, null);
         else drawable.drawImage(jeton1, 0, offsetY, tailleC, tailleC, null);

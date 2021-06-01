@@ -35,7 +35,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     private IdentiteGraphique identite;
     private MainGraphique main;
     private TutoGraphique tuto;
-    Box boiteBas, boiteBasG, boiteInfo, boiteUnReDo, boiteCentreD, boiteCentre, boiteTuto, courant;
+    Box boiteCentreG, boiteUnReDoCartes, boiteInfo, boiteUnReDo, boiteCentreD, boiteCentre, boiteTuto, courant;
 
     // TODO Implémentation Tutoriel
 
@@ -114,7 +114,6 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     @Override
     public void update(Observable o, Object arg) {
-        getJetons().repaint();
         getBoiteJeu().repaint();
     }
 
@@ -241,7 +240,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         }
 
 
-        boiteInfo.setPreferredSize(new Dimension(1*width,(int) (0.104*height) ));
+        boiteInfo.setPreferredSize(new Dimension(width,(int) (0.06*height) ));
 
         tour.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         tour.setText("  Tour n°"+jeu.plateau().getNumTour());
@@ -255,60 +254,70 @@ public class InterfaceGraphique implements Observer, Runnable {
             redo = new JButton("⏩");
             redo.addActionListener(new AdaptateurCommande(controle,"refaire"));
 
-            boiteUnReDo.add(Box.createHorizontalGlue());
             boiteUnReDo.add(undo);
             boiteUnReDo.add(redo);
-            boiteUnReDo.add(Box.createHorizontalGlue());
         }
 
+        undo.setFont(new Font("default", Font.PLAIN, (int) (0.04*height) ));
+        undo.setPreferredSize(new Dimension( (int) (0.07*width), (int) (0.05*height)));
+        undo.setMaximumSize(new Dimension((int) (0.07*width), (int) (0.05*height)));
 
+        redo.setFont(new Font("default", Font.PLAIN, (int) (0.04*height)));
+        redo.setPreferredSize(new Dimension((int) (0.07*width), (int) (0.05*height)));
+        redo.setMaximumSize(new Dimension((int) (0.07*width), (int) (0.05*height)));
 
-        undo.setFont(new Font("default", Font.PLAIN, (int) (0.048*height) ));
-        undo.setPreferredSize(new Dimension( (int) (0.093*width), (int) (0.056*height)));
-        undo.setMaximumSize(new Dimension((int) (0.093*width), (int) (0.056*height)));
+        if(boiteUnReDoCartes == null) {
+            boiteUnReDoCartes = Box.createVerticalBox();
 
-        redo.setFont(new Font("default", Font.PLAIN, 35));
-        redo.setPreferredSize(new Dimension((int) (0.093*width), (int) (0.056*height)));
-        redo.setMaximumSize(new Dimension((int) (0.093*width), (int) (0.056*height)));
+            setVoirJack(new JButton("Voir mes cartes et ⏳"));
+            getVoirJack().addActionListener(new AdaptateurCommande(controle,"main"));
 
+            boiteUnReDoCartes.add(getVoirJack());
+            boiteUnReDoCartes.add(Box.createVerticalGlue());
+            boiteUnReDoCartes.add(boiteUnReDo);
+            boiteUnReDoCartes.add(Box.createVerticalGlue());
+        }
 
+        getJetons().setPreferredSize(new Dimension((int) (0.15*width),(int) (0.25*height)));
+        getPioche().setPreferredSize(new Dimension((int) (0.15*width),(int) (0.15*height)));
 
-        getJetons().setPreferredSize(new Dimension((int) (0.223*width),(int) (0.334*height)));
 
         if(boiteCentreD == null){
             boiteCentreD = Box.createVerticalBox();
             boiteCentreD.add(Box.createVerticalGlue());
             boiteCentreD.add(getJetons());
             boiteCentreD.add(Box.createVerticalGlue());
+            boiteCentreD.add(getPioche());
+            boiteCentreD.add(Box.createVerticalGlue());
+            boiteCentreD.add(boiteUnReDoCartes);
         }
+
+        boiteCentreD.setPreferredSize(new Dimension((int) (0.2*width),height));
+        boiteCentreD.setMaximumSize(new Dimension((int) (0.2*width),height));
+
+        if(boiteCentreG == null){
+            boiteCentreG = Box.createVerticalBox();
+
+            boiteCentreG.add(Box.createVerticalGlue());
+            boiteCentreG.add(getIdentite());
+            boiteCentreG.add(Box.createVerticalGlue());
+            boiteCentreG.add(getMain());
+            boiteCentreG.add(Box.createVerticalGlue());
+        }
+
+        getIdentite().setPreferredSize(new Dimension((int) (0.25*width),(int) (0.60*height) ));
+        getMain().setPreferredSize( new Dimension((int) (0.25*width),(int) (0.40*height)) );
+        boiteCentreG.setPreferredSize( new Dimension((int) (0.25*width),height) );
+        getDistrict().setPreferredSize(new Dimension( (int) (0.4*width),(int) (0.4*width) ));
 
         if(boiteCentre == null) {
             boiteCentre = Box.createHorizontalBox();
 
-            boiteCentre.add(Box.createHorizontalGlue());
-            boiteCentre.add(getIdentite());
+            boiteCentre.add(boiteCentreG);
             boiteCentre.add(Box.createHorizontalGlue());
             boiteCentre.add(getDistrict());
             boiteCentre.add(Box.createHorizontalGlue());
             boiteCentre.add(boiteCentreD);
-            boiteCentre.add(Box.createHorizontalGlue());
-        }
-
-        getIdentite().setPreferredSize(new Dimension((int) (0.223*width),boiteCentre.getHeight()));
-        getDistrict().setPreferredSize(new Dimension( (int) (0.4*width),(int) (0.4*width) ));
-
-        if(boiteBasG == null) {
-            boiteBasG = Box.createVerticalBox();
-
-            setVoirJack(new JButton("Voir mes cartes et ⏳"));
-            getVoirJack().addActionListener(new AdaptateurCommande(controle,"main"));
-
-            boiteBasG.setMaximumSize(new Dimension((int) (0.37*width),(int) (0.278*height) ));
-
-            boiteBasG.add(getVoirJack());
-            boiteBasG.add(Box.createVerticalGlue());
-            boiteBasG.add(boiteUnReDo);
-            boiteBasG.add(Box.createVerticalGlue());
         }
 
         getVoirJack().setAlignmentX(JComponent.CENTER_ALIGNMENT);
@@ -316,22 +325,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         getVoirJack().setPreferredSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
         getVoirJack().setMaximumSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
 
-        if(boiteBas == null) {
-            boiteBas = Box.createHorizontalBox();
 
-            boiteBas.add(boiteBasG);
-            boiteBas.add(Box.createHorizontalGlue());
-            boiteBas.add(getMain());
-            boiteBas.add(Box.createHorizontalGlue());
-            boiteBas.add(getPioche());
-        }
-
-        boiteBas.setMaximumSize(new Dimension(width,(int) (0.243*height) ));
-        boiteBas.setPreferredSize(new Dimension(width,(int) (0.243*height)));
-        boiteBasG.setPreferredSize(new Dimension((int) (0.175*width),boiteBas.getHeight()));
-        getMain().setPreferredSize(new Dimension((int) (0.8*width),(int) (0.243*height) ));
-        getPioche().setPreferredSize(new Dimension((int) (0.175*width),(int) (0.243*height)));
-        getPioche().setMaximumSize(new Dimension((int) (0.175*width),(int) (0.243*height)));
 
         if(boiteJeu == null) {
             getDistrict().addMouseListener(new AdaptateurSouris(getDistrict(), controle));
@@ -345,15 +339,12 @@ public class InterfaceGraphique implements Observer, Runnable {
 
             boiteJeu.add(boiteInfo);
             boiteJeu.add(boiteCentre);
-            boiteJeu.add(boiteBas);
 
             boiteJeu.setOpaque(true);
             boiteJeu.setBackground(Color.WHITE);
         }
 
-
         getVoirJack().setEnabled(isJack);
-        getVoirJack().setVisible(isJack);
         getIdentite().repaint();
         getDistrict().repaint();
         getPioche().repaint();
@@ -366,8 +357,12 @@ public class InterfaceGraphique implements Observer, Runnable {
             if(jeu.plateau().jackVisible) dessinerInfo("<html>Jack est visible.<br/>Passez au prochain tour</html>");
             if(!jeu.plateau().jackVisible) dessinerInfo("<html>Jack n'est pas visible.<br/>Passez au prochain tour</html>");
         }
-        if(jeu.plateau().enqueteur.getWinner()) dessinerInfo("<html>Sherlock a gagné !<br/> Retournez au menu </html>");
-        if(jeu.plateau().jack.getWinner()) dessinerInfo("<html>Jack à gagné !<br/> Retournez au menu </html>");
+        if(jeu.plateau().isAfficherVerdict()){
+            if(jeu.plateau().enqueteur.getWinner()) dessinerInfo("<html>Sherlock a gagné !<br/> Retournez au menu </html>");
+            if(jeu.plateau().jack.getWinner()) dessinerInfo("<html>Jack a gagné !<br/> Retournez au menu </html>");
+
+        }
+
         return boiteJeu;
     }
 
@@ -472,6 +467,17 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteAvantPartie.add(boiteParam);
             boiteAvantPartie.add(Box.createVerticalGlue());
         }
+        if(GroupeDifficulte!=null){
+            GroupeDifficulte.clearSelection();
+        }
+        if(GroupePersonnage != null){
+            GroupePersonnage.clearSelection();
+        }
+        refreshBoiteAvantPartieIA();
+        return boiteAvantPartie;
+    }
+
+    public void refreshBoiteAvantPartieIA(){
         Enumeration<AbstractButton> boutonsDif = GroupeDifficulte.getElements();
         AbstractButton bouton;
         boolean difficulteSet = false;
@@ -486,7 +492,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             if(bouton.isSelected()) personnageSet = true;
         }
         lancerPartie.setEnabled(personnageSet && difficulteSet);
-        return boiteAvantPartie;
+
     }
 
     public Box getBoiteCharger(){

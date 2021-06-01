@@ -10,14 +10,16 @@ import Modele.Action;
 import javax.swing.*;
 import java.awt.*;
 
-public class DistrictGraphique extends JComponent implements  ElementPlateauG{
+public class DistrictGraphique extends JComponent implements ElementPlateauG{
     Graphics2D drawable;
     int tailleC;
     Jeu jeu;
     Image quartier1, quartier2, quartier3, quartier4, quartierX, quartier1S, quartier2S, quartier3S, quartier4S,
             quartierXS, cible, suspectBla, suspectBle, suspectJau, suspectNoi, suspectOra, suspectRos, suspectVer,
-            suspectVio, suspectGri, sherlock, watson, chien, sherlockNB, watsonNB, chienNB;
+            suspectVio, suspectGri, suspectBlaJ, suspectBleJ, suspectJauJ, suspectNoiJ, suspectOraJ, suspectRosJ, suspectVerJ,
+            suspectVioJ, suspectGriJ, sherlock, watson, chien, sherlockNB, watsonNB, chienNB;
     private int offsetX=0,offsetY=0;
+    private boolean afficherVisible;
 
     private Action actionTemp;
 
@@ -43,12 +45,22 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
         suspectRos = Configuration.chargeImage("Suspect-rose");
         suspectVer = Configuration.chargeImage("Suspect-vert");
         suspectVio = Configuration.chargeImage("Suspect-violet");
+        suspectBlaJ = Configuration.chargeImage("Suspect-blancJ");
+        suspectBleJ = Configuration.chargeImage("Suspect-bleuJ");
+        suspectJauJ = Configuration.chargeImage("Suspect-jauneJ");
+        suspectGriJ = Configuration.chargeImage("Suspect-marronJ");
+        suspectNoiJ = Configuration.chargeImage("Suspect-noirJ");
+        suspectOraJ = Configuration.chargeImage("Suspect-orangeJ");
+        suspectRosJ = Configuration.chargeImage("Suspect-roseJ");
+        suspectVerJ = Configuration.chargeImage("Suspect-vertJ");
+        suspectVioJ = Configuration.chargeImage("Suspect-violetJ");
         sherlock = Configuration.chargeImage("Sherlock");
         watson = Configuration.chargeImage("Watson");
         chien = Configuration.chargeImage("Chien");
         sherlockNB = Configuration.chargeImage("SherlockNB");
         watsonNB = Configuration.chargeImage("WatsonNB");
         chienNB = Configuration.chargeImage("ChienNB");
+        setAfficherVisible(false);
     }
 
     public void dessinerCarte(int l, int c, CarteRue rue,boolean isSelectionne, int orientation){
@@ -111,31 +123,49 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
         }
         switch (rue.suspect.getCouleur()){
             case BLEU:
-                suspect = suspectBle;
+                if (afficherVisible && ( (jeu.plateau().visibles().contains(rue.suspect) && !jeu.plateau().jackVisible)
+                        || ( !jeu.plateau().visibles().contains(rue.suspect) && jeu.plateau().jackVisible) ) ) suspect = suspectBleJ;
+                else suspect = suspectBle;
                 break;
             case GRIS:
-                suspect = suspectGri;
+                if (afficherVisible && ( (jeu.plateau().visibles().contains(rue.suspect) && !jeu.plateau().jackVisible)
+                        || ( !jeu.plateau().visibles().contains(rue.suspect) && jeu.plateau().jackVisible) ) ) suspect = suspectGriJ;
+                else suspect = suspectGri;
                 break;
             case NOIR:
-                suspect = suspectNoi;
+                if (afficherVisible && ( (jeu.plateau().visibles().contains(rue.suspect) && !jeu.plateau().jackVisible)
+                        || ( !jeu.plateau().visibles().contains(rue.suspect) && jeu.plateau().jackVisible) ) ) suspect = suspectNoiJ;
+                else suspect = suspectNoi;
                 break;
             case ROSE:
-                suspect = suspectRos;
+                if (afficherVisible && ( (jeu.plateau().visibles().contains(rue.suspect) && !jeu.plateau().jackVisible)
+                        || ( !jeu.plateau().visibles().contains(rue.suspect) && jeu.plateau().jackVisible) ) ) suspect = suspectRosJ;
+                else suspect = suspectRos;
                 break;
             case VERT:
-                suspect = suspectVer;
+                if (afficherVisible && ( (jeu.plateau().visibles().contains(rue.suspect) && !jeu.plateau().jackVisible)
+                        || ( !jeu.plateau().visibles().contains(rue.suspect) && jeu.plateau().jackVisible) ) ) suspect = suspectVerJ;
+                else suspect = suspectVer;
                 break;
             case BLANC:
-                suspect = suspectBla;
+                if (afficherVisible && ( (jeu.plateau().visibles().contains(rue.suspect) && !jeu.plateau().jackVisible)
+                        || ( !jeu.plateau().visibles().contains(rue.suspect) && jeu.plateau().jackVisible) ) ) suspect = suspectBlaJ;
+                else suspect = suspectBla;
                 break;
             case JAUNE:
-                suspect = suspectJau;
+                if (afficherVisible && ( (jeu.plateau().visibles().contains(rue.suspect) && !jeu.plateau().jackVisible)
+                        || ( !jeu.plateau().visibles().contains(rue.suspect) && jeu.plateau().jackVisible) ) ) suspect = suspectJauJ;
+                else suspect = suspectJau;
                 break;
             case ORANGE:
-                suspect = suspectOra;
+                if (afficherVisible && ( (jeu.plateau().visibles().contains(rue.suspect) && !jeu.plateau().jackVisible)
+                        || ( !jeu.plateau().visibles().contains(rue.suspect) && jeu.plateau().jackVisible) ) ) suspect = suspectOraJ;
+                else suspect = suspectOra;
                 break;
             case VIOLET:
-                suspect = suspectVio;
+                if (afficherVisible && ( (jeu.plateau().visibles().contains(rue.suspect) && !jeu.plateau().jackVisible)
+                        || ( !jeu.plateau().visibles().contains(rue.suspect) && jeu.plateau().jackVisible) ) ) suspect = suspectVioJ;
+                else suspect = suspectVio;
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + rue.orientation);
@@ -253,7 +283,7 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
 
         dessinerGrille();
 
-        if(actionTemp!=null)dessinerFeedback();
+        if(actionTemp!=null) dessinerFeedback();
     }
 
     @Override
@@ -278,6 +308,15 @@ public class DistrictGraphique extends JComponent implements  ElementPlateauG{
 
     public void dessinerFeedback(Action actionTemp) {
         this.actionTemp = actionTemp;
+        repaint();
+    }
+
+    public boolean isAfficherVisible() {
+        return afficherVisible;
+    }
+
+    public void setAfficherVisible(boolean afficherVisible) {
+        this.afficherVisible = afficherVisible;
         repaint();
     }
 }

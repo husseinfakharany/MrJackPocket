@@ -37,7 +37,7 @@ public class Joueur implements Cloneable{
 		setName(name);
 		setWinner(win);
 		setTurn(turn);
-		setSablier(sablierCaches,sablierVisibles);
+		setSablier(sabliersCaches,sabliersVisibles);
 	}
 
 	public void ajouterCarte(CarteAlibi card) {
@@ -100,12 +100,12 @@ public class Joueur implements Cloneable{
 
 	public void setSablierCaches(int sabliersCaches) {
 		this.sablierCaches = sabliersCaches;
-		this.sablier = this.sablier+sabliersCaches;
+		this.sablier = this.sablierVisibles+this.sablierCaches;
 	}
 
 	public void setSablierVisibles(int sabliersVisibles) {
 		this.sablierVisibles = sabliersVisibles;
-		this.sablier = this.sablier+sabliersVisibles;
+		this.sablier = this.sablierCaches+this.sablierVisibles;
 	}
 
 

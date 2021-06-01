@@ -116,9 +116,7 @@ public class Action{
             case DEPLACER_SHERLOCK:
                 return getDeplacement() ==1 || getDeplacement() ==2;
             case INNOCENTER_CARD:
-                if (cartePioche!=null && orientationSuspect!=-1)
-                    return true;
-                else return false;
+                return cartePioche != null && orientationSuspect != -1;
             case ECHANGER_DISTRICT:
                 return getPosition1() != null && getPosition2() !=null;
             case ROTATION_DISTRICT:

@@ -36,6 +36,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     public SuspectCouleur idJack;
     Jeu jeu;
     boolean tourFini;
+    private boolean afficherVerdict;
 
 
     public CarteRue [][] grille;
@@ -72,6 +73,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         joueurCourant = enqueteur;
         jeu = j;
         tourFini = false;
+        setAfficherVerdict(false);
 
         initialiseOrientationsRues();
         initialiseSuspects();
@@ -180,6 +182,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
                 carte.setDejaTourne(false);
             }
         }
+
         melangeJetonsActions();
     }
 
@@ -198,7 +201,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     public boolean prochainTour(){
         if (finJeu()){
             Configuration.instance().logger().info("Fin du Jeu");
-            jeu.notifierObserveurs();
+            numTour++;
             return true;
         } else {
             tourFini = false;
@@ -310,21 +313,21 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     }
 
     //Fonction appelée apres la fin du tour
-    public boolean finJeu(boolean updatePlateau){
+    public boolean finJeu(boolean updatePlateau, boolean notifierInterface){
         boolean res = verdictTour(updatePlateau);
         if (numTour>=8) {
-            return true;
+            res =true;
         }
         if (jack.getSablier()>=6){
             jack.setWinner(true);
-            return true;
+            res =true;
         }
-        jeu.notifierObserveurs();
+        if(notifierInterface)jeu.notifierObserveurs();
         return res;
     }
 
     public boolean finJeu(){
-        return finJeu(true);
+        return finJeu(true,true);
     }
 
     public void reinitialiser(){
@@ -509,4 +512,12 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return suspectsInnocete;
     }
 
+    public boolean isAfficherVerdict() {
+        return afficherVerdict;
+    }
+
+    public void setAfficherVerdict(boolean afficherVerdict) {
+        this.afficherVerdict = afficherVerdict;
+        jeu.notifierObserveurs();
+    }
 }

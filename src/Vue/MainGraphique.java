@@ -1,12 +1,11 @@
 package Vue;
 
 import Global.Configuration;
-import Modele.CarteAlibi;
-import Modele.Jeu;
-import Modele.SuspectCouleur;
+import Modele.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class MainGraphique extends JComponent {
@@ -15,6 +14,7 @@ public class MainGraphique extends JComponent {
     Jeu jeu;
     Image suspectBla, suspectBle, suspectJau, suspectNoi, suspectOra, suspectRos, suspectVer, suspectVio, suspectGri;
     private boolean afficherEnqueteur;
+    ArrayList<CarteAlibi> mainFictif;
 
     MainGraphique(Jeu j){
         jeu=j;
@@ -28,13 +28,14 @@ public class MainGraphique extends JComponent {
         suspectOra = Configuration.chargeImage("Suspect-orangeB");
         suspectVio = Configuration.chargeImage("Suspect-violetB");
         setAfficherEnqueteur(true);
-        /*ArrayList<CarteAlibi> mainFictif = new ArrayList<CarteAlibi>();
+        mainFictif = new ArrayList<CarteAlibi>();
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.JEREMY_BERT,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.MADAME,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.JOHN_PIZER,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.INSPECTOR_LESTRADE,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.SERGENT_GOODLEY,null ) ) );
-        jeu.plateau().enqueteur.setCardList(mainFictif);*/
+        mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.WILLIAM_GULL,null ) ) );
+        mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.MISS_STEALTHY,null ) ) );
     }
 
     public void dessinerCarte(SuspectCouleur couleur, int x, int y){
@@ -72,9 +73,9 @@ public class MainGraphique extends JComponent {
     }
     public void dessinerMain(){
         Iterator<CarteAlibi> main;
-
-        drawable.setFont(new Font("default", Font.BOLD, 25));
-        if(isAfficherEnqueteur()){
+        jeu.plateau().enqueteur.setCardList(mainFictif);
+        drawable.setFont(new Font("default", Font.BOLD, 20));
+        if(isAfficherEnqueteur() && !jeu.plateau().finJeu(false,false)){
             main = jeu.plateau().enqueteur.getCardList().iterator();
             drawable.drawString("Main de l'enquêteur :",10,25);
         }
@@ -86,7 +87,7 @@ public class MainGraphique extends JComponent {
         CarteAlibi actuel;
         while(main.hasNext()){
             actuel = main.next();
-            dessinerCarte(actuel.getSuspect().getCouleur(),i* (int) (tailleC*0.85),45);
+            dessinerCarte(actuel.getSuspect().getCouleur(),(i%3)* (int) (tailleC*0.85),(i/3)*tailleC+45);
             i++;
         }
 
@@ -106,8 +107,8 @@ public class MainGraphique extends JComponent {
         drawable.clearRect(0, 0, largeur, hauteur);
 
         //Calcul de la taille d'une case
-        int hCase=hauteur-45;
-        int lCase=(int)(largeur*1.15)/8;
+        int hCase=(hauteur-45)/3;
+        int lCase=(int)(largeur*1.17)/3;
         tailleC=Math.min(hCase,lCase);
 
         dessinerMain();

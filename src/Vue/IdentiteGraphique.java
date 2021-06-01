@@ -29,7 +29,7 @@ public class IdentiteGraphique extends JComponent {
         Joueur personnageCourant = jeu.plateau().joueurCourant;
         int taillePiocheAdv;
         int nbSabliers;
-        if(afficherCaches) nbSabliers = jeu.plateau().jack.getSablier();
+        if(afficherCaches || jeu.plateau().finJeu(false,false)) nbSabliers = jeu.plateau().jack.getSablier();
         else nbSabliers = jeu.plateau().jack.getSablierVisibles();
         boolean isJack = personnageCourant.isJack();
         //isJack = !isJack;
