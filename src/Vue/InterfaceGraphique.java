@@ -284,6 +284,7 @@ public class InterfaceGraphique implements Observer, Runnable {
 
         if(boiteCentreD == null){
             boiteCentreD = Box.createVerticalBox();
+            boiteCentreD = Box.createVerticalBox();
             boiteCentreD.add(Box.createVerticalGlue());
             boiteCentreD.add(getJetons());
             boiteCentreD.add(Box.createVerticalGlue());
@@ -305,9 +306,9 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteCentreG.add(Box.createVerticalGlue());
         }
 
-        getIdentite().setPreferredSize(new Dimension((int) (0.25*width),(int) (0.60*height) ));
-        getMain().setPreferredSize( new Dimension((int) (0.25*width),(int) (0.40*height)) );
-        boiteCentreG.setPreferredSize( new Dimension((int) (0.25*width),height) );
+        getIdentite().setPreferredSize(new Dimension((int) (0.2*width),(int) (0.60*height) ));
+        getMain().setPreferredSize( new Dimension((int) (0.2*width),(int) (0.40*height)) );
+        boiteCentreG.setPreferredSize( new Dimension((int) (0.2*width),height) );
         getDistrict().setPreferredSize(new Dimension( (int) (0.4*width),(int) (0.4*width) ));
 
         if(boiteCentre == null) {
@@ -321,7 +322,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         }
 
         getVoirJack().setAlignmentX(JComponent.CENTER_ALIGNMENT);
-        getVoirJack().setFont(new Font("default", Font.PLAIN, (int) (getIdentite().getWidth()*0.06) ));
+        getVoirJack().setFont(new Font("default", Font.PLAIN, 15) );
         getVoirJack().setPreferredSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
         getVoirJack().setMaximumSize(new Dimension((int) (0.185*width), (int) (0.056*height)));
 
