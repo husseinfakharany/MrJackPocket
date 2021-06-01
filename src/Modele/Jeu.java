@@ -78,7 +78,7 @@ public class Jeu extends Observable implements Cloneable{
             for(int l=0; l<3; l++){
                 for(int c=0; c<3; c++){
                     rue = plateau.grille[l][c];
-                    flux.write(rue.getSuspect().getNomPersonnage());
+                    flux.write(rue.getSuspect().getNomPersonnage().toString());
                     flux.write(" ");
                     entier = rue.getOrientation();
                     flux.write(entier.toString());
@@ -88,7 +88,7 @@ public class Jeu extends Observable implements Cloneable{
             flux.write("\n");
             for(Suspect s: suspects){
                 if(s.getIsJack()){ // Il n'y a qu'un seul Jack
-                    flux.write(s.getNomPersonnage());
+                    flux.write(s.getNomPersonnage().toString());
                 }
             }
             flux.write("\n");
@@ -116,7 +116,7 @@ public class Jeu extends Observable implements Cloneable{
                         finAtteinte = true;
                     } else{
                         ac = cp.getAction();
-                        flux.write(ac.getAction());
+                        flux.write(ac.getAction().toString());
                         flux.write(" ");
                         switch(ac.getAction()){
                             case DEPLACER_JOKER:
