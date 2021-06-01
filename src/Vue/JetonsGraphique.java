@@ -52,6 +52,17 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
 
     public void dessinerJetons(){
         Image jeton1, jeton2, jeton3, jeton4, jeton1Tra, jeton2Tra, jeton3Tra, jeton4Tra;
+
+        drawable.setFont(new Font("default", Font.BOLD, 25));
+        drawable.drawString("Jetons :",0,25);
+        drawable.setFont(new Font("default", Font.PLAIN, 12));
+
+        if (jeu.plateau().tousJetonsJoues()){
+            int taille = Math.min(largeur,hauteur);
+            drawable.drawImage(tourSuivant, offsetX, offsetX+20, taille-offsetX-20 , taille-offsetX-20, null);
+            return;
+        }
+
         if(jeu.plateau().getJeton(0).estRecto())  {
             jeton1 = selection==1 || selection == -1? jeton1A : jeton1ANB;
             jeton1Tra = jeton1ATra;
@@ -85,9 +96,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
             jeton4Tra = jeton4BTra;
         }
 
-        drawable.setFont(new Font("default", Font.BOLD, 25));
-        drawable.drawString("Jetons :",0,25);
-        drawable.setFont(new Font("default", Font.PLAIN, 12));
+
         if(jeu.plateau().getJeton(0).getDejaJoue()) drawable.drawImage(jeton1Tra, 0, offsetY, tailleC, tailleC, null);
         else drawable.drawImage(jeton1, 0, offsetY, tailleC, tailleC, null);
         if(jeu.plateau().getJeton(1).getDejaJoue())drawable.drawImage(jeton2Tra, tailleC+offsetX, offsetY, tailleC, tailleC, null);
@@ -96,11 +105,6 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         else drawable.drawImage(jeton3, 0, tailleC+2*offsetY, tailleC, tailleC, null);
         if(jeu.plateau().getJeton(3).getDejaJoue()) drawable.drawImage(jeton4Tra, tailleC+offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
         else drawable.drawImage(jeton4, tailleC+offsetX, tailleC+2*offsetY, tailleC, tailleC, null);
-
-        if (jeu.plateau().tousJetonsJoues()){
-            int taille = Math.min(largeur,hauteur);
-            drawable.drawImage(tourSuivant, offsetX, offsetX, taille-offsetX , taille-offsetX, null);
-        }
 
 
         if(estJouable) {

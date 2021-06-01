@@ -1,11 +1,12 @@
 package Vue;
 
 import Global.Configuration;
-import Modele.*;
+import Modele.CarteAlibi;
+import Modele.Jeu;
+import Modele.SuspectCouleur;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 public class MainGraphique extends JComponent {
@@ -14,7 +15,7 @@ public class MainGraphique extends JComponent {
     Jeu jeu;
     Image suspectBla, suspectBle, suspectJau, suspectNoi, suspectOra, suspectRos, suspectVer, suspectVio, suspectGri;
     private boolean afficherEnqueteur;
-    ArrayList<CarteAlibi> mainFictif;
+    //ArrayList<CarteAlibi> mainFictif;
 
     MainGraphique(Jeu j){
         jeu=j;
@@ -28,14 +29,14 @@ public class MainGraphique extends JComponent {
         suspectOra = Configuration.chargeImage("Suspect-orangeB");
         suspectVio = Configuration.chargeImage("Suspect-violetB");
         setAfficherEnqueteur(true);
-        mainFictif = new ArrayList<CarteAlibi>();
+        /*mainFictif = new ArrayList<CarteAlibi>();
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.JEREMY_BERT,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.MADAME,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.JOHN_PIZER,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.INSPECTOR_LESTRADE,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.SERGENT_GOODLEY,null ) ) );
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.WILLIAM_GULL,null ) ) );
-        mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.MISS_STEALTHY,null ) ) );
+        mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.MISS_STEALTHY,null ) ) );*/
     }
 
     public void dessinerCarte(SuspectCouleur couleur, int x, int y){
@@ -73,7 +74,6 @@ public class MainGraphique extends JComponent {
     }
     public void dessinerMain(){
         Iterator<CarteAlibi> main;
-        jeu.plateau().enqueteur.setCardList(mainFictif);
         drawable.setFont(new Font("default", Font.BOLD, 20));
         if(isAfficherEnqueteur() && !jeu.plateau().finJeu(false,false)){
             main = jeu.plateau().enqueteur.getCardList().iterator();
