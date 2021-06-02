@@ -86,6 +86,27 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         initialiseTour();
     }
 
+    public Plateau(Jeu j, ArrayList<SuspectNom> suspectIndicesSauv, ArrayList<Integer> orientationSauv, SuspectNom nomJackSauv){
+        rand = new Random(Jeu.getSeed());
+        jack = new Joueur(true, "Hussein", 0,0,false,false);
+        enqueteur = new Joueur(false, "Fabien", 0,0, false, true);
+        numTour = 0;
+        grille = new CarteRue[3][3];
+        joueurCourant = enqueteur;
+        jeu = j;
+        tourFini = false;
+        setAfficherVerdict(false);
+
+        initialiseOrientationsRues();
+        initialiseSuspects();
+        initialiseEnqueteurs();
+        initialiseJetonsActions();
+        forceGrille(suspectIndicesSauv, orientationSauv); 
+        initialiseCarteAlibis();
+        forceJack(nomJackSauv);
+        initialiseTour();
+    }
+
     public boolean tousJetonsJoues(){
         return jeu.plateau().getJeton(0).getDejaJoue() && jeu.plateau().getJeton(1).getDejaJoue() &&
                 jeu.plateau().getJeton(2).getDejaJoue() && jeu.plateau().getJeton(3).getDejaJoue();
@@ -171,6 +192,42 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         grille[2][1].setEnqueteur(enqueteurs.get(TOBBY)); //Modified for test (original = [2][1])
 
     }
+    
+    private void forceGrille(ArrayList<SuspectNom> suspectIndicesSauv, ArrayList<int> orientationSauv){
+        int i,j;
+        j=0;
+        for(int l=0; l<3; l++){
+            for(int c=0; c<3; c++){
+                for(Suspect s: getSuspects()){
+                    if(s.getNomPersonnage() == suspectIndicesSauv.get(j)){
+                        grille[l][c] = new CarteRue(new Point(c,l), s);
+                        grille[l][c].setOrientation(orientationSauv.get(i));
+                    }
+                }
+                j++;
+            }
+        }
+
+        jackVisible = false;
+        grille[0][0].setOrientation(NSE);
+        enqueteurs.get(SHERLOCK).setPositionSurCarte(O);
+        grille[0][0].setEnqueteur(enqueteurs.get(SHERLOCK)); //Modified for test (original = [0][0],E)
+        System.out.println("Expected 1: " + grille[0][0].getPosEnqueteur(enqueteurs.get(SHERLOCK)));
+        System.out.println("Expected 1: " + enqueteurs.get(SHERLOCK).getPositionSurCarte());
+        System.out.println("Expected 0,0: " + enqueteurs.get(SHERLOCK).getPosition());
+
+
+        grille[0][2].setOrientation(NSO);
+        grille[0][2].setEnqueteur(enqueteurs.get(WATSON)); //Modified for test (original = [0][2])
+        enqueteurs.get(WATSON).setPositionSurCarte(E);
+        System.out.println("Expected 2: " + grille[0][2].getPosEnqueteur(enqueteurs.get(WATSON)));
+        System.out.println("Expected 2: " + enqueteurs.get(WATSON).getPositionSurCarte());
+        System.out.println("Expected 2,0: " + enqueteurs.get(WATSON).getPosition());
+
+        grille[2][1].setOrientation(NEO);
+        enqueteurs.get(TOBBY).setPositionSurCarte(S);
+        grille[2][1].setEnqueteur(enqueteurs.get(TOBBY)); //Modified for test (original = [2][1])
+    }
 
     void initialiseTour(){
         numTour++;
@@ -223,6 +280,15 @@ public class Plateau extends Historique<Coup> implements Cloneable {
             act.setDejaJoue(false);
         }
     }
+    
+    void forceJetons(ArrayList<Boolean> jetonsActionsSauv) {
+        int i = 0;
+        for(JetonActions act:jetonsActions){
+            act.setEstRecto(jetonsActionsSauv.get(i)); //Lancement de chaque jeton
+            act.setDejaJoue(false);
+            i++;
+        }
+    }
 
     void inverserJetons() {
         for(JetonActions act:jetonsActions){
@@ -250,6 +316,19 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     public void piocherJack(){
         int index = rand.nextInt(cartesAlibis.size());
+        CarteAlibi JackCard = cartesAlibis.get(index);
+        cartesAlibis.remove(index);
+        JackCard.getSuspect().setIsJack(true);
+        JackCard.getSuspect().setPioche(true);
+        idJack = JackCard.getCouleur();
+    }
+
+    public void forceJack(SuspectNom nomJackSauv){
+        for(int i=0; i<cartesAlibis.size(); i++){
+            if (cartesAlibis.get(i).getSuspect().getNomPersonnage() == nomJackSauv){
+                index = i;
+            }
+        }
         CarteAlibi JackCard = cartesAlibis.get(index);
         cartesAlibis.remove(index);
         JackCard.getSuspect().setIsJack(true);
@@ -467,6 +546,10 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     public ArrayList<Suspect> getSuspects() {
         return suspects;
+    }
+
+    public ArrayList<CarteAlibi> getCartesAlibis() {
+        return cartesAlibis;
     }
 
     public Actions getActionJeton(int num){
