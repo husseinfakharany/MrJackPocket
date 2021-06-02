@@ -7,6 +7,8 @@ import Modele.Jeu;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Observer;
@@ -36,8 +38,6 @@ public class InterfaceGraphique implements Observer, Runnable {
     private MainGraphique main;
     private TutoGraphique tuto;
     Box boiteCentreG, boiteUnReDoCartes, boiteInfo, boiteUnReDo, boiteCentreD, boiteCentre, boiteTuto, courant;
-
-    // TODO Implémentation Tutoriel
 
     InterfaceGraphique(Jeu j, CollecteurEvenements c) {
         jeu = j;
@@ -198,6 +198,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             tuto = nouveauBouton("Règles & Tutoriel");
             tuto.addActionListener(new AdaptateurCommande(controle,"tuto"));
             tuto.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
             boiteBoutons =Box.createVerticalBox();
 
@@ -566,9 +567,18 @@ public class InterfaceGraphique implements Observer, Runnable {
     //Boite tuto
     public Box getBoiteTuto(){
         if (boiteTuto == null){
-            boiteTuto = Box.createVerticalBox();
 
+            boiteTuto = Box.createHorizontalBox();
             boiteTuto.add(tuto);
+
+            JButton b1=new JButton("<<");
+            boiteTuto.add(b1);
+            b1.addActionListener(new AdaptateurCommande(controle,"tuto"));
+
+            JButton b2=new JButton(">>");
+            boiteTuto.add(b2);
+            b2.addActionListener(new AdaptateurCommande(controle,"tuto"));
+
         }
 
         return boiteTuto;

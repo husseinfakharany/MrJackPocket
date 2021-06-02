@@ -5,17 +5,37 @@ import Global.Configuration;
 import javax.swing.*;
 import java.awt.*;
 
+
+
 public class TutoGraphique extends JComponent implements  ElementPlateauG{
     Graphics2D drawable;
     int tailleC;
-    Image image;
+    Image [] s;
+    int i;
     private int offsetX, offsetY;
 
-
     TutoGraphique(){
-        image = Configuration.chargeImage("QuartierVide-1");
+        i=0;
+        s= new Image[6];
+        for (i=0;i<s.length;i++) {
+            s[i]= Configuration.chargeImage("tuto"+i);
+        }
         offsetX = 0;
         offsetY = 0;
+
+        }
+
+    public void tutoriel(){
+
+        if (i < s.length - 1){
+                i++;
+                  drawable.drawImage(s[i], offsetX,offsetY,null);
+                  repaint();
+        }
+        else {
+                System.out.println("No more tuto");
+            }
+
     }
 
 
@@ -29,7 +49,6 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
         // On recupere quelques infos provenant de la partie JComponent
         largeur = getSize().width;
         hauteur = getSize().height;
-
         // On efface tout
         drawable.clearRect(0, 0, largeur, hauteur);
 
@@ -38,6 +57,7 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
         int lCase=largeur/5; //3 rues + 2 inspecteurs qui l'entourent possiblement
         tailleC=Math.min(hCase,lCase);
 
+        tutoriel();
 
     }
 
@@ -62,3 +82,4 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
     }
 
 }
+
