@@ -146,6 +146,7 @@ public class Jeu extends Observable implements Cloneable{
                                 flux.write(entier.toString());
                                 break;
                             case INNOCENTER_CARD:
+                                flux.write(ac.getCartePioche().getSuspect().getNomPersonnage().toString());
                                 break;
                             case ROTATION_DISTRICT:
                                 entier = ac.getPosition1().y;
