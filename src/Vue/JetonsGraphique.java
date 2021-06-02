@@ -54,7 +54,7 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         Image jeton1, jeton2, jeton3, jeton4, jeton1Tra, jeton2Tra, jeton3Tra, jeton4Tra;
 
         drawable.setFont(new Font("default", Font.PLAIN, 20));
-        drawable.setColor(Color.WHITE);
+        drawable.setColor(Color.BLACK);
         drawable.drawString("Jetons :",0,25);
         drawable.setFont(new Font("default", Font.PLAIN, 12));
 

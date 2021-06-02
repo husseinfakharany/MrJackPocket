@@ -1,14 +1,13 @@
 package Vue;
 
 import Controle.CollecteurEvenements;
-import Global.Configuration;
 import Modele.Action;
 import Modele.Jeu;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Observer;
@@ -48,7 +47,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         pioche = new PiocheGraphique(jeu);
         setJetons(new JetonsGraphique(jeu));
         identite = new IdentiteGraphique(jeu);
-        tuto = new TutoGraphique();
+        setTuto(new TutoGraphique());
         main = new MainGraphique(jeu);
     }
 
@@ -229,7 +228,6 @@ public class InterfaceGraphique implements Observer, Runnable {
 
             setInfo(new JLabel("Explications",SwingConstants.CENTER));
             info.setFont(new Font("default", Font.PLAIN, (int) (0.028*height) ));
-            info.setForeground(Color.WHITE);
 
             menu = nouveauBouton("Sauvegarder/quitter", (int) (0.231*width) , (int) (0.056*height) );
             menu.addActionListener(new AdaptateurCommande(controle,"quitterJ"));
@@ -246,7 +244,6 @@ public class InterfaceGraphique implements Observer, Runnable {
 
         tour.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         tour.setText("  Tour n°"+jeu.plateau().getNumTour());
-        tour.setForeground(Color.WHITE);
         tour.setFont(new Font("default", Font.PLAIN, (int) (0.034*height) ));
 
 
@@ -568,16 +565,24 @@ public class InterfaceGraphique implements Observer, Runnable {
     public Box getBoiteTuto(){
         if (boiteTuto == null){
 
-            boiteTuto = Box.createHorizontalBox();
-            boiteTuto.add(tuto);
+            boiteTuto = Box.createVerticalBox();
+            Box boitePreviousNext = Box.createHorizontalBox();
+            boitePreviousNext.add(getTuto());
 
             JButton b1=new JButton("<<");
-            boiteTuto.add(b1);
-            b1.addActionListener(new AdaptateurCommande(controle,"tuto"));
+            boitePreviousNext.add(b1);
+            b1.addActionListener(new AdaptateurCommande(controle,"previousTuto"));
 
             JButton b2=new JButton(">>");
-            boiteTuto.add(b2);
-            b2.addActionListener(new AdaptateurCommande(controle,"tuto"));
+            boitePreviousNext.add(b2);
+            b2.addActionListener(new AdaptateurCommande(controle,"nextTuto"));
+
+            JButton retourMenu = new JButton("Retour au menu");
+            retourMenu.setFont(new Font("default", Font.PLAIN, 20));
+            retourMenu.addActionListener(new AdaptateurCommande(controle,"retourMenuTuto"));
+            retourMenu.setAlignmentX(Component.RIGHT_ALIGNMENT);
+            boiteTuto.add(retourMenu);
+            boiteTuto.add(boitePreviousNext);
 
         }
 
@@ -586,13 +591,17 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     public void quitterJeu(){
         Object[] options = {"Sauvegader et quitter", "Sauvegader", "Quitter", "Retour au jeu"};
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH-mm-ss");
         int res = JOptionPane.showOptionDialog(frame, "Que voulez vous faire ?",
                 "Quitter la partie", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
                 options, options[3]);
         switch (res){
             case 0:
+                jeu.sauvegarder("Partie du " + LocalDateTime.now().format(dtf));
+                controle.commandeMenu("menuJ");
+                break;
             case 1:
-                Configuration.instance().logger().info("Sauvegarde pas implémenté");
+                jeu.sauvegarder("Partie du " + LocalDateTime.now().format(dtf));
                 break;
             case 2:
                 controle.commandeMenu("menuJ");
@@ -647,5 +656,13 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     public void setInfo(JLabel text) {
         info = text;
+    }
+
+    public TutoGraphique getTuto() {
+        return tuto;
+    }
+
+    public void setTuto(TutoGraphique tuto) {
+        this.tuto = tuto;
     }
 }

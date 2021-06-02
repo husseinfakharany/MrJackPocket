@@ -2,12 +2,18 @@ package Modele;
 
 import Global.Configuration;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Observable;
 
 public class Jeu extends Observable implements Cloneable{
 
     public static final long seed = System.currentTimeMillis();
-    //public static final long seed = 1622191690051L; //Testing seed
+    //public static final long seed = 1622191690051L; Testing seed
 
     Plateau plateau;
 
@@ -58,6 +64,124 @@ public class Jeu extends Observable implements Cloneable{
         Coup cp = plateau.refaire();
         notifyObservers();
         return cp;
+    }
+
+    public void sauvegarder(String nomFichier){
+        Coup cp;
+        Action ac;
+        CarteRue rue;
+        int i;
+        Integer entier;
+
+        cp = annule();
+        // Retour à l'état initial de la partie
+        while(cp != null){
+            cp = annule();
+        }
+        try{
+            String home = System.getProperty("user.home");
+            Path path = Paths.get(home + File.separator + "JackPocket"+ File.separator);
+            Files.createDirectories(path);
+            File f = new File(home + File.separator + "JackPocket" + File.separator + nomFichier + ".save");
+            if (f.createNewFile()) {
+                System.out.println("File created: " + f.getName());
+            } else {
+                throw new IOException("File already exist");
+            }
+            PrintWriter flux = new PrintWriter(f);
+
+            // Recuperation des informations de la grille
+            for(int l=0; l<3; l++){
+                for(int c=0; c<3; c++){
+                    rue = plateau.grille[l][c];
+                    flux.write(rue.getSuspect().getNomPersonnage().toString());
+                    flux.write(" ");
+                    entier = rue.getOrientation();
+                    flux.write(entier.toString());
+                    flux.write(" ");
+                }
+            }
+            flux.write("\n");
+            for(Suspect s: plateau().getSuspects()){
+                if(s.getIsJack()){ // Il n'y a qu'un seul Jack
+                    flux.write(s.getNomPersonnage().toString());
+                }
+            }
+            flux.write("\n");
+
+            //Recuperation jetons et actions
+            int actionsVues = 8;
+            boolean finAtteinte = false;
+
+            while(!finAtteinte){
+                if(actionsVues == 8){
+                    //Recuperation des nouveaux jetons
+                    for(i=0; i<=3; i++){
+                        if(plateau.getJeton(i).estRecto()){
+                            flux.write("true ");
+                        } else{
+                            flux.write("false ");
+                        }
+                    }
+                    flux.write("\n");
+                    actionsVues = 0;
+                } else{
+                    //Recuperation d'une action
+                    cp = refaire();
+                    if(cp == null){
+                        finAtteinte = true;
+                    } else{
+                        ac = cp.getAction();
+                        flux.write(ac.getAction().toString());
+                        flux.write(" ");
+                        switch(ac.getAction()){
+                            case DEPLACER_JOKER:
+                                entier = ac.getNumEnqueteur();
+                                flux.write(entier.toString());
+                                flux.write(" ");
+                            case DEPLACER_TOBBY:
+                            case DEPLACER_WATSON:
+                            case DEPLACER_SHERLOCK:
+                                entier = ac.getDeplacement();
+                                flux.write(entier.toString());
+                                break;
+                            case INNOCENTER_CARD:
+                                break;
+                            case ROTATION_DISTRICT:
+                                entier = ac.getPosition1().y;
+                                flux.write(entier.toString());
+                                flux.write(" ");
+                                entier = ac.getPosition1().x;
+                                flux.write(entier.toString());
+                                flux.write(" ");
+                                entier = ac.getOrientationNew();
+                                flux.write(entier.toString());
+                                break;
+                            case ECHANGER_DISTRICT:
+                                entier = ac.getPosition1().y;
+                                flux.write(entier.toString());
+                                flux.write(" ");
+                                entier = ac.getPosition1().x;
+                                flux.write(entier.toString());
+                                flux.write(" ");
+                                entier = ac.getPosition2().y;
+                                flux.write(entier.toString());
+                                flux.write(" ");
+                                entier = ac.getPosition2().x;
+                                flux.write(entier.toString());
+                                break;
+                        }
+                    }
+                    flux.write("\n");
+                    actionsVues++;
+                }
+            }
+            flux.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            return;
+        }
     }
 
     //Getters and setters

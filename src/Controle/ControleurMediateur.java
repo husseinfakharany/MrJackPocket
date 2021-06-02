@@ -386,6 +386,15 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "tuto":
                 ig.changerMenu(ig.getBoiteMenu(),ig.getBoiteTuto());
                 break;
+            case "nextTuto":
+                ig.getTuto().tutorielNext();
+                break;
+            case "previousTuto":
+                ig.getTuto().tutorielPrevious();
+                break;
+            case "retourMenuTuto":
+                ig.changerMenu(ig.getBoiteTuto(), ig.getBoiteMenu() );
+                break;
             default:
                 return false;
         }

@@ -13,29 +13,42 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
     Image [] s;
     int i;
     private int offsetX, offsetY;
+    Image toDraw;
 
     TutoGraphique(){
         i=0;
         s= new Image[6];
-        for (i=0;i<s.length;i++) {
-            s[i]= Configuration.chargeImage("tuto"+i);
+        for (int j=0;j<s.length;j++) {
+            s[j]= Configuration.chargeImage("tuto"+j);
         }
         offsetX = 0;
         offsetY = 0;
+        toDraw = s[0];
+    }
 
-        }
 
-    public void tutoriel(){
+    public void tutorielNext(){
 
         if (i < s.length - 1){
-                i++;
-                  drawable.drawImage(s[i], offsetX,offsetY,null);
-                  repaint();
+            i++;
+            toDraw = s[i];
+            repaint();
         }
         else {
                 System.out.println("No more tuto");
-            }
+        }
 
+    }
+
+    public void tutorielPrevious(){
+        if (i > 0){
+            i--;
+            toDraw = s[i];
+            repaint();
+        }
+        else {
+            System.out.println("No more tuto");
+        }
     }
 
 
@@ -57,7 +70,7 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
         int lCase=largeur/5; //3 rues + 2 inspecteurs qui l'entourent possiblement
         tailleC=Math.min(hCase,lCase);
 
-        tutoriel();
+        drawable.drawImage(toDraw, offsetX,offsetY,null);
 
     }
 

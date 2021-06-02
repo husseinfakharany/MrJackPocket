@@ -76,7 +76,7 @@ public class IdentiteGraphique extends JComponent {
         }
 
         drawable.setFont(new Font("default", Font.BOLD, (int) (0.1*largeur)));
-        drawable.setColor(Color.WHITE);
+        drawable.setColor(Color.BLACK);
         drawable.drawString("Vous Incarnez :",30,(int) (0.2*tailleC));
         drawable.setFont(new Font("default", Font.ITALIC, 20));
         if(isJack) {

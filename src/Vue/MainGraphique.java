@@ -76,7 +76,7 @@ public class MainGraphique extends JComponent {
         Iterator<CarteAlibi> main;
         //jeu.plateau().enqueteur.setCardList(mainFictif);
         drawable.setFont(new Font("default", Font.PLAIN, 18));
-        drawable.setColor(Color.WHITE);
+        drawable.setColor(Color.BLACK);
         if(isAfficherEnqueteur() && (!jeu.plateau().finJeu(false,false) || jeu.plateau().getNumAction() != 4) ){
             main = jeu.plateau().enqueteur.getCardList().iterator();
             drawable.drawString("Main de l'enquêteur :",10,25);
