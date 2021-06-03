@@ -31,11 +31,10 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     public Joueur enqueteur;
     public Joueur joueurCourant;
     public boolean jackVisible;
-    int numTour;
+    private int numTour;
     int numAction;
     public SuspectCouleur idJack;
     Jeu jeu;
-    boolean tourFini;
     private boolean afficherVerdict;
 
 
@@ -68,11 +67,10 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         rand = new Random(Jeu.getSeed());
         jack = new Joueur(true, "Hussein", 0,0,false,false);
         enqueteur = new Joueur(false, "Fabien", 0,0, false, true);
-        numTour = 0;
+        numTour = 1;
         grille = new CarteRue[3][3];
         joueurCourant = enqueteur;
         jeu = j;
-        tourFini = false;
         setAfficherVerdict(false);
 
         initialiseOrientationsRues();
@@ -173,38 +171,70 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     }
 
     void initialiseTour(){
-        numTour++;
-        numAction = 0;
         jackVisible = false;
-        if(numTour>=2)changerJoueur();
         for(CarteRue[] ligne:grille){
             for(CarteRue carte: ligne){
                 carte.setDejaTourne(false);
             }
         }
-
         melangeJetonsActions();
     }
 
-    //retourne vrai si c'est la fin du jeu
-    public boolean actionJouee(){
+    //retourne vrai si c'est la fin du tour
+    public boolean actionPlus(){
+        boolean res=false;
+        if(numTour<=8 && numAction<4){
+            numAction ++;
+        }
+        if (numAction == 4){
+            if(numTour == 8){
+                numAction = 3;
+            }
+            else {
+                numAction = 0;
+                numTour++;
+            }
+            res =true;
+        }
         System.out.println("Numéro Tour: " + numTour);
         System.out.println("Numéro Action: " + numAction);
         if (numAction==1 || numAction==3){
             changerJoueur();
-        } else if (numAction == 4){
-            tourFini = true;
         }
-        return false;
+        return res;
+    }
+
+    //true si un retour en arrière est mathématiquement possible
+    public boolean actionMoins(){
+        boolean res=true;
+        if(numTour>=0 && numAction>=0){
+            numAction --;
+        }
+        if (numAction == -1){
+            if(numTour == 0){
+                numAction = 0;
+                res = false;
+            }
+            else {
+                numAction = 3;
+                numTour--;
+            }
+        }
+        System.out.println("Numéro Tour: " + numTour);
+        System.out.println("Numéro Action: " + numAction);
+        if (numAction==0  || numAction==2 ){
+            changerJoueur();
+        }
+        return res;
     }
 
     public boolean prochainTour(){
         if (finJeu()){
             Configuration.instance().logger().info("Fin du Jeu");
-            numTour++;
+            actionPlus();
             return true;
         } else {
-            tourFini = false;
+            actionPlus();
             initialiseTour();
             jeu.notifierObserveurs();
         }
@@ -335,7 +365,6 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         rand = new Random(Jeu.getSeed());
         jack = new Joueur(true, "Hussein", 0,0,false,false);
         enqueteur = new Joueur(false, "Fabien", 0,0, false, true);
-        tourFini = false;
 
         jack.setSablier(0,0);
         jack.setTurn(false);
@@ -401,7 +430,6 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         copy.numAction = numAction;
         copy.numTour = numTour;
         copy.rand = new Random(Jeu.getSeed());
-        copy.tourFini = tourFini;
 
         copy.grille = new CarteRue[3][3];
         for (int i = 0; i<3; i++){

@@ -69,6 +69,7 @@ public class IaAleatoire extends IA{
                 }while(j.plateau().grille[p.y][p.x].getOrientation() == action.getOrientationNew());
                 break;
         }
+        action.setNumAction(numJetonAction);
         return new Coup(j.plateau(),action);
     }
 }

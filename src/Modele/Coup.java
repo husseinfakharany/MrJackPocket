@@ -180,7 +180,7 @@ public class Coup extends Commande implements Cloneable{
 
 	public void ajouterArguments(int l, int c){
 		if(action == null || action.getAction() == null) {
-			Configuration.instance().logger().warning("Impossible d'ajouter un argument à une action pas initialise");
+			Configuration.instance().logger().warning("Impossible d'ajouter un argument à une action pas initialisé");
 			return;
 		}
 		switch (action.getAction()){
@@ -311,48 +311,69 @@ public class Coup extends Commande implements Cloneable{
 
 	@Override
 	boolean execute() {
+		boolean res =false;
 		switch(action.getAction()){
 			case DEPLACER_JOKER:
-				return deplacer(action.getNumEnqueteur(),action.getDeplacement(),1);
+				res = deplacer(action.getNumEnqueteur(),action.getDeplacement(),1);
+				break;
 			case DEPLACER_WATSON:
-				return deplacer(Plateau.WATSON,action.getDeplacement(),1);
+				res = deplacer(Plateau.WATSON,action.getDeplacement(),1);
+				break;
 			case DEPLACER_SHERLOCK:
-				return deplacer(Plateau.SHERLOCK,action.getDeplacement(),1);
+				res = deplacer(Plateau.SHERLOCK,action.getDeplacement(),1);
+				break;
 			case DEPLACER_TOBBY:
-				return deplacer(Plateau.TOBBY,action.getDeplacement(),1);
+				res = deplacer(Plateau.TOBBY,action.getDeplacement(),1);
+				break;
 			case INNOCENTER_CARD:
-				return innocenter(1);
+				res = innocenter(1);
+				break;
 			case ECHANGER_DISTRICT:
 				//L'ordre des parametres est purement esthetique
 				if(action.getPosition1().equals(action.getPosition2())) return false;
-				return echanger(action.getPosition1(), action.getPosition2());
+				res = echanger(action.getPosition1(), action.getPosition2());
+				break;
 			case ROTATION_DISTRICT:
-				return rotation(action.getPosition1(),action.getOrientationNew(),1);
+				res = rotation(action.getPosition1(),action.getOrientationNew(),1);
+				break;
 			default:
 				throw new IllegalStateException("Unexpected action");
 		}
 
 
+		if(!plateau.tousJetonsJoues()) plateau.actionPlus();
+
+		plateau.getJeton(action.getNumAction()).setDejaJoue(true);
+		return res;
 	}
 
 	@Override
 	boolean desexecute() {
+		boolean res=false;
 		switch (action.getAction()){
 			case DEPLACER_JOKER:
 			case DEPLACER_WATSON:
 			case DEPLACER_SHERLOCK:
 			case DEPLACER_TOBBY:
-				return deplacer(action.getNumEnqueteur(), action.getDeplacement(),-1);
+				res = deplacer(action.getNumEnqueteur(), action.getDeplacement(),-1);
+				break;
 			case INNOCENTER_CARD:
-				return innocenter(-1);
+				res = innocenter(-1);
+				break;
 			case ECHANGER_DISTRICT:
 				//L'ordre des parametres est purement esthetique
-				return echanger(action.getPosition2(), action.getPosition1());
+				res = echanger(action.getPosition2(), action.getPosition1());
+				break;
 			case ROTATION_DISTRICT:
-				return rotation(action.getPosition1(),action.getOrientationOld(),-1);
+				res = rotation(action.getPosition1(),action.getOrientationOld(),-1);
+				break;
 			default:
 				throw new IllegalStateException("Unexpected action");
 		}
+		plateau.actionMoins();
+
+		plateau.getJeton(action.getNumAction()).setDejaJoue(false);
+		return res;
 	}
 
 }

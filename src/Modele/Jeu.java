@@ -71,7 +71,7 @@ public class Jeu extends Observable implements Cloneable{
         Action ac;
         CarteRue rue;
         int i;
-        Integer entier;
+        int entier;
 
         cp = annule();
         // Retour à l'état initial de la partie
@@ -97,7 +97,7 @@ public class Jeu extends Observable implements Cloneable{
                     flux.write(rue.getSuspect().getNomPersonnage().toString());
                     flux.write(" ");
                     entier = rue.getOrientation();
-                    flux.write(entier.toString());
+                    flux.write(Integer.toString(entier));
                     flux.write(" ");
                 }
             }
@@ -137,38 +137,38 @@ public class Jeu extends Observable implements Cloneable{
                         switch(ac.getAction()){
                             case DEPLACER_JOKER:
                                 entier = ac.getNumEnqueteur();
-                                flux.write(entier.toString());
+                                flux.write(Integer.toString(entier));
                                 flux.write(" ");
                             case DEPLACER_TOBBY:
                             case DEPLACER_WATSON:
                             case DEPLACER_SHERLOCK:
                                 entier = ac.getDeplacement();
-                                flux.write(entier.toString());
+                                flux.write(Integer.toString(entier));
                                 break;
                             case INNOCENTER_CARD:
                                 break;
                             case ROTATION_DISTRICT:
                                 entier = ac.getPosition1().y;
-                                flux.write(entier.toString());
+                                flux.write(Integer.toString(entier));
                                 flux.write(" ");
                                 entier = ac.getPosition1().x;
-                                flux.write(entier.toString());
+                                flux.write(Integer.toString(entier));
                                 flux.write(" ");
                                 entier = ac.getOrientationNew();
-                                flux.write(entier.toString());
+                                flux.write(Integer.toString(entier));
                                 break;
                             case ECHANGER_DISTRICT:
                                 entier = ac.getPosition1().y;
-                                flux.write(entier.toString());
+                                flux.write(Integer.toString(entier));
                                 flux.write(" ");
                                 entier = ac.getPosition1().x;
-                                flux.write(entier.toString());
+                                flux.write(Integer.toString(entier));
                                 flux.write(" ");
                                 entier = ac.getPosition2().y;
-                                flux.write(entier.toString());
+                                flux.write(Integer.toString(entier));
                                 flux.write(" ");
                                 entier = ac.getPosition2().x;
-                                flux.write(entier.toString());
+                                flux.write(Integer.toString(entier));
                                 break;
                         }
                     }
@@ -180,7 +180,6 @@ public class Jeu extends Observable implements Cloneable{
         }
         catch(Exception e){
             e.printStackTrace();
-            return;
         }
     }
 
@@ -188,4 +187,5 @@ public class Jeu extends Observable implements Cloneable{
     public static long getSeed() {
         return seed;
     }
+
 }

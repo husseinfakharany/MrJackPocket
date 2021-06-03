@@ -55,6 +55,12 @@ public class IAMeilleureProchain extends IA{
             }
         }
         cp.setAction(aJouer);
+        int i = listeAction.indexOf(aJouer);
+        while(j.plateau().getJeton(i).getDejaJoue()){
+           listeAction.remove(i);
+            i = listeAction.indexOf(aJouer);
+        }
+        action.setNumAction(i);
         return cp;
     }
 }

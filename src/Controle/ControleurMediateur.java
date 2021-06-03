@@ -62,10 +62,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     }
 
-    public void clicSouris(int l, int c) {
-        Configuration.instance().logger().info("Clic en ( l : " +l+" , c : "+c+" )" );
-    }
-
     @Override
     public void jouerCoupIA(Coup cp){
         if(iaActive){
@@ -80,15 +76,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     public void appliquer(int i){
 
-        boolean dejaJoue = false;
-        if (i==1){
-            dejaJoue = true;
-        }
-
-        jeu.plateau().setNumAction(jeu.plateau().getNumAction()+i);
-        jeu.plateau().getJeton(selectionne).setDejaJoue(dejaJoue);
-        jeu.plateau().actionJouee();
-
         //Reinitialisation
         reinitialiser();
 
@@ -98,6 +85,21 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
         if(jeu.plateau().tousJetonsJoues()){
             ig.getDistrict().setAfficherVisible(true);
+        }
+
+        if(i==1){
+            if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack) && iaActive && iaIsJack && jeu.plateau().getNumAction() <4){
+                tempsIA.restart();
+                iaJoue = true;
+                ig.dessinerInfo("Ia joue son coup");
+            }
+            if(jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur) && iaActive && !iaIsJack  && jeu.plateau().getNumAction() <4){
+                tempsIA.restart();
+                iaJoue = true;
+                ig.dessinerInfo("Ia joue son coup");
+            }
+            if(!ig.getMain().getAfficherEnqueteur() && jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur ) )
+                commandeMenu("main");
         }
     }
 
@@ -126,11 +128,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     @Override
     public void commandeDistrict(int l, int c){
-        if(iaJoue)return;
-        if (cp==null){
-            action = new Action(jeu.plateau().joueurCourant);
-            cp = new Coup(jeu.plateau(),action);
-        }
+        if(iaJoue || cp==null)return;
 
         if(l>=1 && l <= 3 && c>=1 && c<=3 && (cp.getAction().getAction() == Actions.ROTATION_DISTRICT
                 || cp.getAction().getAction() != Actions.ECHANGER_DISTRICT || cp.getAction().getAction() != Actions.INNOCENTER_CARD) )
@@ -153,7 +151,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
 
         if(jeu.plateau().tousJetonsJoues() ){
-            if(!jeu.plateau().prochainTour()){
+            boolean partiFini = jeu.plateau().prochainTour();
+            if(!partiFini){
                 ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
                 demarrerIA();
                 ig.getDistrict().setAfficherVisible(false);
@@ -268,18 +267,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         if (jeu.jouerCoup(cp)){
             Configuration.instance().logger().info("Coup joué");
             appliquer(1);
-            if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack) && iaActive && iaIsJack && jeu.plateau().getNumAction() <4){
-                tempsIA.restart();
-                iaJoue = true;
-                ig.dessinerInfo("Ia joue son coup");
-            }
-            if(jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur) && iaActive && !iaIsJack  && jeu.plateau().getNumAction() <4){
-                tempsIA.restart();
-                iaJoue = true;
-                ig.dessinerInfo("Ia joue son coup");
-            }
-            if(!ig.getMain().getAfficherEnqueteur() && jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur ) )
-                commandeMenu("main");
         } else {
             Configuration.instance().logger().warning("Coup invalide");
         }
