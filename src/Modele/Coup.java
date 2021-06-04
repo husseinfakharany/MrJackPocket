@@ -350,6 +350,11 @@ public class Coup extends Commande implements Cloneable{
 	@Override
 	boolean desexecute() {
 		boolean res=false;
+		plateau.actionMoins();
+		if(plateau.numAction==3 ) {
+			plateau.resetJetons();
+			plateau.annuleVerdict();
+		}
 		switch (action.getAction()){
 			case DEPLACER_JOKER:
 			case DEPLACER_WATSON:
@@ -370,8 +375,6 @@ public class Coup extends Commande implements Cloneable{
 			default:
 				throw new IllegalStateException("Unexpected action");
 		}
-		plateau.actionMoins();
-
 		plateau.getJeton(action.getNumAction()).setDejaJoue(false);
 		return res;
 	}

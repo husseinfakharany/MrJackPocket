@@ -10,11 +10,13 @@ public class IaAleatoire extends IA{
     Random r;
     Jeu j;
     boolean isJack;
+
     public IaAleatoire(Jeu j,boolean isJack) {
         r = new Random();
         this.j=j;
         this.isJack = isJack;
     }
+
     @Override
     public Coup coupIA(Jeu j) {
 

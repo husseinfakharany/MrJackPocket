@@ -21,8 +21,8 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteCharger = null;
     boolean ia,isJack;
     private JButton voirJack;
-    JButton undo;
-    JButton redo;
+    private JButton undo;
+    private JButton redo;
     JButton menu;
     JButton lancerPartie;
     private JLabel info;
@@ -243,28 +243,28 @@ public class InterfaceGraphique implements Observer, Runnable {
         boiteInfo.setPreferredSize(new Dimension(width,(int) (0.06*height) ));
 
         tour.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-        tour.setText("  Tour n°"+jeu.plateau().getNumTour());
+        tour.setText("  Tour n°"+ (jeu.plateau().getNumTour()+1) );
         tour.setFont(new Font("default", Font.PLAIN, (int) (0.034*height) ));
 
 
         if(boiteUnReDo==null) {
             boiteUnReDo = Box.createHorizontalBox();
             undo = new JButton("⏪");
-            undo.addActionListener(new AdaptateurCommande(controle,"annuler"));
+            getUndo().addActionListener(new AdaptateurCommande(controle,"annuler"));
             redo = new JButton("⏩");
-            redo.addActionListener(new AdaptateurCommande(controle,"refaire"));
+            getRedo().addActionListener(new AdaptateurCommande(controle,"refaire"));
 
-            boiteUnReDo.add(undo);
-            boiteUnReDo.add(redo);
+            boiteUnReDo.add(getUndo());
+            boiteUnReDo.add(getRedo());
         }
 
-        undo.setFont(new Font("default", Font.PLAIN, (int) (0.04*height) ));
-        undo.setPreferredSize(new Dimension( (int) (0.07*width), (int) (0.05*height)));
-        undo.setMaximumSize(new Dimension((int) (0.07*width), (int) (0.05*height)));
+        getUndo().setFont(new Font("default", Font.PLAIN, (int) (0.04*height) ));
+        getUndo().setPreferredSize(new Dimension( (int) (0.07*width), (int) (0.05*height)));
+        getUndo().setMaximumSize(new Dimension((int) (0.07*width), (int) (0.05*height)));
 
-        redo.setFont(new Font("default", Font.PLAIN, (int) (0.04*height)));
-        redo.setPreferredSize(new Dimension((int) (0.07*width), (int) (0.05*height)));
-        redo.setMaximumSize(new Dimension((int) (0.07*width), (int) (0.05*height)));
+        getRedo().setFont(new Font("default", Font.PLAIN, (int) (0.04*height)));
+        getRedo().setPreferredSize(new Dimension((int) (0.07*width), (int) (0.05*height)));
+        getRedo().setMaximumSize(new Dimension((int) (0.07*width), (int) (0.05*height)));
 
         if(boiteUnReDoCartes == null) {
             boiteUnReDoCartes = Box.createVerticalBox();
@@ -354,7 +354,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         getPioche().repaint();
         getMain().repaint();
         getJetons().repaint();
-        tour.setText("  Tour n°"+jeu.plateau().getNumTour());
+        tour.setText("  Tour n°"+ (jeu.plateau().getNumTour()+1) );
 
         if(jeu.plateau().tousJetonsJoues() ) {
             jeu.plateau().visibles();
@@ -664,5 +664,13 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     public void setTuto(TutoGraphique tuto) {
         this.tuto = tuto;
+    }
+
+    public JButton getUndo() {
+        return undo;
+    }
+
+    public JButton getRedo() {
+        return redo;
     }
 }

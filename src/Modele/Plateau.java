@@ -183,14 +183,11 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     //retourne vrai si c'est la fin du tour
     public boolean actionPlus(){
         boolean res=false;
-        if(numTour<=8 && numAction<4){
+        if(numTour<=7 && numAction<4){
             numAction ++;
         }
         if (numAction == 4){
-            if(numTour == 8){
-                numAction = 3;
-            }
-            else {
+            if(numTour != 7){
                 numAction = 0;
                 numTour++;
             }
@@ -207,10 +204,13 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     //true si un retour en arrière est mathématiquement possible
     public boolean actionMoins(){
         boolean res=true;
+        if (numAction==1 || numAction==3){
+            changerJoueur();
+        }
         if(numTour>=0 && numAction>=0){
             numAction --;
         }
-        if (numAction == -1){
+        if (numAction == 0){
             if(numTour == 0){
                 numAction = 0;
                 res = false;
@@ -222,10 +222,20 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         }
         System.out.println("Numéro Tour: " + numTour);
         System.out.println("Numéro Action: " + numAction);
-        if (numAction==0  || numAction==2 ){
-            changerJoueur();
-        }
         return res;
+    }
+
+    void resetJetons(){
+        for(Coup cp: passe.subList(passe.size()-4, passe.size()) ) {
+            if (getJeton(cp.getAction().getNumAction()).getAction1().equals(cp.getAction().getAction())) {
+                getJeton(cp.getAction().getNumAction()).setEstRecto(true);
+            } else if (getJeton(cp.getAction().getNumAction()).getAction2().equals(cp.getAction().getAction())) {
+                getJeton(cp.getAction().getNumAction()).setEstRecto(false);
+            } else {
+                Configuration.instance().logger().warning("Problème de réinistialisation des jetons");
+            }
+            getJeton(cp.getAction().getNumAction()).setDejaJoue(true);
+        }
     }
 
     public boolean prochainTour(){
@@ -243,7 +253,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     //Mélange ou inverse les cartes actions (depend du numéro du tour)
     void melangeJetonsActions(){
-        if (numTour%2 == 1) jetJetons();
+        if (numTour%2 == 0) jetJetons();
         else inverserJetons();
     }
 
@@ -342,11 +352,31 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return false;
     }
 
+    //Cette fonction retourne vrai s'il reste qu'une seule carte non innonctée (Jack)
+    public boolean annuleVerdict(){
+        ArrayList<Suspect> res = visibles();
+        //Si jack est visible par un des trois enqueteurs
+        int nbInnocent = suspectsInnocete.size();
+        if (jackVisible) {
+            for (Suspect s : getSuspects()) {
+                if (!res.contains(s)) {
+                    s.suspecter(grille, suspectsInnocete);
+                }
+            }
+        } else {
+            jack.setSablierVisibles(jack.getSablierVisibles() - 1);
+            for (Suspect s : res) {
+                s.suspecter(grille, suspectsInnocete);
+            }
+        }
+        return false;
+    }
+
     //Fonction appelée apres la fin du tour
     public boolean finJeu(boolean updatePlateau, boolean notifierInterface){
         boolean res = verdictTour(updatePlateau);
-        if (numTour>=8) {
-            res =true;
+        if (numTour>=7) {
+            res = numAction==4;
         }
         if (jack.getSablier()>=6){
             jack.setWinner(true);

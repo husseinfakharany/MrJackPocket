@@ -28,9 +28,10 @@ public class Historique<E extends Commande> {
 
 	E annuler() {
 		if (peutAnnuler()) {
-			E c = passe.remove(0);
+			E c = passe.get(0);
 			if (c.desexecute()){
 				futur.add(0,c);
+				passe.remove(0);
 				return c;
 			} else {
 				passe.add(0,c);
@@ -55,4 +56,6 @@ public class Historique<E extends Commande> {
 			return null;
 		}
 	}
+
+
 }

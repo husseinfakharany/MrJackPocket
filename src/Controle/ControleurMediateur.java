@@ -85,6 +85,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
         if(jeu.plateau().tousJetonsJoues()){
             ig.getDistrict().setAfficherVisible(true);
+            ig.getUndo().setEnabled(false);
+            ig.getRedo().setEnabled(false);
         }
 
         if(i==1){
@@ -112,6 +114,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             action = cp.getAction();
             selectionne = action.getNumAction();
             appliquer(-1);
+            ig.getDistrict().setAfficherVisible(false);
         }
 
     }
@@ -156,6 +159,8 @@ public class ControleurMediateur implements CollecteurEvenements {
                 ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
                 demarrerIA();
                 ig.getDistrict().setAfficherVisible(false);
+                ig.getUndo().setEnabled(true);
+                ig.getRedo().setEnabled(true);
             }else{
                 jeu.plateau().setAfficherVerdict(true);
             }
