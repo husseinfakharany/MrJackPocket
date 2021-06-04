@@ -63,9 +63,7 @@ public class Coup extends Commande implements Cloneable{
 			return false;
 		}
 		action.setOrientationOld(plateau.grille[position1.y][position1.x].getOrientation());
-		if (action.getOrientationOld()!=Plateau.NSEO){
-			plateau.grille[position1.y][position1.x].setOrientation(orientation);
-		}
+		plateau.grille[position1.y][position1.x].setOrientation(orientation);
 		if (type==1){
 			plateau.grille[position1.y][position1.x].setDejaTourne(true);
 		} else if (type==-1){
