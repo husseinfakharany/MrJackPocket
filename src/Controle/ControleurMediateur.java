@@ -49,7 +49,12 @@ public class ControleurMediateur implements CollecteurEvenements {
                 }
                 break;
             case "difficile":
-
+                try{
+                    ia = new IaDifficile(jeu.clone(),iaIsJack);
+                }catch(Exception e){
+                    Configuration.instance().logger().severe("Erreur de clonage du jeu");
+                    System.exit(-1);
+                }
                 break;
             default:
                 //throw new NoSuchElementException();
@@ -324,13 +329,15 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
             case "moyen":
                 Configuration.instance().logger().info("Moyenne");
-                //fixerIA(c);
-                //iaActive = true;
+                fixerIA(c);
+                iaActive = true;
+                ig.refreshBoiteAvantPartieIA();
                 break;
             case "difficile":
                 Configuration.instance().logger().info("Difficile");
-                //fixerIA(c);
-                //iaActive = true;
+                fixerIA(c);
+                iaActive = true;
+                ig.refreshBoiteAvantPartieIA();
                 break;
             case "commencerIA":
                 jeu.plateau().reinitialiser();

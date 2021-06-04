@@ -416,6 +416,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             difficulte.setFont(new Font("default", Font.PLAIN, 20));
 
             facileB.setText("Facile");
+            facileB.setEnabled(true);
             facileB.addActionListener(new AdaptateurCommande(controle,"facile"));
             moyenB.setText("Moyen");
             moyenB.setEnabled(false);
@@ -504,12 +505,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteCharger = Box.createHorizontalBox();
 
             //Recuperer la liste des parties (en attendant)
-            String [] listPartie = {"Partie 1 - 28/02/21", "Partie 2 - 04/03/21", "Partie 3 - 05/05/21",
-                    "Partie 4 - 18/05/21","Partie 1 - 28/02/21", "Partie 2 - 04/03/21","Partie 1 - 28/02/21",
-                    "Partie 2 - 04/03/21","Partie 1 - 28/02/21", "Partie 2 - 04/03/21","Partie 1 - 28/02/21",
-                    "Partie 2 - 04/03/21","Partie 1 - 28/02/21", "Partie 2 - 04/03/21","Partie 1 - 28/02/21",
-                    "Partie 2 - 04/03/21","Partie 1 - 28/02/21", "Partie 2 - 04/03/21","Partie 1 - 28/02/21",
-                    "Partie 2 - 04/03/21","Partie 1 - 28/02/21", "Partie 2 - 04/03/21","Partie 1 - 28/02/21" };
+            String [] listPartie = {"" };
 
             JList list = new JList(listPartie);
             list.setAlignmentX(Component.CENTER_ALIGNMENT);

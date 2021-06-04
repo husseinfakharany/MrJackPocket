@@ -24,8 +24,6 @@ public class IaDifficile extends IA{
         cp = new Coup(j.plateau(), null);
         aJouer = new Action(joueurCourant);
 
-
-
         for(Actions actions : listeAction){
             for(Action a : Action.listeAction(actions,joueurCourant)){
                 cp.setAction(a);
@@ -40,7 +38,6 @@ public class IaDifficile extends IA{
             }
             j.annule();
         }
-
         return valeur;
     }
 
@@ -48,9 +45,6 @@ public class IaDifficile extends IA{
 
         int valeur = Integer.MAX_VALUE;
         action.setAction( j.plateau().getActionJeton(0));
-
-
-
 
         for(Actions actions : listeAction){
             for(Action a : Action.listeAction(actions,joueurCourant)){
@@ -66,7 +60,6 @@ public class IaDifficile extends IA{
             }
             j.annule();
         }
-
         return valeur;
     }
 
@@ -98,8 +91,8 @@ public class IaDifficile extends IA{
                cp.setAction(aJouer);
                int i = listeAction.indexOf(aJouer);
                while(j.plateau().getJeton(i).getDejaJoue()){
-               listeAction.remove(i);
-               i = listeAction.indexOf(aJouer);
+                   listeAction.remove(i);
+                   i = listeAction.indexOf(aJouer);
                }
                action.setNumAction(i);
                cp.getAction().setNumAction(i);
