@@ -102,6 +102,7 @@ public class IaDifficile extends IA{
                i = listeAction.indexOf(aJouer);
                }
                action.setNumAction(i);
+               cp.getAction().setNumAction(i);
                return cp;
 
 
