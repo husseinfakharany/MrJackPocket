@@ -260,45 +260,69 @@ public class Coup extends Commande implements Cloneable{
 		if (l==4){
 			if (c==3){
 				enqueteurs = plateau.grille[l-2][c-1].getEnqueteurs();
-				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.EST)
-					return enqueteurs.get(0).getNumEnqueteur();
+				for (Enqueteur e: enqueteurs){
+					if (e.getPositionSurCarte()==Enqueteur.EST){
+						return e.getNumEnqueteur();
+					}
+				}
 			} else {
 				enqueteurs = plateau.grille[l-2][c].getEnqueteurs();
-				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.SUD)
-					return enqueteurs.get(0).getNumEnqueteur();
+				for (Enqueteur e: enqueteurs){
+					if (e.getPositionSurCarte()==Enqueteur.SUD){
+						return e.getNumEnqueteur();
+					}
+				}
 			}
 		}
 		if (c==4){
 			if (l==1){
 				enqueteurs = plateau.grille[l-1][c-2].getEnqueteurs();
-				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.NORD)
-					return enqueteurs.get(0).getNumEnqueteur();
+				for (Enqueteur e: enqueteurs){
+					if (e.getPositionSurCarte()==Enqueteur.NORD){
+						return e.getNumEnqueteur();
+					}
+				}
 			} else {
 				enqueteurs = plateau.grille[l-2][c-2].getEnqueteurs();
-				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.EST)
-					return enqueteurs.get(0).getNumEnqueteur();
+				for (Enqueteur e: enqueteurs){
+					if (e.getPositionSurCarte()==Enqueteur.EST){
+						return e.getNumEnqueteur();
+					}
+				}
 			}
 		}
 		if (l==0){
 			if (c==1){
 				enqueteurs = plateau.grille[l][c-1].getEnqueteurs();
-				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.OUEST)
-					return enqueteurs.get(0).getNumEnqueteur();
+				for (Enqueteur e: enqueteurs){
+					if (e.getPositionSurCarte()==Enqueteur.OUEST){
+						return e.getNumEnqueteur();
+					}
+				}
 			} else {
 				enqueteurs = plateau.grille[l][c-2].getEnqueteurs();
-				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.NORD)
-					return enqueteurs.get(0).getNumEnqueteur();
+				for (Enqueteur e: enqueteurs){
+					if (e.getPositionSurCarte()==Enqueteur.NORD){
+						return e.getNumEnqueteur();
+					}
+				}
 			}
 		}
 		if (c==0){
 			if (l==3){
 				enqueteurs = plateau.grille[l-1][c].getEnqueteurs();
-				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.SUD)
-					return enqueteurs.get(0).getNumEnqueteur();
+				for (Enqueteur e: enqueteurs){
+					if (e.getPositionSurCarte()==Enqueteur.SUD){
+						return e.getNumEnqueteur();
+					}
+				}
 			} else {
 				enqueteurs = plateau.grille[l][c].getEnqueteurs();
-				if(!enqueteurs.isEmpty() && enqueteurs.get(0).getPositionSurCarte() == Enqueteur.OUEST)
-					return enqueteurs.get(0).getNumEnqueteur();
+				for (Enqueteur e: enqueteurs){
+					if (e.getPositionSurCarte()==Enqueteur.OUEST){
+						return e.getNumEnqueteur();
+					}
+				}
 			}
 		}
 		Configuration.instance().logger().info("Position invalide pour l'action en cours");
