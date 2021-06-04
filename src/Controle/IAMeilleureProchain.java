@@ -26,7 +26,7 @@ public class IAMeilleureProchain extends IA{
         Coup cp = new Coup(j.plateau(), null);
         Action aJouer = new Action(joueurCourant);
 
-        //Jamais anticiper ou tirer des jetons car un regarde que le prochain coup
+        //Jamais anticiper ou  tirer des jetons car un regarde que le prochain coup
         ArrayList<Actions> listeAction = new ArrayList<>();
         listeAction.add(j.plateau().getActionJeton(0));
         listeAction.add(j.plateau().getActionJeton(1));
