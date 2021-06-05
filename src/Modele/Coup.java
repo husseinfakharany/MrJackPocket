@@ -276,8 +276,8 @@ public class Coup extends Commande implements Cloneable{
 				enqueteurs = plateau.grille[l-2][c-1].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
 					if (e.getPositionSurCarte()==Enqueteur.EST && e.getNumEnqueteur() != action.numEnqueteur ){
-						enqueteurs.remove(e);
 						enqueteurs.add(enqueteurs.size()-1,e);
+						enqueteurs.remove(e);
 						return e.getNumEnqueteur();
 					}
 				}
@@ -285,6 +285,8 @@ public class Coup extends Commande implements Cloneable{
 				enqueteurs = plateau.grille[l-2][c].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
 					if (e.getPositionSurCarte()==Enqueteur.SUD && e.getNumEnqueteur() != action.numEnqueteur ){
+						enqueteurs.add(enqueteurs.size()-1,e);
+						enqueteurs.remove(e);
 						return e.getNumEnqueteur();
 					}
 				}
@@ -295,6 +297,8 @@ public class Coup extends Commande implements Cloneable{
 				enqueteurs = plateau.grille[l-1][c-2].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
 					if (e.getPositionSurCarte()==Enqueteur.NORD && e.getNumEnqueteur() != action.numEnqueteur ){
+						enqueteurs.add(enqueteurs.size()-1,e);
+						enqueteurs.remove(e);
 						return e.getNumEnqueteur();
 					}
 				}
@@ -302,6 +306,8 @@ public class Coup extends Commande implements Cloneable{
 				enqueteurs = plateau.grille[l-2][c-2].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
 					if (e.getPositionSurCarte()==Enqueteur.EST && e.getNumEnqueteur() != action.numEnqueteur ){
+						enqueteurs.add(enqueteurs.size()-1,e);
+						enqueteurs.remove(e);
 						return e.getNumEnqueteur();
 					}
 				}
@@ -312,6 +318,8 @@ public class Coup extends Commande implements Cloneable{
 				enqueteurs = plateau.grille[l][c-1].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
 					if (e.getPositionSurCarte()==Enqueteur.OUEST && e.getNumEnqueteur() != action.numEnqueteur ){
+						enqueteurs.add(enqueteurs.size()-1,e);
+						enqueteurs.remove(e);
 						return e.getNumEnqueteur();
 					}
 				}
@@ -319,6 +327,8 @@ public class Coup extends Commande implements Cloneable{
 				enqueteurs = plateau.grille[l][c-2].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
 					if (e.getPositionSurCarte()==Enqueteur.NORD && e.getNumEnqueteur() != action.numEnqueteur ){
+						enqueteurs.add(enqueteurs.size()-1,e);
+						enqueteurs.remove(e);
 						return e.getNumEnqueteur();
 					}
 				}
@@ -329,6 +339,8 @@ public class Coup extends Commande implements Cloneable{
 				enqueteurs = plateau.grille[l-1][c].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
 					if (e.getPositionSurCarte()==Enqueteur.SUD && e.getNumEnqueteur() != action.numEnqueteur ){
+						enqueteurs.add(enqueteurs.size()-1,e);
+						enqueteurs.remove(e);
 						return e.getNumEnqueteur();
 					}
 				}
@@ -336,6 +348,8 @@ public class Coup extends Commande implements Cloneable{
 				enqueteurs = plateau.grille[l][c].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
 					if (e.getPositionSurCarte()==Enqueteur.OUEST && e.getNumEnqueteur() != action.numEnqueteur ){
+						enqueteurs.add(enqueteurs.size()-1,e);
+						enqueteurs.remove(e);
 						return e.getNumEnqueteur();
 					}
 				}
