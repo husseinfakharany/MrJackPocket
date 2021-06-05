@@ -2,13 +2,20 @@ package Modele;
 
 import Global.Configuration;
 
+import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Scanner;
+
+import static Modele.Actions.*;
+import static Modele.SuspectNom.*;
 
 public class Jeu extends Observable implements Cloneable{
 
@@ -22,8 +29,13 @@ public class Jeu extends Observable implements Cloneable{
         Configuration.instance().logger().info("Seed used: " + seed);
     }
 
-    public Jeu(String nomFichier){
-        Scanner sc = new Scanner(new File(nomFichier));
+    public Jeu(File file){
+        Scanner sc = null;
+        try {
+            sc = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         ArrayList<SuspectNom> suspectIndicesSauv = new ArrayList<>();
         ArrayList<Integer> orientationSauv = new ArrayList<>();
         ArrayList<Boolean> jetonsActionsSauv = new ArrayList<>();
@@ -44,7 +56,7 @@ public class Jeu extends Observable implements Cloneable{
         nomPersonnage = stringVersSuspectNom(chaineChar);
 
         //Chargement position initiale de la partie
-        plateau = Plateau(this, suspectIndicesSauv, orientationSauv, nomPersonnage);
+        plateau = new Plateau(this, suspectIndicesSauv, orientationSauv, nomPersonnage);
         Configuration.instance().logger().info("Seed used: " + seed);
 
 
@@ -56,13 +68,13 @@ public class Jeu extends Observable implements Cloneable{
                 jetonsActionsSauv.clear();
                 for(i=0; i<=3; i++){
                     chaineChar = sc.next();
-                    if (chaineChar.equals("true"){
+                    if (chaineChar.equals("true")){
                         jetonsActionsSauv.add(true);
                     } else{
                         jetonsActionsSauv.add(false);
                     }
                 }
-                p.forceJetons(jetonsActionsSauv);
+                plateau.forceJetons(jetonsActionsSauv);
                 actionsVues = 0;
             } else{
                 ac = new Action(null);
@@ -91,7 +103,7 @@ public class Jeu extends Observable implements Cloneable{
                     case "INNOCENTER_CARD":
                         ac.setAction(INNOCENTER_CARD);
                         chaineChar = sc.next();
-                        for(CarteAlibi a: p.getCartesAlibis()){
+                        for(CarteAlibi a: plateau.getCartesAlibis()){
                             if(a.getSuspect().getNomPersonnage().toString() == chaineChar){
                                 ac.setCartePioche(a);
                             }
@@ -114,7 +126,7 @@ public class Jeu extends Observable implements Cloneable{
                         ac.setOrientationNew(sc.nextInt());
                         break;
                     default:
-                        throw new IllegalStateException("Unexpected value: " + nom);
+                        throw new IllegalStateException("Unexpected value: " + chaineChar);
                 }
                 actionsVues++;
                 cp = new Coup(plateau, ac);

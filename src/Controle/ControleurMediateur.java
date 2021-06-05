@@ -1,12 +1,15 @@
 package Controle;
 
 import Global.Configuration;
-import Modele.*;
 import Modele.Action;
+import Modele.Actions;
+import Modele.Coup;
+import Modele.Jeu;
 import Vue.AdaptateurTemps;
 import Vue.InterfaceGraphique;
 
 import javax.swing.*;
+import java.io.File;
 
 public class ControleurMediateur implements CollecteurEvenements {
     InterfaceGraphique ig;
@@ -372,8 +375,13 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "charger":
                 Configuration.instance().logger().info("Chargement de la partie...");
                 if(!ig.getSaveList().isSelectionEmpty()){
-                    //(String) (ig.getSaveList().getSelectedValue())
+                    String home = System.getProperty("user.home");
+                    File f = new File(home + File.separator + "JackPocket" + File.separator + ig.getSaveList().getSelectedValue());
+                    jeu = new Jeu( f );
                 }
+                reinitialiser();
+                reinitialiserIA();
+                ig.changerMenu(ig.getBoiteCharger(), ig.getBoiteJeu());
                 break;
             case "annuler":
                 annuler();

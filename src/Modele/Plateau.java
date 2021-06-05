@@ -92,7 +92,6 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         grille = new CarteRue[3][3];
         joueurCourant = enqueteur;
         jeu = j;
-        tourFini = false;
         setAfficherVerdict(false);
 
         initialiseOrientationsRues();
@@ -202,14 +201,14 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     }
 
     private void forceGrille(ArrayList<SuspectNom> suspectIndicesSauv, ArrayList<Integer> orientationSauv){
-        int i,j;
+        int j;
         j=0;
         for(int l=0; l<3; l++){
             for(int c=0; c<3; c++){
                 for(Suspect s: getSuspects()){
                     if(s.getNomPersonnage() == suspectIndicesSauv.get(j)){
                         grille[l][c] = new CarteRue(new Point(c,l), s);
-                        grille[l][c].setOrientation(orientationSauv.get(i));
+                        grille[l][c].setOrientation(orientationSauv.get(j));
                     }
                 }
                 j++;
@@ -365,6 +364,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     }
 
     public void forceJack(SuspectNom nomJackSauv){
+        int index=-1;
         for(int i=0; i<cartesAlibis.size(); i++){
             if (cartesAlibis.get(i).getSuspect().getNomPersonnage() == nomJackSauv){
                 index = i;
