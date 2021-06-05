@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
@@ -23,7 +24,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     Jeu jeu;
     JFrame frame;
     private Box boiteMenu = null,boiteTitre  = null,boiteBoutons = null, boiteJeu = null, boiteAvantPartie = null,
-            boiteCharger = null;
+            boiteCharger = null, boiteIAvsIA = null;
     boolean ia,isJack;
     private JButton voirJack;
     private JButton undo;
@@ -490,6 +491,195 @@ public class InterfaceGraphique implements Observer, Runnable {
         return boiteAvantPartie;
     }
 
+    public Box getBoiteIAvsIA(){
+        if (boiteIAvsIA == null){
+            boiteIAvsIA = Box.createVerticalBox();
+
+            Box boiteParams = Box.createHorizontalBox();
+
+            Box boiteParamJack = Box.createVerticalBox();
+            Box boiteParamSherlock = Box.createVerticalBox();
+            Box boiteParamGlobal = Box.createVerticalBox();
+
+            NumberFormat intFormat = NumberFormat.getIntegerInstance();
+            JFormattedTextField nbParties = new JFormattedTextField(intFormat);
+            nbParties.setValue(100);
+            nbParties.setMaximumSize(new Dimension(200,70));
+
+            JFormattedTextField profondeurIA = new JFormattedTextField(intFormat);
+            profondeurIA.setValue(4);
+            profondeurIA.setMaximumSize(new Dimension(200,70));
+
+            JLabel paramG = new JLabel("Paramètres généraux : ");
+            paramG.setFont(new Font("default", Font.PLAIN, 20));
+
+            JLabel labelNbPartie = new JLabel("Nombre de partie : ");
+            labelNbPartie.setFont(new Font("default", Font.ITALIC, 12));
+
+            JLabel labelProfondeur = new JLabel("Profondeur de l'analyse : ");
+            labelProfondeur.setFont(new Font("default", Font.ITALIC, 12));
+
+            boiteParamGlobal.add(Box.createVerticalGlue());
+            boiteParamGlobal.add(paramG);
+            boiteParamGlobal.add(labelNbPartie);
+            boiteParamGlobal.add(nbParties);
+            boiteParamGlobal.add(labelProfondeur);
+            boiteParamGlobal.add(profondeurIA);
+            boiteParamGlobal.add(Box.createVerticalGlue());
+            boiteParamGlobal.setPreferredSize(new Dimension(400, 200));
+
+            JLabel paramGJack = new JLabel("Paramètres Jack : ");
+            paramGJack.setFont(new Font("default", Font.PLAIN, 20));
+
+            JLabel labelDispersionJack = new JLabel("Coefficient stratégie dispersion : ");
+            labelDispersionJack.setFont(new Font("default", Font.ITALIC, 12));
+
+            JFormattedTextField coefDispersionJack = new JFormattedTextField(intFormat);
+            coefDispersionJack.setValue(1);
+            coefDispersionJack.setMaximumSize(new Dimension(200,70));
+
+            JLabel labelTempoJack = new JLabel("Coefficient jack contre 3 suspects : ");
+            labelTempoJack.setFont(new Font("default", Font.ITALIC, 12));
+
+            JFormattedTextField coefTempoJack = new JFormattedTextField(intFormat);
+            coefTempoJack.setValue(1);
+            coefTempoJack.setMaximumSize(new Dimension(200,70));
+
+            JLabel labelProtegeSuspect = new JLabel("Coefficient protege les suspects : ");
+            labelProtegeSuspect.setFont(new Font("default", Font.ITALIC, 12));
+
+            JFormattedTextField coefProtegeSuspect = new JFormattedTextField(intFormat);
+            coefProtegeSuspect.setValue(1);
+            coefProtegeSuspect.setMaximumSize(new Dimension(200,70));
+
+
+            JLabel labelEloigneEnqueteurs = new JLabel("Coefficient eloignement enqueteur : ");
+            labelEloigneEnqueteurs.setFont(new Font("default", Font.ITALIC, 12));
+
+            JFormattedTextField coefEloigneEnqueteurs = new JFormattedTextField(intFormat);
+            coefEloigneEnqueteurs.setValue(1);
+            coefEloigneEnqueteurs.setMaximumSize(new Dimension(200,70));
+
+
+            JLabel labelJackAvantTout = new JLabel("Coefficient protège Jack avant tout : ");
+            labelJackAvantTout.setFont(new Font("default", Font.ITALIC, 12));
+
+            JFormattedTextField coefJackAvantTout = new JFormattedTextField(intFormat);
+            coefJackAvantTout.setValue(1);
+            coefJackAvantTout.setMaximumSize(new Dimension(200,70));
+
+
+            JLabel labelProtegeMain = new JLabel("Coefficient protège suspect main : ");
+            labelProtegeMain.setFont(new Font("default", Font.ITALIC, 12));
+
+            JFormattedTextField coefProtegeMain = new JFormattedTextField(intFormat);
+            coefProtegeMain.setValue(1);
+            coefProtegeMain.setMaximumSize(new Dimension(200,70));
+
+
+            JLabel labelMaxSabliers = new JLabel("Coefficient maximiser sabliers : ");
+            labelMaxSabliers.setFont(new Font("default", Font.ITALIC, 12));
+
+            JFormattedTextField coefMaxSabliers = new JFormattedTextField(intFormat);
+            coefMaxSabliers.setValue(1);
+            coefMaxSabliers.setMaximumSize(new Dimension(200,70));
+
+
+            boiteParamJack.add(Box.createVerticalGlue());
+            boiteParamJack.add(paramGJack);
+            boiteParamJack.add(labelDispersionJack);
+            boiteParamJack.add(coefDispersionJack);
+
+            boiteParamJack.add(labelTempoJack);
+            boiteParamJack.add(coefTempoJack);
+
+            boiteParamJack.add(labelProtegeSuspect);
+            boiteParamJack.add(coefProtegeSuspect);
+
+            boiteParamJack.add(labelEloigneEnqueteurs);
+            boiteParamJack.add(coefEloigneEnqueteurs);
+
+            boiteParamJack.add(labelJackAvantTout);
+            boiteParamJack.add(coefJackAvantTout);
+
+            boiteParamJack.add(labelProtegeMain);
+            boiteParamJack.add(coefProtegeMain);
+
+            boiteParamJack.add(labelMaxSabliers);
+            boiteParamJack.add(coefMaxSabliers);
+
+            boiteParamJack.add(Box.createVerticalGlue());
+
+            boiteParamJack.setPreferredSize(new Dimension(400, 200));
+
+            JLabel paramGSherlock = new JLabel("Paramètres Sherlock : ");
+            paramGSherlock.setFont(new Font("default", Font.PLAIN, 20));
+
+            JLabel labelPiocherSherlock = new JLabel("Coefficient piocher le plus souvent possible : ");
+            labelPiocherSherlock.setFont(new Font("default", Font.ITALIC, 12));
+
+            JFormattedTextField coefPiocherSherlock = new JFormattedTextField(intFormat);
+            coefPiocherSherlock.setValue(1);
+            coefPiocherSherlock.setMaximumSize(new Dimension(200,70));
+
+            JLabel labelDiviserDeux = new JLabel("Coefficient diviser par deux : ");
+            labelDiviserDeux.setFont(new Font("default", Font.ITALIC, 12));
+
+            JFormattedTextField coefDiviserDeux = new JFormattedTextField(intFormat);
+            coefDiviserDeux.setValue(1);
+            coefDiviserDeux.setMaximumSize(new Dimension(200,70));
+
+
+            JLabel labelVoirPlus = new JLabel("Coefficient voir le plus possible : ");
+            labelVoirPlus.setFont(new Font("default", Font.ITALIC, 12));
+
+            JFormattedTextField coefVoirPlus = new JFormattedTextField(intFormat);
+            coefVoirPlus.setValue(1);
+            coefVoirPlus.setMaximumSize(new Dimension(200,70));
+
+            boiteParamSherlock.add(Box.createVerticalGlue());
+            boiteParamSherlock.add(paramGSherlock);
+            boiteParamSherlock.add(labelPiocherSherlock);
+            boiteParamSherlock.add(coefPiocherSherlock);
+
+            boiteParamSherlock.add(labelDiviserDeux);
+            boiteParamSherlock.add(coefDiviserDeux);
+
+            boiteParamSherlock.add(labelVoirPlus);
+            boiteParamSherlock.add(coefVoirPlus);
+
+            boiteParamSherlock.add(Box.createVerticalGlue());
+
+            boiteParams.add(boiteParamGlobal);
+            boiteParams.add(Box.createHorizontalGlue());
+            boiteParams.add(boiteParamSherlock);
+            boiteParams.add(Box.createHorizontalGlue());
+            boiteParams.add(boiteParamJack);
+
+            JLabel titre = new JLabel("Mr Jack Pocket");
+            titre.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 50));
+            titre.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            JButton lancerIAvsIA = new JButton("Lancer simulation");
+            lancerIAvsIA.setFont(new Font("default", Font.PLAIN, 20));
+            lancerIAvsIA.addActionListener(new AdaptateurCommande(controle,"LancerIAvsIA"));
+            lancerIAvsIA.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            boiteIAvsIA.add(titre);
+            boiteIAvsIA.add(boiteParams);
+            boiteIAvsIA.add(lancerIAvsIA);
+
+        }
+        /*if(GroupeDifficulte!=null){
+            GroupeDifficulte.clearSelection();
+        }
+        if(GroupePersonnage != null){
+            GroupePersonnage.clearSelection();
+        }
+        refreshBoiteAvantPartieIA();*/
+        return boiteIAvsIA;
+    }
+
     public void refreshBoiteAvantPartieIA(){
         Enumeration<AbstractButton> boutonsDif = GroupeDifficulte.getElements();
         AbstractButton bouton;
@@ -572,6 +762,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         }
         return boiteCharger;
     }
+
 
     //Boite tuto
     public Box getBoiteTuto(){

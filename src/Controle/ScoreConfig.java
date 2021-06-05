@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class ScoreConfig {
 
-    //[Sherlock]Qui disperse les enqueteurs avecsens =1
+    //[Sherlock]Qui disperse les enqueteurs avecsens = 1
     //[Jack]Qui regroupe les enqueteurs avec sens = -1
     static int scoreDispersionEnqueteur(Jeu j, int sens){
         int distanceCalcule, distanceMin=-1,resultat=-1;
@@ -29,12 +29,21 @@ public class ScoreConfig {
         return sens*resultat;
     }
 
+    //[Jack]Se montre si ça permet d'innoncenter 4 personne de plus
+    static int scoreJackVisiblePourSauver(Jeu j){
+        int jackVisibles = 0;
+        for(Suspect s : j.plateau().visibles()){
+            if(s.getCouleur().equals(j.plateau().idJack)) jackVisibles = -3;
+        }
+        return jackVisibles + 9 - j.plateau().getSuspectsInnocete().size() - j.plateau().visibles().size();
+    }
+
     //[Jack]Qui essaye de protéger un maximum de suspect
     static int scoreSuspectCaches(Jeu j){
         return 9 - j.plateau().getSuspectsInnocete().size() - j.plateau().visibles().size();
     }
 
-    //[Jack]Qui s'éloigne le plus de l'inspecteur de l'inspecteur le plus proche en nombre de cartes
+    //[Jack]Qui s'éloigne le plus de l'inspecteur le plus proche en nombre de cartes
     static int scoreEloignement(Jeu j){
         Point positionJ=null;
         for(Suspect s : j.plateau().getSuspects()){
@@ -49,7 +58,7 @@ public class ScoreConfig {
     }
 
     //[Jack]Qui essaye de protéger un maximum de suspect dont Jack
-    //Négatif si Jack est visibles prend le cas où le moins de suspect sont innocentés
+    //Négatif si Jack est visible prend le cas où le moins de suspect sont innocentés
     static int scoreSuspectVisiblesJackCache(Jeu j){
         int jackVisibles = 0;
         for(Suspect s : j.plateau().visibles()){
@@ -101,14 +110,7 @@ public class ScoreConfig {
         }
     }
 
-    //[Jack]Se montre si ça permet d'innoncenter 4 personne de plus
-    static int scoreJackVisiblePourSauver(Jeu j){
-        int jackVisibles = 0;
-        for(Suspect s : j.plateau().visibles()){
-            if(s.getCouleur().equals(j.plateau().idJack)) jackVisibles = -4;
-        }
-        return jackVisibles + 9 - j.plateau().getSuspectsInnocete().size() - j.plateau().visibles().size();
-    }
+
 
     //[Sherlock] Piocher dès que possible en fonction de la **proba d'innoncenter en fonction du nombre à innocenter** un suspect
     static int scoreSuspectCaches(Jeu j, Actions action){

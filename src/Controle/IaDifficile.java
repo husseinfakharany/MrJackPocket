@@ -50,8 +50,6 @@ public class IaDifficile extends IA{
             for(Action a : Action.listeAction(actions,joueurCourant)){
                 cp.setAction(a);
                 j.jouerCoup(cp);
-                //Appel récursif ici pour le minimax
-
                 int score = ScoreConfig.scoreSuspectVisiblesJackCache(j);
                 if(tourMinMaxJack(j,action,joueurCourant,listeAction,cp,aJouer) < valeur ){
                     aJouer = a;
@@ -97,7 +95,6 @@ public class IaDifficile extends IA{
                action.setNumAction(i);
                cp.getAction().setNumAction(i);
                return cp;
-
 
     }
 }
