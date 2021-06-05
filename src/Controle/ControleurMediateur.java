@@ -126,7 +126,6 @@ public class ControleurMediateur implements CollecteurEvenements {
             appliquer(-1);
             ig.getDistrict().setAfficherVisible(false);
         }
-
     }
 
     @Override
@@ -294,7 +293,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         ig.getDistrict().setAfficherVisible(false);
         selectionne = -1;
         cp = null;
-        action.setNumEnqueteur(-1);
+        //action.setNumEnqueteur(-1);
         ig.getPioche().setPiocheActive(false);
         if(!jeu.plateau().tousJetonsJoues()) ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
         if(!ig.getMain().getAfficherEnqueteur()) commandeMenu("main");

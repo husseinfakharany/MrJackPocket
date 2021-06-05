@@ -368,16 +368,10 @@ public class Coup extends Commande implements Cloneable{
 		boolean res =false;
 		switch(action.getAction()){
 			case DEPLACER_JOKER:
-				res = deplacer(action.getNumEnqueteur(),action.getDeplacement(),1);
-				break;
 			case DEPLACER_WATSON:
-				res = deplacer(Plateau.WATSON,action.getDeplacement(),1);
-				break;
 			case DEPLACER_SHERLOCK:
-				res = deplacer(Plateau.SHERLOCK,action.getDeplacement(),1);
-				break;
 			case DEPLACER_TOBBY:
-				res = deplacer(Plateau.TOBBY,action.getDeplacement(),1);
+				res = deplacer(action.getNumEnqueteur(),action.getDeplacement(),1);
 				break;
 			case INNOCENTER_CARD:
 				res = innocenter(1);

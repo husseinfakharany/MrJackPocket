@@ -38,6 +38,7 @@ public class CarteRue implements Cloneable {
 		CarteRue copy;
 		try {
 			copy = (CarteRue) super.clone();
+
 		} catch (CloneNotSupportedException e) {
 			Configuration.instance().logger().severe("Bug interne: CarteRue non clonable");
 			return null;

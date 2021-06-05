@@ -46,6 +46,7 @@ public class Action{
                     action.setAction(Actions.DEPLACER_JOKER);
                     action.setDeplacement(1);
                     action.setNumEnqueteur(i);
+                    action.setJoueur(joueur);
                     res.add(action);
                 }
                 break;
@@ -55,6 +56,7 @@ public class Action{
                     action.setAction(Actions.DEPLACER_SHERLOCK);
                     action.setDeplacement(i);
                     action.setNumEnqueteur(Plateau.SHERLOCK);
+                    action.setJoueur(joueur);
                     res.add(action);
                 }
                 break;
@@ -64,15 +66,17 @@ public class Action{
                     action.setAction(Actions.DEPLACER_WATSON);
                     action.setDeplacement(i);
                     action.setNumEnqueteur(Plateau.WATSON);
+                    action.setJoueur(joueur);
                     res.add(action);
                 }
                 break;
             case DEPLACER_TOBBY:
                 for(int i = 1; i<3;i++){
                     action = new Action(joueur);
-                    action.setAction(Actions.DEPLACER_WATSON);
+                    action.setAction(Actions.DEPLACER_TOBBY);
                     action.setDeplacement(i);
                     action.setNumEnqueteur(Plateau.TOBBY);
+                    action.setJoueur(joueur);
                     res.add(action);
                 }
                 break;
@@ -84,6 +88,7 @@ public class Action{
                             action.setAction(Actions.ECHANGER_DISTRICT);
                             action.setPosition1(position1);
                             action.setPosition2(position2);
+                            action.setJoueur(joueur);
                             res.add(action);
                         }
                     }
@@ -92,6 +97,7 @@ public class Action{
             case INNOCENTER_CARD:
                 action = new Action(joueur);
                 action.setAction(Actions.INNOCENTER_CARD);
+                action.setJoueur(joueur);
                 res.add(action);
                 break;
             case ROTATION_DISTRICT:
@@ -100,7 +106,8 @@ public class Action{
                         action = new Action(joueur);
                         action.setAction(Actions.ROTATION_DISTRICT);
                         action.setPosition1(position);
-                        action.setOrientationNew((~(1<<i)) & 0b1111);
+                        action.setOrientationNew((~(1<<i)) & Plateau.NSEO);
+                        action.setJoueur(joueur);
                         res.add(action);
                     }
                 }
@@ -235,7 +242,6 @@ public class Action{
     public int getOrientationSuspect(){
         return orientationSuspect;
     }
-
 
     public int getNumAction() {
         return numAction;
