@@ -22,6 +22,108 @@ public class Jeu extends Observable implements Cloneable{
         Configuration.instance().logger().info("Seed used: " + seed);
     }
 
+    public Jeu(String nomFichier){
+        Scanner sc = new Scanner(new File(nomFichier));
+        ArrayList<SuspectNom> suspectIndicesSauv = new ArrayList<>();
+        ArrayList<Integer> orientationSauv = new ArrayList<>();
+        ArrayList<Boolean> jetonsActionsSauv = new ArrayList<>();
+        ArrayList<Action> ActionsSauv = new ArrayList<>();
+        ArrayList<SuspectNom> SuspectNomPiocheSauv = new ArrayList<>();
+        SuspectNom nomPersonnage;
+        Action ac;
+        Coup cp;
+        String chaineChar;
+        int i, l, c;
+
+        // Lecture informations de la grille
+        for (i=0; i<9; i++){
+            suspectIndicesSauv.add(stringVersSuspectNom(sc.next()));
+            orientationSauv.add(sc.nextInt());
+        }
+        chaineChar = sc.next();
+        nomPersonnage = stringVersSuspectNom(chaineChar);
+
+        //Chargement position initiale de la partie
+        plateau = Plateau(this, suspectIndicesSauv, orientationSauv, nomPersonnage);
+        Configuration.instance().logger().info("Seed used: " + seed);
+
+
+        //Lecture jetons et actions
+        int actionsVues = 8;
+        while(sc.hasNext()){
+            if(actionsVues == 8){
+                //Lecture de nouveaux jetons
+                jetonsActionsSauv.clear();
+                for(i=0; i<=3; i++){
+                    chaineChar = sc.next();
+                    if (chaineChar.equals("true"){
+                        jetonsActionsSauv.add(true);
+                    } else{
+                        jetonsActionsSauv.add(false);
+                    }
+                }
+                p.forceJetons(jetonsActionsSauv);
+                actionsVues = 0;
+            } else{
+                ac = new Action(null);
+                chaineChar = sc.next();
+                switch(chaineChar){
+                    case "DEPLACER_JOKER":
+                        ac.setAction(DEPLACER_JOKER);
+                        ac.setNumEnqueteur(sc.nextInt());
+                        ac.setDeplacement(sc.nextInt());
+                        break;
+                    case "DEPLACER_TOBBY":
+                        ac.setAction(DEPLACER_TOBBY);
+                        ac.setNumEnqueteur(2);
+                        ac.setDeplacement(sc.nextInt());
+                        break;
+                    case "DEPLACER_WATSON":
+                        ac.setAction(DEPLACER_WATSON);
+                        ac.setNumEnqueteur(1);
+                        ac.setDeplacement(sc.nextInt());
+                        break;
+                    case "DEPLACER_SHERLOCK":
+                        ac.setAction(DEPLACER_SHERLOCK);
+                        ac.setNumEnqueteur(0);
+                        ac.setDeplacement(sc.nextInt());
+                        break;
+                    case "INNOCENTER_CARD":
+                        ac.setAction(INNOCENTER_CARD);
+                        chaineChar = sc.next();
+                        for(CarteAlibi a: p.getCartesAlibis()){
+                            if(a.getSuspect().getNomPersonnage().toString() == chaineChar){
+                                ac.setCartePioche(a);
+                            }
+                        }
+                        break;
+                    case "ECHANGER_DISTRICT":
+                        ac.setAction(ECHANGER_DISTRICT);
+                        l = sc.nextInt();
+                        c = sc.nextInt();
+                        ac.setPosition1(new Point(c,l));
+                        l = sc.nextInt();
+                        c = sc.nextInt();
+                        ac.setPosition2(new Point(c,l));
+                        break;
+                    case "ROTATION_DISTRICT":
+                        ac.setAction(ROTATION_DISTRICT);
+                        l = sc.nextInt();
+                        c = sc.nextInt();
+                        ac.setPosition1(new Point(c,l));
+                        ac.setOrientationNew(sc.nextInt());
+                        break;
+                    default:
+                        throw new IllegalStateException("Unexpected value: " + nom);
+                }
+                actionsVues++;
+                cp = new Coup(plateau, ac);
+                jouerCoup(cp);
+            }
+        }
+        sc.close();
+    }
+
     public Plateau plateau(){return plateau;}
 
     public boolean jouerCoup(Coup cp) {
@@ -181,6 +283,31 @@ public class Jeu extends Observable implements Cloneable{
         }
         catch(Exception e){
             e.printStackTrace();
+        }
+    }
+
+    SuspectNom stringVersSuspectNom(String nom){
+        switch(nom){
+            case "MADAME":
+                return MADAME;
+            case "JOHN_PIZER":
+                return JOHN_PIZER;
+            case "JOHN_SMITH":
+                return JOHN_SMITH;
+            case "JEREMY_BERT":
+                return JEREMY_BERT;
+            case "JOSEPH_LANE":
+                return JOSEPH_LANE;
+            case "MISS_STEALTHY":
+                return MISS_STEALTHY;
+            case "WILLIAM_GULL":
+                return WILLIAM_GULL;
+            case "SERGENT_GOODLEY":
+                return SERGENT_GOODLEY;
+            case "INSPECTOR_LESTRADE":
+                return INSPECTOR_LESTRADE;
+            default:
+                throw new IllegalStateException("Unexpected value: " + nom);
         }
     }
 
