@@ -70,7 +70,7 @@ public class Action{
             case DEPLACER_TOBBY:
                 for(int i = 1; i<3;i++){
                     action = new Action(joueur);
-                    action.setAction(Actions.DEPLACER_WATSON);
+                    action.setAction(Actions.DEPLACER_TOBBY);
                     action.setDeplacement(i);
                     action.setNumEnqueteur(Plateau.TOBBY);
                     res.add(action);
@@ -100,7 +100,7 @@ public class Action{
                         action = new Action(joueur);
                         action.setAction(Actions.ROTATION_DISTRICT);
                         action.setPosition1(position);
-                        action.setOrientationNew((~(1<<i)) & 0b1111);
+                        action.setOrientationNew((~(1<<i)) & Plateau.NSEO);
                         res.add(action);
                     }
                 }
@@ -235,7 +235,6 @@ public class Action{
     public int getOrientationSuspect(){
         return orientationSuspect;
     }
-
 
     public int getNumAction() {
         return numAction;
