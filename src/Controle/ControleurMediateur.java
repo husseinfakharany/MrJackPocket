@@ -314,7 +314,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
             case "IA contre IA":
                 Configuration.instance().logger().info("Partie IA contre IA");
-                //ig.changerMenu(ig.getBoiteMenu(),ig.getBoiteAvantPartie());
+                ig.changerMenu(ig.getBoiteMenu(),ig.getBoiteIAvsIA());
                 break;
             case"Contre une IA":
                 Configuration.instance().logger().info("Partie contre une IA");
