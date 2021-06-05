@@ -124,7 +124,6 @@ public class ControleurMediateur implements CollecteurEvenements {
             appliquer(-1);
             ig.getDistrict().setAfficherVisible(false);
         }
-
     }
 
     @Override
