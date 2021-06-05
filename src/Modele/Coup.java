@@ -90,6 +90,8 @@ public class Coup extends Commande implements Cloneable{
 		/*if (carteRue1.getInnocente() || carteRue2.getInnocente()){
 			return false;
 		}*/
+		suspect1.setPosition(suspect2.getPosition());
+		suspect2.setPosition(tmpSuspect.getPosition());
 
 		//On échange que l'orientation et le suspect
 		carteRue1.setOrientation(orientation2);
@@ -220,20 +222,32 @@ public class Coup extends Commande implements Cloneable{
 			case ROTATION_DISTRICT:
 				l--;
 				c--;
-				action.setPosition1(new Point(c,l));
-				if(action.getOrientationNew() == -1) action.setOrientationNew(plateau.grille[l][c].orientation);
+				if(action.getOrientationNew() == Plateau.NSEO || plateau.grille[l][c].orientation == Plateau.NSEO ) action.setOrientationNew(Plateau.NSEO);
+				if(action.getOrientationNew() == -1 || action.getOrientationNew() == Plateau.NSEO) action.setOrientationNew(plateau.grille[l][c].orientation);
 				switch (action.getOrientationNew()){
 					case Plateau.SEO:
+						action.setPosition1(new Point(c,l));
 						action.setOrientationNew(Plateau.NSO);
 						break;
 					case Plateau.NSO:
+						action.setPosition1(new Point(c,l));
 						action.setOrientationNew(Plateau.NEO);
 						break;
 					case Plateau.NEO:
+						action.setPosition1(new Point(c,l));
 						action.setOrientationNew(Plateau.NSE);
 						break;
 					case Plateau.NSE:
+						action.setPosition1(new Point(c,l));
 						action.setOrientationNew(Plateau.SEO);
+						break;
+					case Plateau.NSEO:
+						action.setOrientationNew(Plateau.NSEO);
+						if(action.getPosition1() != null && action.getPosition1().getX() == c && action.getPosition1().getY() == l){
+							action.setPosition1(new Point(-1,-1));
+							return;
+						}
+						else action.setPosition1(new Point(c,l));
 						break;
 					default:
 						break;
@@ -261,14 +275,16 @@ public class Coup extends Commande implements Cloneable{
 			if (c==3){
 				enqueteurs = plateau.grille[l-2][c-1].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
-					if (e.getPositionSurCarte()==Enqueteur.EST){
+					if (e.getPositionSurCarte()==Enqueteur.EST && e.getNumEnqueteur() != action.numEnqueteur ){
+						enqueteurs.remove(e);
+						enqueteurs.add(enqueteurs.size()-1,e);
 						return e.getNumEnqueteur();
 					}
 				}
 			} else {
 				enqueteurs = plateau.grille[l-2][c].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
-					if (e.getPositionSurCarte()==Enqueteur.SUD){
+					if (e.getPositionSurCarte()==Enqueteur.SUD && e.getNumEnqueteur() != action.numEnqueteur ){
 						return e.getNumEnqueteur();
 					}
 				}
@@ -278,14 +294,14 @@ public class Coup extends Commande implements Cloneable{
 			if (l==1){
 				enqueteurs = plateau.grille[l-1][c-2].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
-					if (e.getPositionSurCarte()==Enqueteur.NORD){
+					if (e.getPositionSurCarte()==Enqueteur.NORD && e.getNumEnqueteur() != action.numEnqueteur ){
 						return e.getNumEnqueteur();
 					}
 				}
 			} else {
 				enqueteurs = plateau.grille[l-2][c-2].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
-					if (e.getPositionSurCarte()==Enqueteur.EST){
+					if (e.getPositionSurCarte()==Enqueteur.EST && e.getNumEnqueteur() != action.numEnqueteur ){
 						return e.getNumEnqueteur();
 					}
 				}
@@ -295,14 +311,14 @@ public class Coup extends Commande implements Cloneable{
 			if (c==1){
 				enqueteurs = plateau.grille[l][c-1].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
-					if (e.getPositionSurCarte()==Enqueteur.OUEST){
+					if (e.getPositionSurCarte()==Enqueteur.OUEST && e.getNumEnqueteur() != action.numEnqueteur ){
 						return e.getNumEnqueteur();
 					}
 				}
 			} else {
 				enqueteurs = plateau.grille[l][c-2].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
-					if (e.getPositionSurCarte()==Enqueteur.NORD){
+					if (e.getPositionSurCarte()==Enqueteur.NORD && e.getNumEnqueteur() != action.numEnqueteur ){
 						return e.getNumEnqueteur();
 					}
 				}
@@ -312,14 +328,14 @@ public class Coup extends Commande implements Cloneable{
 			if (l==3){
 				enqueteurs = plateau.grille[l-1][c].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
-					if (e.getPositionSurCarte()==Enqueteur.SUD){
+					if (e.getPositionSurCarte()==Enqueteur.SUD && e.getNumEnqueteur() != action.numEnqueteur ){
 						return e.getNumEnqueteur();
 					}
 				}
 			} else {
 				enqueteurs = plateau.grille[l][c].getEnqueteurs();
 				for (Enqueteur e: enqueteurs){
-					if (e.getPositionSurCarte()==Enqueteur.OUEST){
+					if (e.getPositionSurCarte()==Enqueteur.OUEST && e.getNumEnqueteur() != action.numEnqueteur ){
 						return e.getNumEnqueteur();
 					}
 				}

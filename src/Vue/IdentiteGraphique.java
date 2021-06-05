@@ -32,7 +32,6 @@ public class IdentiteGraphique extends JComponent {
         if(afficherCaches || jeu.plateau().finJeu(false,false)) nbSabliers = jeu.plateau().jack.getSablier();
         else nbSabliers = jeu.plateau().jack.getSablierVisibles();
         boolean isJack = personnageCourant.isJack();
-        //isJack = !isJack;
 
         switch (jeu.plateau().idJack){
             case BLEU:
@@ -132,6 +131,11 @@ public class IdentiteGraphique extends JComponent {
 
     public void swapImageJack() {
         estCache = !estCache;
+        repaint();
+    }
+
+    public void resetIdJack() {
+        estCache = true;
         repaint();
     }
 }

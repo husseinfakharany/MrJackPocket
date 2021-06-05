@@ -121,9 +121,9 @@ public class Action{
                 return getPosition1() != null && getPosition2() !=null;
             case ROTATION_DISTRICT:
                 return getPosition1() != null &&
-                    (  getOrientationNew() == Plateau.NSE || getOrientationNew() == Plateau.NSO
+                        ( (  getOrientationNew() == Plateau.NSE || getOrientationNew() == Plateau.NSO
                     || getOrientationNew() == Plateau.SEO || getOrientationNew() == Plateau.NEO)
-                        && (getOrientationNew() != getOrientationOld());
+                        && (getOrientationNew() != getOrientationOld()) || ( getOrientationNew() == Plateau.NSEO && getPosition1().getX() != -1 ) );
         }
         return false;
     }

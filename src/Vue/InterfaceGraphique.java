@@ -6,6 +6,11 @@ import Modele.Jeu;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Enumeration;
@@ -23,6 +28,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     private JButton voirJack;
     private JButton undo;
     private JButton redo;
+    private JList saveList;
     JButton menu;
     JButton lancerPartie;
     private JLabel info;
@@ -504,14 +510,22 @@ public class InterfaceGraphique implements Observer, Runnable {
         if (boiteCharger == null){
             boiteCharger = Box.createHorizontalBox();
 
+            String home = System.getProperty("user.home");
+            Path path = Paths.get(home + File.separator + "JackPocket"+ File.separator);
+            try {
+                Files.createDirectories(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            File directoryPath = new File(home + File.separator + "JackPocket");
             //Recuperer la liste des parties (en attendant)
-            String [] listPartie = {"" };
+            String [] listPartie = directoryPath.list();
 
-            JList list = new JList(listPartie);
-            list.setAlignmentX(Component.CENTER_ALIGNMENT);
-            list.setLayoutOrientation(JList.VERTICAL);
-            list.setFont(new Font("default",Font.PLAIN,20));
-            JScrollPane listScroller = new JScrollPane(list);
+            saveList = new JList(listPartie);
+            saveList.setAlignmentX(Component.CENTER_ALIGNMENT);
+            saveList.setLayoutOrientation(JList.VERTICAL);
+            saveList.setFont(new Font("default",Font.PLAIN,20));
+            JScrollPane listScroller = new JScrollPane(saveList);
             listScroller.setPreferredSize(new Dimension(300, 350));
             listScroller.setMaximumSize(new Dimension(300, 350));
 
@@ -668,5 +682,9 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     public JButton getRedo() {
         return redo;
+    }
+
+    public JList getSaveList() {
+        return saveList;
     }
 }

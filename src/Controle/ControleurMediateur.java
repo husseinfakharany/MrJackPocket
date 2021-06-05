@@ -146,7 +146,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             cp.ajouterArguments(l,c);
         action.setJoueur(jeu.plateau().joueurCourant);
         ig.getJetons().dessinerValide(action.estValide());
-        ig.getDistrict().dessinerFeedback(action);
+        ig.getDistrict().dessinerFeedback(cp.getAction());
         ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
     }
 
@@ -286,12 +286,15 @@ public class ControleurMediateur implements CollecteurEvenements {
         ig.getJetons().dessinerSelection(-1);
         ig.getJetons().dessinerValide(false);
         ig.getDistrict().dessinerFeedback(null);
+        ig.getDistrict().setAfficherVisible(false);
         selectionne = -1;
         cp = null;
+        action.setNumEnqueteur(-1);
         ig.getPioche().setPiocheActive(false);
         if(!jeu.plateau().tousJetonsJoues()) ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
         if(!ig.getMain().getAfficherEnqueteur()) commandeMenu("main");
         ig.getMain().setAfficherEnqueteur(true);
+        ig.getIdentite().resetIdJack();
     }
 
     void reinitialiserIA(){
@@ -368,6 +371,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
             case "charger":
                 Configuration.instance().logger().info("Chargement de la partie...");
+                if(!ig.getSaveList().isSelectionEmpty()){
+                    //(String) (ig.getSaveList().getSelectedValue())
+                }
                 break;
             case "annuler":
                 annuler();

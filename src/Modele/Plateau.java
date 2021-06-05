@@ -190,6 +190,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
             if(numTour != 7){
                 numAction = 0;
                 numTour++;
+                changerJoueur();
             }
             res =true;
         }
@@ -392,7 +393,6 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     public void reinitialiser(){
 
-        rand = new Random(Jeu.getSeed());
         jack = new Joueur(true, "Hussein", 0,0,false,false);
         enqueteur = new Joueur(false, "Fabien", 0,0, false, true);
 
@@ -404,6 +404,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         enqueteur.setWinner(false);
         joueurCourant = enqueteur;
         setNumTour(0);
+        setNumAction(0);
         initialiseSuspects();
         initialiseGrille();
         initialiseCarteAlibis();
