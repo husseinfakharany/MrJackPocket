@@ -24,6 +24,7 @@ public class IaMoyen extends IA{
 
         for(Actions actions : listeAction){
             for(Action a : Action.listeAction(actions,joueurCourant)){
+                a.setAction(actions);
                 cp.setAction(a);
                 j.jouerCoup(cp);
                 //Appel récursif ici pour le minimax

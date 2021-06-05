@@ -43,6 +43,7 @@ public class Action{
             case DEPLACER_JOKER:
                 for(int i = 0; i<3;i++){
                     action = new Action(joueur);
+                    action.setAction(Actions.DEPLACER_JOKER);
                     action.setDeplacement(1);
                     action.setNumEnqueteur(i);
                     res.add(action);
@@ -51,6 +52,7 @@ public class Action{
             case DEPLACER_SHERLOCK:
                 for(int i = 1; i<3;i++){
                     action = new Action(joueur);
+                    action.setAction(Actions.DEPLACER_SHERLOCK);
                     action.setDeplacement(i);
                     action.setNumEnqueteur(Plateau.SHERLOCK);
                     res.add(action);
@@ -59,6 +61,7 @@ public class Action{
             case DEPLACER_WATSON:
                 for(int i = 1; i<3;i++){
                     action = new Action(joueur);
+                    action.setAction(Actions.DEPLACER_WATSON);
                     action.setDeplacement(i);
                     action.setNumEnqueteur(Plateau.WATSON);
                     res.add(action);
@@ -67,6 +70,7 @@ public class Action{
             case DEPLACER_TOBBY:
                 for(int i = 1; i<3;i++){
                     action = new Action(joueur);
+                    action.setAction(Actions.DEPLACER_WATSON);
                     action.setDeplacement(i);
                     action.setNumEnqueteur(Plateau.TOBBY);
                     res.add(action);
@@ -77,6 +81,7 @@ public class Action{
                     for(Point position2 : positions){
                         if(!position1.equals(position2)){
                             action = new Action(joueur);
+                            action.setAction(Actions.ECHANGER_DISTRICT);
                             action.setPosition1(position1);
                             action.setPosition2(position2);
                             res.add(action);
@@ -86,12 +91,14 @@ public class Action{
                 break;
             case INNOCENTER_CARD:
                 action = new Action(joueur);
+                action.setAction(Actions.INNOCENTER_CARD);
                 res.add(action);
                 break;
             case ROTATION_DISTRICT:
                 for(Point position : positions){
                     for(int i = 0; i<4;i++){
                         action = new Action(joueur);
+                        action.setAction(Actions.ROTATION_DISTRICT);
                         action.setPosition1(position);
                         action.setOrientationNew((~(1<<i)) & 0b1111);
                         res.add(action);

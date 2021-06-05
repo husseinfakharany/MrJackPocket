@@ -360,6 +360,8 @@ public class InterfaceGraphique implements Observer, Runnable {
         getPioche().repaint();
         getMain().repaint();
         getJetons().repaint();
+        redo.setEnabled(jeu.plateau().peutRefaire());
+        undo.setEnabled(jeu.plateau().peutAnnuler());
         tour.setText("  Tour n°"+ (jeu.plateau().getNumTour()+1) );
 
         if(jeu.plateau().tousJetonsJoues() ) {
@@ -425,7 +427,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             facileB.setEnabled(true);
             facileB.addActionListener(new AdaptateurCommande(controle,"facile"));
             moyenB.setText("Moyen");
-            moyenB.setEnabled(false);
+            moyenB.setEnabled(true);
             moyenB.addActionListener(new AdaptateurCommande(controle,"moyen"));
             difficileB.setText("Difficile");
             difficileB.setEnabled(false);
@@ -526,8 +528,8 @@ public class InterfaceGraphique implements Observer, Runnable {
             saveList.setLayoutOrientation(JList.VERTICAL);
             saveList.setFont(new Font("default",Font.PLAIN,20));
             JScrollPane listScroller = new JScrollPane(saveList);
-            listScroller.setPreferredSize(new Dimension(300, 350));
-            listScroller.setMaximumSize(new Dimension(300, 350));
+            listScroller.setPreferredSize(new Dimension(400, 550));
+            listScroller.setMaximumSize(new Dimension(400, 550));
 
 
             Box boiteTitre = Box.createVerticalBox();

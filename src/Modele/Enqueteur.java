@@ -92,7 +92,7 @@ public class Enqueteur implements Cloneable{
             copy = (Enqueteur) super.clone();
 
         } catch (CloneNotSupportedException e) {
-            Configuration.instance().logger().severe("Bug interne: CarteRue non clonable");
+            Configuration.instance().logger().severe("Bug interne: Enqueteur non clonable");
             return null;
         }
         copy.position = (Point) position.clone();

@@ -15,7 +15,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class CarteRue {
+public class CarteRue implements Cloneable {
     public int orientation; //4 bits de poids faible indiquent les orientations des rues (N,S,E,O) - 3/4 activés (si 1110 alors Mur|-)
     public Point position;
     public ArrayList<Enqueteur> enqueteurs; //liste des enqueteurs sur cette carte (seulement pour les cartes des bords)
@@ -38,7 +38,6 @@ public class CarteRue {
 		CarteRue copy;
 		try {
 			copy = (CarteRue) super.clone();
-
 		} catch (CloneNotSupportedException e) {
 			Configuration.instance().logger().severe("Bug interne: CarteRue non clonable");
 			return null;

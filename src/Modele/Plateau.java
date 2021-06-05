@@ -298,10 +298,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     public boolean prochainTour(){
         if (finJeu()){
             Configuration.instance().logger().info("Fin du Jeu");
-            actionPlus();
             return true;
         } else {
-            actionPlus();
             initialiseTour();
             jeu.notifierObserveurs();
         }

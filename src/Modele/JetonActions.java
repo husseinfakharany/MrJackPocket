@@ -9,7 +9,7 @@ Action face 2
 Boolean recto (True) = Action 1 ou verso (False) = Action 2
 Boolean dejaJoue
  */
-public class JetonActions {
+public class JetonActions implements Cloneable {
 
 	Actions action1; //action face 1 
 	Actions action2;  // action face 2
@@ -28,7 +28,7 @@ public class JetonActions {
 			copy = (JetonActions) super.clone();
 
 		} catch (CloneNotSupportedException e) {
-			Configuration.instance().logger().severe("Bug interne: CarteRue non clonable");
+			Configuration.instance().logger().severe("Bug interne: JetonActions non clonable");
 			return null;
 		}
 		copy.action1 = action1;

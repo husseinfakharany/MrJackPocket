@@ -13,7 +13,7 @@ Nom Personnage
 Position
 Boolean caché ou pas
  */
-public class Suspect {
+public class Suspect implements Cloneable {
 	
     private SuspectNom nomPersonnage;
     private SuspectCouleur couleur;
@@ -70,7 +70,7 @@ public class Suspect {
 			copy = (Suspect) super.clone();
 
 		} catch (CloneNotSupportedException e) {
-			Configuration.instance().logger().severe("Bug interne: CarteRue non clonable");
+			Configuration.instance().logger().severe("Bug interne: Suspect non clonable");
 			return null;
 		}
 		copy.nomPersonnage = nomPersonnage;
