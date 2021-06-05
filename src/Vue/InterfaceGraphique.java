@@ -22,7 +22,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     static int MIN_WIDTH = 1080;
     static int MIN_HEIGHT = 720;
     Jeu jeu;
-    JFrame frame;
+    public JFrame frame;
     private Box boiteMenu = null,boiteTitre  = null,boiteBoutons = null, boiteJeu = null, boiteAvantPartie = null,
             boiteCharger = null, boiteIAvsIA = null;
     boolean ia,isJack;
@@ -44,6 +44,9 @@ public class InterfaceGraphique implements Observer, Runnable {
     private MainGraphique main;
     private TutoGraphique tuto;
     Box boiteCentreG, boiteUnReDoCartes, boiteInfo, boiteUnReDo, boiteCentreD, boiteCentre, boiteTuto, courant;
+    private JFormattedTextField nbParties, profondeurIA, coefDispersionJack, coefTempoJack, coefProtegeSuspect,
+            coefEloigneEnqueteurs, coefJackAvantTout, coefProtegeMain, coefMaxSabliers, coefPiocherSherlock,
+            coefDiviserDeux, coefVoirPlus;
 
     InterfaceGraphique(Jeu j, CollecteurEvenements c) {
         jeu = j;
@@ -502,11 +505,11 @@ public class InterfaceGraphique implements Observer, Runnable {
             Box boiteParamGlobal = Box.createVerticalBox();
 
             NumberFormat intFormat = NumberFormat.getIntegerInstance();
-            JFormattedTextField nbParties = new JFormattedTextField(intFormat);
+            nbParties = new JFormattedTextField(intFormat);
             nbParties.setValue(100);
             nbParties.setMaximumSize(new Dimension(200,70));
 
-            JFormattedTextField profondeurIA = new JFormattedTextField(intFormat);
+            profondeurIA = new JFormattedTextField(intFormat);
             profondeurIA.setValue(4);
             profondeurIA.setMaximumSize(new Dimension(200,70));
 
@@ -534,21 +537,21 @@ public class InterfaceGraphique implements Observer, Runnable {
             JLabel labelDispersionJack = new JLabel("Coefficient stratégie dispersion : ");
             labelDispersionJack.setFont(new Font("default", Font.ITALIC, 12));
 
-            JFormattedTextField coefDispersionJack = new JFormattedTextField(intFormat);
+            coefDispersionJack = new JFormattedTextField(intFormat);
             coefDispersionJack.setValue(1);
             coefDispersionJack.setMaximumSize(new Dimension(200,70));
 
             JLabel labelTempoJack = new JLabel("Coefficient jack contre 3 suspects : ");
             labelTempoJack.setFont(new Font("default", Font.ITALIC, 12));
 
-            JFormattedTextField coefTempoJack = new JFormattedTextField(intFormat);
+            coefTempoJack = new JFormattedTextField(intFormat);
             coefTempoJack.setValue(1);
             coefTempoJack.setMaximumSize(new Dimension(200,70));
 
             JLabel labelProtegeSuspect = new JLabel("Coefficient protege les suspects : ");
             labelProtegeSuspect.setFont(new Font("default", Font.ITALIC, 12));
 
-            JFormattedTextField coefProtegeSuspect = new JFormattedTextField(intFormat);
+            coefProtegeSuspect = new JFormattedTextField(intFormat);
             coefProtegeSuspect.setValue(1);
             coefProtegeSuspect.setMaximumSize(new Dimension(200,70));
 
@@ -556,7 +559,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             JLabel labelEloigneEnqueteurs = new JLabel("Coefficient eloignement enqueteur : ");
             labelEloigneEnqueteurs.setFont(new Font("default", Font.ITALIC, 12));
 
-            JFormattedTextField coefEloigneEnqueteurs = new JFormattedTextField(intFormat);
+            coefEloigneEnqueteurs = new JFormattedTextField(intFormat);
             coefEloigneEnqueteurs.setValue(1);
             coefEloigneEnqueteurs.setMaximumSize(new Dimension(200,70));
 
@@ -564,7 +567,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             JLabel labelJackAvantTout = new JLabel("Coefficient protège Jack avant tout : ");
             labelJackAvantTout.setFont(new Font("default", Font.ITALIC, 12));
 
-            JFormattedTextField coefJackAvantTout = new JFormattedTextField(intFormat);
+            coefJackAvantTout = new JFormattedTextField(intFormat);
             coefJackAvantTout.setValue(1);
             coefJackAvantTout.setMaximumSize(new Dimension(200,70));
 
@@ -572,7 +575,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             JLabel labelProtegeMain = new JLabel("Coefficient protège suspect main : ");
             labelProtegeMain.setFont(new Font("default", Font.ITALIC, 12));
 
-            JFormattedTextField coefProtegeMain = new JFormattedTextField(intFormat);
+            coefProtegeMain = new JFormattedTextField(intFormat);
             coefProtegeMain.setValue(1);
             coefProtegeMain.setMaximumSize(new Dimension(200,70));
 
@@ -580,7 +583,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             JLabel labelMaxSabliers = new JLabel("Coefficient maximiser sabliers : ");
             labelMaxSabliers.setFont(new Font("default", Font.ITALIC, 12));
 
-            JFormattedTextField coefMaxSabliers = new JFormattedTextField(intFormat);
+            coefMaxSabliers = new JFormattedTextField(intFormat);
             coefMaxSabliers.setValue(1);
             coefMaxSabliers.setMaximumSize(new Dimension(200,70));
 
@@ -618,14 +621,14 @@ public class InterfaceGraphique implements Observer, Runnable {
             JLabel labelPiocherSherlock = new JLabel("Coefficient piocher le plus souvent possible : ");
             labelPiocherSherlock.setFont(new Font("default", Font.ITALIC, 12));
 
-            JFormattedTextField coefPiocherSherlock = new JFormattedTextField(intFormat);
+            coefPiocherSherlock = new JFormattedTextField(intFormat);
             coefPiocherSherlock.setValue(1);
             coefPiocherSherlock.setMaximumSize(new Dimension(200,70));
 
             JLabel labelDiviserDeux = new JLabel("Coefficient diviser par deux : ");
             labelDiviserDeux.setFont(new Font("default", Font.ITALIC, 12));
 
-            JFormattedTextField coefDiviserDeux = new JFormattedTextField(intFormat);
+            coefDiviserDeux = new JFormattedTextField(intFormat);
             coefDiviserDeux.setValue(1);
             coefDiviserDeux.setMaximumSize(new Dimension(200,70));
 
@@ -633,7 +636,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             JLabel labelVoirPlus = new JLabel("Coefficient voir le plus possible : ");
             labelVoirPlus.setFont(new Font("default", Font.ITALIC, 12));
 
-            JFormattedTextField coefVoirPlus = new JFormattedTextField(intFormat);
+            coefVoirPlus = new JFormattedTextField(intFormat);
             coefVoirPlus.setValue(1);
             coefVoirPlus.setMaximumSize(new Dimension(200,70));
 
@@ -670,13 +673,6 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteIAvsIA.add(lancerIAvsIA);
 
         }
-        /*if(GroupeDifficulte!=null){
-            GroupeDifficulte.clearSelection();
-        }
-        if(GroupePersonnage != null){
-            GroupePersonnage.clearSelection();
-        }
-        refreshBoiteAvantPartieIA();*/
         return boiteIAvsIA;
     }
 
@@ -879,5 +875,53 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     public JList getSaveList() {
         return saveList;
+    }
+
+    public int getNbParties() {
+        return Integer.parseInt(nbParties.getText());
+    }
+
+    public int getProfondeurIA() {
+        return Integer.parseInt(profondeurIA.getText());
+    }
+
+    public int getCoefDispersionJack() {
+        return Integer.parseInt(coefDispersionJack.getText());
+    }
+
+    public int getCoefTempoJack() {
+        return Integer.parseInt(coefTempoJack.getText());
+    }
+
+    public int getCoefProtegeSuspect() {
+        return Integer.parseInt(coefProtegeSuspect.getText());
+    }
+
+    public int getCoefEloigneEnqueteurs() {
+        return Integer.parseInt(coefEloigneEnqueteurs.getText());
+    }
+
+    public int getCoefJackAvantTout() {
+        return Integer.parseInt(coefJackAvantTout.getText());
+    }
+
+    public int getCoefProtegeMain() {
+        return Integer.parseInt(coefProtegeMain.getText());
+    }
+
+    public int getCoefMaxSabliers() {
+        return Integer.parseInt(coefMaxSabliers.getText());
+    }
+
+    public int getCoefPiocherSherlock() {
+        return Integer.parseInt(coefPiocherSherlock.getText());
+    }
+
+    public int getCoefDiviserDeux() {
+        return Integer.parseInt(coefDiviserDeux.getText());
+    }
+
+    public int getCoefVoirPlus() {
+        return Integer.parseInt(coefVoirPlus.getText());
     }
 }

@@ -63,7 +63,7 @@ public class IaDifficile extends IA{
 
 
     @Override
-    public Coup coupIA(Jeu j) {
+    public Coup coupIA() {
                 int score;
                 Joueur joueurCourant = j.plateau().joueurCourant;
                 Action action = new Action(joueurCourant);

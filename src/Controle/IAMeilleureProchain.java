@@ -1,6 +1,7 @@
 package Controle;
 
 import Modele.*;
+import Vue.InterfaceGraphique;
 
 import java.util.ArrayList;
 
@@ -9,6 +10,9 @@ public class IAMeilleureProchain extends IA{
     Jeu j;
     boolean isJack;
     int difficulte;
+    private int profondeurIA, coefDispersionJack, coefTempoJack, coefProtegeSuspect,
+            coefEloigneEnqueteurs, coefJackAvantTout, coefProtegeMain, coefMaxSabliers, coefPiocherSherlock,
+            coefDiviserDeux, coefVoirPlus;
 
     public IAMeilleureProchain(Jeu j, boolean isJack) {
         this.j=j;
@@ -17,8 +21,43 @@ public class IAMeilleureProchain extends IA{
         if(difficulte<0) difficulte=0;
     }
 
+    public void setCoeff(InterfaceGraphique ig){
+        if(isJack){
+            coefDispersionJack =ig.getCoefDispersionJack();
+            coefTempoJack=ig.getCoefTempoJack();
+            coefProtegeSuspect = ig.getCoefProtegeSuspect();
+            coefEloigneEnqueteurs = ig.getCoefEloigneEnqueteurs();
+            coefJackAvantTout = ig.getCoefJackAvantTout();
+            coefProtegeMain = ig.getCoefProtegeMain();
+            coefMaxSabliers = ig.getCoefMaxSabliers();
+        } else {
+            coefPiocherSherlock = ig.getCoefPiocherSherlock();
+            coefDiviserDeux = ig.getCoefDiviserDeux();
+            coefVoirPlus = ig.getCoefVoirPlus();
+        }
+    }
+
+    public int score(Action a){
+        int res;
+        if(isJack){
+            res = coefDispersionJack * ScoreConfig.scoreDispersionEnqueteur(j,-1) +
+            coefTempoJack * ScoreConfig.scoreJackVisiblePourSauver(j) +
+            coefProtegeSuspect * ScoreConfig.scoreSuspectCaches(j) +
+            coefEloigneEnqueteurs * ScoreConfig.scoreEloignement(j) +
+            coefJackAvantTout * ScoreConfig.scoreSuspectVisiblesJackCache(j) +
+            coefProtegeMain * ScoreConfig.scoreSuspectMainCache(j) +
+            coefMaxSabliers * ScoreConfig.scoreSablierJack(j,a.getAction());
+            return res;
+        } else {
+            res = coefPiocherSherlock * ScoreConfig.scoreSuspectCaches(j,a.getAction()) +
+            coefDiviserDeux* ScoreConfig.scoreSuspectElimine(j) +
+            coefVoirPlus * ScoreConfig.scoreSuspectVisibles(j);
+        }
+        return res;
+    }
+
     @Override
-    public Coup coupIA(Jeu j) {
+    public Coup coupIA() {
         Joueur joueurCourant = j.plateau().joueurCourant;
         int valeur = Integer.MIN_VALUE;
         Action action = new Action(joueurCourant);
@@ -38,7 +77,7 @@ public class IAMeilleureProchain extends IA{
                 j.jouerCoup(cp);
                 //Appel récursif ici pour le minimax
                 if(j.plateau().joueurCourant.isJack()) {
-                    int score = ScoreConfig.scoreSuspectVisiblesJackCache(j);
+                    int score = score(a);
                     if(valeur <= score){
                         aJouer = a;
                         valeur = score;

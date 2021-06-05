@@ -18,7 +18,7 @@ public class IaAleatoire extends IA{
     }
 
     @Override
-    public Coup coupIA(Jeu j) {
+    public Coup coupIA() {
 
         Joueur joueurCourant = j.plateau().joueurCourant;
 

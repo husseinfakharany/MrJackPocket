@@ -9,12 +9,14 @@ import Vue.AdaptateurTemps;
 import Vue.InterfaceGraphique;
 
 import javax.swing.*;
+import java.awt.event.WindowEvent;
 import java.io.File;
 
 public class ControleurMediateur implements CollecteurEvenements {
     InterfaceGraphique ig;
     Jeu jeu;
     IA ia;
+    IAMeilleureProchain iaJ,iaS;
     boolean iaActive;
     boolean iaIsJack;
     boolean iaJoue;
@@ -62,7 +64,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             default:
                 //throw new NoSuchElementException();
         }
-        tempsIA = new Timer(3000,new AdaptateurTemps(ia,jeu,this));
+        tempsIA = new Timer(3000,new AdaptateurTemps(ia,this));
         tempsIA.setRepeats(false);
     }
 
@@ -408,6 +410,20 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "retourMenuTuto":
                 ig.changerMenu(ig.getBoiteTuto(), ig.getBoiteMenu() );
                 break;
+            case "LancerIAvsIA":
+                try {
+                    iaJ = new IAMeilleureProchain(jeu.clone(), true);
+                    iaS = new IAMeilleureProchain(jeu.clone(),false);
+                } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                }
+                iaJ.setCoeff(ig);
+                iaS.setCoeff(ig);
+                jeu.plateau().reinitialiser();
+                this.reinitialiser();
+                jouerIAvsIA(ig.getNbParties());
+                ig.frame.dispatchEvent(new WindowEvent(ig.frame, WindowEvent.WINDOW_CLOSING));
+                break;
             default:
                 return false;
         }
@@ -425,6 +441,40 @@ public class ControleurMediateur implements CollecteurEvenements {
             iaJoue =true;
             ig.dessinerInfo("Ia joue son coup");
         }
+    }
+
+    private void jouerIAvsIA(int nbPartie){
+        int victoireJack =0, victoireSherlock =0;
+
+        cp = null;
+        action.setNumEnqueteur(-1);
+        jeu.plateau().reinitialiser();
+
+        for(int i=0; i < nbPartie; i++){
+            while(jeu.plateau().finJeu(false,false)){
+                if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack)){
+                    coupIAJack();
+                } else if(jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur)){
+                    coupIASherlock();
+                }
+            }
+            if(jeu.plateau().jack.getWinner()) victoireJack++;
+            if(jeu.plateau().enqueteur.getWinner()) victoireSherlock++;
+        }
+        Configuration.instance().logger().info("Jack a gagné " + victoireJack + " parties sur " + (victoireJack+victoireSherlock) );
+        Configuration.instance().logger().info("Sherlock a gagné " + victoireSherlock + " parties sur " + (victoireJack+victoireSherlock) );
+    }
+
+    private void coupIASherlock(){
+        cp = iaS.coupIA();
+        jouerCoup();
+        if(jeu.plateau().tousJetonsJoues()) jeu.plateau().prochainTour();
+    }
+
+    private void coupIAJack(){
+        cp = iaJ.coupIA();
+        jouerCoup();
+        if(jeu.plateau().tousJetonsJoues()) jeu.plateau().prochainTour();
     }
 
     @Override

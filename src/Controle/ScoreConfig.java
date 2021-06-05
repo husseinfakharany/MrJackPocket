@@ -29,7 +29,7 @@ public class ScoreConfig {
         return sens*resultat;
     }
 
-    //[Jack]Se montre si ça permet d'innoncenter 4 personne de plus
+    //[Jack]Se montre si ça permet d'innoncenter 3 personne de plus
     static int scoreJackVisiblePourSauver(Jeu j){
         int jackVisibles = 0;
         for(Suspect s : j.plateau().visibles()){
@@ -109,8 +109,6 @@ public class ScoreConfig {
             return scoreSuspectElimine(j);
         }
     }
-
-
 
     //[Sherlock] Piocher dès que possible en fonction de la **proba d'innoncenter en fonction du nombre à innocenter** un suspect
     static int scoreSuspectCaches(Jeu j, Actions action){
