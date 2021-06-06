@@ -12,7 +12,8 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
     int tailleC;
     Image [] s;
     int i;
-    private int offsetX, offsetY;
+    private final int offsetX;
+    private final int offsetY;
     Image toDraw;
 
     TutoGraphique(){
