@@ -404,17 +404,18 @@ public class Coup extends Commande implements Cloneable{
 				throw new IllegalStateException("Unexpected action");
 		}
 
+		if (res){
+			plateau.actionPlus();
+			plateau.getJeton(action.getNumAction()).setDejaJoue(true);
+		}
 
-		plateau.actionPlus();
-
-		plateau.getJeton(action.getNumAction()).setDejaJoue(true);
 		return res;
 	}
 
 	@Override
 	boolean desexecute() {
 		boolean res=false;
-		plateau.actionMoins();
+
 		if(plateau.numAction==3 ) {
 			plateau.resetJetons();
 			plateau.annuleVerdict();
@@ -439,7 +440,12 @@ public class Coup extends Commande implements Cloneable{
 			default:
 				throw new IllegalStateException("Unexpected action");
 		}
-		plateau.getJeton(action.getNumAction()).setDejaJoue(false);
+
+		if (res){
+			plateau.actionMoins();
+			plateau.getJeton(action.getNumAction()).setDejaJoue(false);
+		}
+
 		return res;
 	}
 

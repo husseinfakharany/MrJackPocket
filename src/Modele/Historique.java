@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Historique<E extends Commande> {
 	ArrayList<E> passe, futur;
 
-
 	Historique() {
 		passe = new ArrayList<>();
 		futur = new ArrayList<>();
