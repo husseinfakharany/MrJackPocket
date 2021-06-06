@@ -27,7 +27,16 @@ public class Coup extends Commande implements Cloneable{
 		int sabliersCarte;
 
 		if(i==1){
-			card = plateau.piocher();
+			if(action.cartePioche != null) {
+				card = action.cartePioche;
+				CarteAlibi toRemove = null;
+				for(CarteAlibi carte:plateau.getCartesAlibis()){
+					if(carte.getSuspect().equals(card.getSuspect()))
+						toRemove =  carte;
+				}
+				if(toRemove!=null)plateau.cartesAlibis.remove(toRemove);
+			}
+			else card = plateau.piocher();
 			action.setCartePioche(card);
 			sabliersCarte = card.getSablier();
 			if (!j.isJack()) {
@@ -84,12 +93,13 @@ public class Coup extends Commande implements Cloneable{
 		Suspect suspect2 = carteRue2.getSuspect();
 
 		int tmpOrientation = orientation1;
-		Suspect tmpSuspect = suspect1;
+		Suspect tmpSuspect = null;
+		try {
+			tmpSuspect = suspect1.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
 
-		//On peux echanger des quartiers retournés il n'ya pas de contraintes je crois
-		/*if (carteRue1.getInnocente() || carteRue2.getInnocente()){
-			return false;
-		}*/
 		suspect1.setPosition(suspect2.getPosition());
 		suspect2.setPosition(tmpSuspect.getPosition());
 
@@ -389,7 +399,7 @@ public class Coup extends Commande implements Cloneable{
 		}
 
 
-		if(!plateau.tousJetonsJoues()) plateau.actionPlus();
+		plateau.actionPlus();
 
 		plateau.getJeton(action.getNumAction()).setDejaJoue(true);
 		return res;

@@ -61,6 +61,19 @@ public class InterfaceGraphique implements Observer, Runnable {
         main = new MainGraphique(jeu);
     }
 
+    public void setIG(Jeu j, CollecteurEvenements c){
+        jeu = j;
+        jeu.addObserver(this);
+        controle = c;
+        controle.fixerInterfaceUtilisateur(this);
+        setDistrict(new DistrictGraphique(jeu));
+        pioche = new PiocheGraphique(jeu);
+        setJetons(new JetonsGraphique(jeu));
+        identite = new IdentiteGraphique(jeu);
+        setTuto(new TutoGraphique());
+        main = new MainGraphique(jeu);
+    }
+
     public static void demarrer(Jeu j, CollecteurEvenements c) {
         SwingUtilities.invokeLater(new InterfaceGraphique(j, c));
     }
@@ -695,67 +708,66 @@ public class InterfaceGraphique implements Observer, Runnable {
     }
 
     public Box getBoiteCharger(){
-        if (boiteCharger == null){
-            boiteCharger = Box.createHorizontalBox();
+        if (boiteCharger == null)boiteCharger = Box.createHorizontalBox();
 
-            String home = System.getProperty("user.home");
-            Path path = Paths.get(home + File.separator + "JackPocket"+ File.separator);
-            try {
-                Files.createDirectories(path);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            File directoryPath = new File(home + File.separator + "JackPocket");
-            //Recuperer la liste des parties (en attendant)
-            String [] listPartie = directoryPath.list();
-
-            saveList = new JList(listPartie);
-            saveList.setAlignmentX(Component.CENTER_ALIGNMENT);
-            saveList.setLayoutOrientation(JList.VERTICAL);
-            saveList.setFont(new Font("default",Font.PLAIN,20));
-            JScrollPane listScroller = new JScrollPane(saveList);
-            listScroller.setPreferredSize(new Dimension(400, 550));
-            listScroller.setMaximumSize(new Dimension(400, 550));
-
-
-            Box boiteTitre = Box.createVerticalBox();
-
-            JLabel titre = new JLabel("Mr Jack Pocket");
-            titre.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 50));
-            titre.setAlignmentX(Component.CENTER_ALIGNMENT);
-            JLabel astuces = new JLabel("Astuces : Cliquez sur une partie et finissez là !");
-            astuces.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 25));
-            astuces.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-            Box boiteList = Box.createHorizontalBox();
-            boiteList.add(Box.createHorizontalGlue());
-            boiteList.add(listScroller);
-            boiteList.add(Box.createHorizontalGlue());
-
-            Box boiteBoutons = Box.createHorizontalBox();
-
-            JButton charger = nouveauBouton("Charger partie",250,40);
-            charger.addActionListener(new AdaptateurCommande(controle,"charger"));
-
-            JButton menu = nouveauBouton("Retour au Menu",250,40);
-            menu.addActionListener(new AdaptateurCommande(controle,"menuC"));
-
-            boiteBoutons.add(Box.createHorizontalGlue());
-            boiteBoutons.add(charger);
-            boiteBoutons.add(Box.createHorizontalGlue());
-            boiteBoutons.add(menu);
-            boiteBoutons.add(Box.createHorizontalGlue());
-
-            boiteTitre.add(Box.createVerticalGlue());
-            boiteTitre.add(titre);
-            boiteTitre.add(astuces);
-            boiteTitre.add(Box.createVerticalGlue());
-            boiteTitre.add(boiteBoutons);
-            boiteTitre.add(Box.createVerticalGlue());
-
-            boiteCharger.add(boiteList, BorderLayout.PAGE_START);
-            boiteCharger.add(boiteTitre);
+        String home = System.getProperty("user.home");
+        Path path = Paths.get(home + File.separator + "JackPocket"+ File.separator);
+        try {
+            Files.createDirectories(path);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        File directoryPath = new File(home + File.separator + "JackPocket");
+        //Recuperer la liste des parties (en attendant)
+        String [] listPartie = directoryPath.list();
+
+        saveList = new JList(listPartie);
+        saveList.setAlignmentX(Component.CENTER_ALIGNMENT);
+        saveList.setLayoutOrientation(JList.VERTICAL);
+        saveList.setFont(new Font("default",Font.PLAIN,20));
+        JScrollPane listScroller = new JScrollPane(saveList);
+        listScroller.setPreferredSize(new Dimension(400, 550));
+        listScroller.setMaximumSize(new Dimension(400, 550));
+
+
+        Box boiteTitre = Box.createVerticalBox();
+
+        JLabel titre = new JLabel("Mr Jack Pocket");
+        titre.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 50));
+        titre.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel astuces = new JLabel("Astuces : Cliquez sur une partie et finissez là !");
+        astuces.setFont(new Font(Font.SANS_SERIF,  Font.PLAIN, 25));
+        astuces.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        Box boiteList = Box.createHorizontalBox();
+        boiteList.add(Box.createHorizontalGlue());
+        boiteList.add(listScroller);
+        boiteList.add(Box.createHorizontalGlue());
+
+        Box boiteBoutons = Box.createHorizontalBox();
+
+        JButton charger = nouveauBouton("Charger partie",250,40);
+        charger.addActionListener(new AdaptateurCommande(controle,"charger"));
+
+        JButton menu = nouveauBouton("Retour au Menu",250,40);
+        menu.addActionListener(new AdaptateurCommande(controle,"menuC"));
+
+        boiteBoutons.add(Box.createHorizontalGlue());
+        boiteBoutons.add(charger);
+        boiteBoutons.add(Box.createHorizontalGlue());
+        boiteBoutons.add(menu);
+        boiteBoutons.add(Box.createHorizontalGlue());
+
+        boiteTitre.add(Box.createVerticalGlue());
+        boiteTitre.add(titre);
+        boiteTitre.add(astuces);
+        boiteTitre.add(Box.createVerticalGlue());
+        boiteTitre.add(boiteBoutons);
+        boiteTitre.add(Box.createVerticalGlue());
+
+        boiteCharger.removeAll();
+        boiteCharger.add(boiteList, BorderLayout.PAGE_START);
+        boiteCharger.add(boiteTitre);
         return boiteCharger;
     }
 

@@ -61,7 +61,6 @@ public class CarteRue implements Cloneable {
 	void setOrientation(int orientation) {
 		this.orientation = orientation;
 		this.suspect.setOrientation(this.orientation);
-		this.suspect.setOrientation(this.orientation);
 	}
 
 	public ArrayList<Enqueteur> getEnqueteurs() {

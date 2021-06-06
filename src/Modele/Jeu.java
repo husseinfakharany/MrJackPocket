@@ -19,9 +19,9 @@ import static Modele.SuspectNom.*;
 
 public class Jeu extends Observable implements Cloneable{
 
-    //public static final long seed = System.currentTimeMillis();
+    public static final long seed = System.currentTimeMillis();
     //public static final long seed = 1622191690051L; Testing seed
-    public static final long seed = 1622909369189L;
+    //public static final long seed = 1622909369189L;
 
     Plateau plateau;
 
@@ -30,7 +30,7 @@ public class Jeu extends Observable implements Cloneable{
         Configuration.instance().logger().info("Seed used: " + seed);
     }
 
-    public Jeu(File file){
+    public void charger(File file){
         Scanner sc = null;
         try {
             sc = new Scanner(file);
@@ -79,6 +79,7 @@ public class Jeu extends Observable implements Cloneable{
                 actionsVues = 0;
             } else{
                 ac = new Action(null);
+                ac.setNumAction(sc.nextInt());
                 chaineChar = sc.next();
                 switch(chaineChar){
                     case "DEPLACER_JOKER":
@@ -105,7 +106,7 @@ public class Jeu extends Observable implements Cloneable{
                         ac.setAction(INNOCENTER_CARD);
                         chaineChar = sc.next();
                         for(CarteAlibi a: plateau.getCartesAlibis()){
-                            if(a.getSuspect().getNomPersonnage().toString() == chaineChar){
+                            if(a.getSuspect().getNomPersonnage().toString().equals(chaineChar)){
                                 ac.setCartePioche(a);
                             }
                         }
@@ -129,9 +130,12 @@ public class Jeu extends Observable implements Cloneable{
                     default:
                         throw new IllegalStateException("Unexpected value: " + chaineChar);
                 }
-                actionsVues++;
+
+                ac.setJoueur(plateau.joueurCourant);
                 cp = new Coup(plateau, ac);
                 jouerCoup(cp);
+                actionsVues++;
+                if(actionsVues==4)plateau.prochainTour();
             }
         }
         sc.close();
@@ -247,6 +251,11 @@ public class Jeu extends Observable implements Cloneable{
                         finAtteinte = true;
                     } else{
                         ac = cp.getAction();
+                        int REDIX=10;//redix 10 is for decimal number, for hexa use redix 16
+                        int numAction=ac.getNumAction();
+                        char c=Character.forDigit(numAction,REDIX);
+                        flux.write(c);
+                        flux.write(" ");
                         flux.write(ac.getAction().toString());
                         flux.write(" ");
                         switch(ac.getAction()){

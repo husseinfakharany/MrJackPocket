@@ -378,7 +378,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 if(!ig.getSaveList().isSelectionEmpty()){
                     String home = System.getProperty("user.home");
                     File f = new File(home + File.separator + "JackPocket" + File.separator + ig.getSaveList().getSelectedValue());
-                    jeu = new Jeu( f );
+                    jeu.charger(f);
                 }
                 reinitialiser();
                 reinitialiserIA();

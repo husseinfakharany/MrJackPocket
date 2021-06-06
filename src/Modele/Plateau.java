@@ -67,7 +67,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         rand = new Random(Jeu.getSeed());
         jack = new Joueur(true, "Hussein", 0,0,false,false);
         enqueteur = new Joueur(false, "Fabien", 0,0, false, true);
-        numTour = 1;
+        numTour = 0;
         grille = new CarteRue[3][3];
         joueurCourant = enqueteur;
         jeu = j;
@@ -267,7 +267,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         if(numTour>=0 && numAction>=0){
             numAction --;
         }
-        if (numAction == 0){
+        if (numAction == -1){
             if(numTour == 0){
                 numAction = 0;
                 res = false;
@@ -300,7 +300,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
             Configuration.instance().logger().info("Fin du Jeu");
             return true;
         } else {
-            initialiseTour();
+            jackVisible = false;
+            melangeJetonsActions();
             jeu.notifierObserveurs();
         }
         return false;
