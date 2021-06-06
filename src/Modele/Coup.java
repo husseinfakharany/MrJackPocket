@@ -24,7 +24,7 @@ public class Coup extends Commande implements Cloneable{
 	public boolean innocenter(int i){
 		CarteAlibi card;
 		Joueur j = action.getJoueur();
-		int sabliersCarte;
+		int sabliersCarte = 0;
 
 		if(i==1){
 			if(action.cartePioche != null) {
@@ -34,11 +34,17 @@ public class Coup extends Commande implements Cloneable{
 					if(carte.getSuspect().equals(card.getSuspect()))
 						toRemove =  carte;
 				}
-				if(toRemove!=null)plateau.cartesAlibis.remove(toRemove);
+				if(toRemove!=null){
+					action.setCartePioche(toRemove);
+					sabliersCarte = toRemove.getSablier();
+					plateau.cartesAlibis.remove(toRemove);
+				}
 			}
-			else card = plateau.piocher();
-			action.setCartePioche(card);
-			sabliersCarte = card.getSablier();
+			else {
+				card = plateau.piocher();
+				action.setCartePioche(card);
+				sabliersCarte = card.getSablier();
+			}
 			if (!j.isJack()) {
 				action.setOrientationSuspect(card.getSuspect().getOrientation());
 				card.getSuspect().innoceter(plateau.grille,plateau.getSuspectsInnocete());
