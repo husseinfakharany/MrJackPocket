@@ -120,6 +120,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void annuler() {
         cp = jeu.annule();
+        reinitialiser();
         if(cp != null){
             action = cp.getAction();
             selectionne = action.getNumAction();
@@ -131,6 +132,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     @Override
     public void refaire() {
         cp = jeu.refaire();
+        reinitialiser();
         if(cp != null){
             action = cp.getAction();
             selectionne = action.getNumAction();
@@ -296,7 +298,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         //action.setNumEnqueteur(-1);
         ig.getPioche().setPiocheActive(false);
         if(!jeu.plateau().tousJetonsJoues()) ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
-        if(!ig.getMain().getAfficherEnqueteur()) commandeMenu("main");
         ig.getMain().setAfficherEnqueteur(true);
         ig.getIdentite().resetIdJack();
     }
@@ -391,9 +392,10 @@ public class ControleurMediateur implements CollecteurEvenements {
                 refaire();
                 break;
             case "main":
-                ig.getMain().changerMain();
-                ig.getIdentite().switchAfficherCaches();
-                if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack))ig.getIdentite().swapImageJack();
+                if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack)){
+                    ig.getIdentite().swapImageJack();
+                    ig.getMain().changerMain();
+                }
                 if(ig.getMain().getAfficherEnqueteur()) ig.getVoirJack().setText("Voir mes cartes et ⏳");
                 else ig.getVoirJack().setText("Cacher mes cartes et ⏳");
                 break;

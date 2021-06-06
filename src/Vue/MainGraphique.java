@@ -134,5 +134,6 @@ public class MainGraphique extends JComponent {
 
     public void setAfficherEnqueteur(boolean afficherEnqueteur) {
         this.afficherEnqueteur = afficherEnqueteur;
+        repaint();
     }
 }

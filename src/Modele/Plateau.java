@@ -426,7 +426,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         }
         if (suspectsInnocete.size()==8 || nbInnocent >= 8){
             enqueteur.setWinner(true);
-            return true;
+            return numAction==4;
         }
         return false;
     }

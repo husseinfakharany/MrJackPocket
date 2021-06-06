@@ -12,7 +12,6 @@ public class IdentiteGraphique extends JComponent {
     int largeur,hauteur,tailleC;
     Jeu jeu;
     Image jack,sherlock, pioche, sablier, mystere;
-    boolean afficherCaches;
     boolean estCache;
 
     IdentiteGraphique(Jeu j){
@@ -29,7 +28,7 @@ public class IdentiteGraphique extends JComponent {
         Joueur personnageCourant = jeu.plateau().joueurCourant;
         int taillePiocheAdv;
         int nbSabliers;
-        if(afficherCaches || jeu.plateau().finJeu(false,false)) nbSabliers = jeu.plateau().jack.getSablier();
+        if(!estCache || jeu.plateau().finJeu(false,false)) nbSabliers = jeu.plateau().jack.getSablier();
         else nbSabliers = jeu.plateau().jack.getSablierVisibles();
         boolean isJack = personnageCourant.isJack();
 
@@ -122,11 +121,6 @@ public class IdentiteGraphique extends JComponent {
 
         dessinerIdentite();
 
-    }
-
-    public void switchAfficherCaches(){
-        afficherCaches = !afficherCaches;
-        repaint();
     }
 
     public void swapImageJack() {
