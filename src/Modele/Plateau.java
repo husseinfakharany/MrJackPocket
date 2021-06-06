@@ -564,6 +564,12 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         for(Enqueteur e : enqueteurs) {
             copy.enqueteurs.add(e.clone());
         }
+
+        //No need to copy content, array empty
+        copy.passe = new ArrayList<>();
+
+        copy.futur = new ArrayList<>();
+
         return copy;
     }
 

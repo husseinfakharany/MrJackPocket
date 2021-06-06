@@ -19,9 +19,14 @@ import static Modele.SuspectNom.*;
 
 public class Jeu extends Observable implements Cloneable{
 
-    public static final long seed = System.currentTimeMillis();
+    //public static final long seed = System.currentTimeMillis();
     //public static final long seed = 1622191690051L; Testing seed
+    //Innocenter, no rotation:
     //public static final long seed = 1622909369189L;
+    //Rotation:
+    //public static final long seed = 1622905984056L;
+    //Double rotation:
+    public static final long seed = 1622998682792L;
 
     Plateau plateau;
 

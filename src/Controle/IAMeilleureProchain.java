@@ -58,7 +58,6 @@ public class IAMeilleureProchain extends IA{
 
     @Override
     public Coup coupIA() {
-        int act=0;
         Joueur joueurCourant = j.plateau().joueurCourant;
         int valeur = Integer.MIN_VALUE;
         Action action = new Action(joueurCourant);
@@ -68,42 +67,41 @@ public class IAMeilleureProchain extends IA{
 
         //Jamais anticiper ou  tirer des jetons car un regarde que le prochain coup
         ArrayList<Actions> listeAction = new ArrayList<>();
-        //listeAction.add(j.plateau().getActionJeton(0));
-        //listeAction.add(j.plateau().getActionJeton(1));
-        //listeAction.add(j.plateau().getActionJeton(2));
+        listeAction.add(j.plateau().getActionJeton(0));
+        listeAction.add(j.plateau().getActionJeton(1));
+        listeAction.add(j.plateau().getActionJeton(2));
         listeAction.add(j.plateau().getActionJeton(3));
         for(Actions actions : listeAction){
-            for(Action a : Action.listeAction(actions,joueurCourant)){
+            for(Action a : Action.listeAction(actions,joueurCourant)) {
                 cp.setAction(a);
                 j.jouerCoup(cp);
                 //Appel récursif ici pour le minimax
-                if(j.plateau().joueurCourant.isJack()) {
+                if (j.plateau().joueurCourant.isJack()) {
                     int score = score(a);
-                    if(valeur <= score){
+                    if (valeur <= score) {
                         aJouer = a;
                         valeur = score;
                     }
-                }
-                else {
+                } else {
                     int score = ScoreConfig.scoreSuspectElimine(j);
-                    if(valeur <= score){
+                    if (valeur <= score) {
                         aJouer = a;
                         valeur = score;
                     }
                 }
                 j.annule();
             }
-            act++;
         }
         cp.setAction(aJouer);
+        j.jouerCoup(cp);
         //Erreur dans indexOf
-        /*
-        int i = listeAction.indexOf(aJouer);
+
+        int i = listeAction.indexOf(aJouer.getAction());
         while(j.plateau().getJeton(i).getDejaJoue()){
            listeAction.remove(i);
-            i = listeAction.indexOf(aJouer);
-        }*/
-        action.setNumAction(3);
+            i = listeAction.indexOf(aJouer.getAction());
+        }
+        action.setNumAction(i);
         return cp;
     }
 }
