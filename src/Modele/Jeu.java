@@ -173,7 +173,7 @@ public class Jeu extends Observable implements Cloneable{
         return copy;
     }
 
-    void notifierObserveurs(){
+    public void notifierObserveurs(){
         setChanged();
         notifyObservers();
     }

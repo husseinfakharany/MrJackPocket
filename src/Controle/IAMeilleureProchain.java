@@ -79,7 +79,7 @@ public class IAMeilleureProchain extends IA{
                     if (j.jouerCoup(cp)){
                         //Appel récursif ici pour le minimax
                         if (j.plateau().joueurCourant.isJack()) {
-                            int score = score(a);
+                            int score = ScoreConfig.scoreSablierJack(j,a.getAction());
                             if (valeur <= score) {
                                 aJouer = a;
                                 aJouer.setNumAction(i);

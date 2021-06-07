@@ -45,11 +45,15 @@ public class ControleurMediateur implements CollecteurEvenements {
         switch (com){
             case "facile":
                 ia = new IaAleatoire(jeu,iaIsJack);
+                tempsIA = new Timer(3000,new AdaptateurTemps(ia,this));
+                tempsIA.setRepeats(false);
                 break;
             case "moyen":
                 try{
                     jeuClone = jeu.clone();
                     ia = new IAMeilleureProchain(jeuClone,iaIsJack);
+                    tempsIA = new Timer(1000,new AdaptateurTemps(ia,this));
+                    tempsIA.setRepeats(false);
                 }catch(Exception e){
                     Configuration.instance().logger().severe("Erreur de clonage du jeu");
                     System.exit(-1);
@@ -58,6 +62,8 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "difficile":
                 try{
                     ia = new IaDifficile(jeu.clone(),iaIsJack);
+                    tempsIA = new Timer(0,new AdaptateurTemps(ia,this));
+                    tempsIA.setRepeats(false);
                 }catch(Exception e){
                     Configuration.instance().logger().severe("Erreur de clonage du jeu");
                     System.exit(-1);
@@ -66,8 +72,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             default:
                 //throw new NoSuchElementException();
         }
-        tempsIA = new Timer(3000,new AdaptateurTemps(ia,this));
-        tempsIA.setRepeats(false);
+
     }
 
     public void activeIA(int state){
@@ -108,12 +113,12 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
 
         if(i==1){
-            if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack) && iaActive && iaIsJack && jeu.plateau().getNumAction() <4){
+            if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack) && iaActive && iaIsJack && jeu.plateau().getNumAction() <4 && jeu.plateau().getNumAction()!=0){
                 tempsIA.restart();
                 iaJoue = true;
                 ig.dessinerInfo("Ia joue son coup");
             }
-            if(jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur) && iaActive && !iaIsJack  && jeu.plateau().getNumAction() <4){
+            if(jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur) && iaActive && !iaIsJack  && jeu.plateau().getNumAction() <4 && jeu.plateau().getNumAction()!=0){
                 tempsIA.restart();
                 iaJoue = true;
                 ig.dessinerInfo("Ia joue son coup");
@@ -129,6 +134,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void annuler() {
         cp = jeu.annule();
         reinitialiser();
+        jeu.notifierObserveurs();
         if(cp != null){
             action = cp.getAction();
             selectionne = action.getNumAction();
@@ -141,6 +147,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     public void refaire() {
         cp = jeu.refaire();
         reinitialiser();
+        jeu.notifierObserveurs();
         if(cp != null){
             action = cp.getAction();
             selectionne = action.getNumAction();
@@ -174,6 +181,17 @@ public class ControleurMediateur implements CollecteurEvenements {
 
         if(jeu.plateau().tousJetonsJoues() ){
             boolean partiFini = jeu.plateau().prochainTour();
+            jeuClone.plateau().prochainTour();
+            if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack) && iaActive && iaIsJack && jeu.plateau().getNumAction()==0){
+                tempsIA.restart();
+                iaJoue = true;
+                ig.dessinerInfo("Ia joue son coup");
+            }
+            if(jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur) && iaActive && !iaIsJack && jeu.plateau().getNumAction()==0){
+                tempsIA.restart();
+                iaJoue = true;
+                ig.dessinerInfo("Ia joue son coup");
+            }
             if(!partiFini){
                 ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
                 demarrerIA();
