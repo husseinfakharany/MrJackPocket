@@ -416,7 +416,8 @@ public class Coup extends Commande implements Cloneable{
 	boolean desexecute() {
 		boolean res=false;
 
-		if(plateau.numAction==3 ) {
+		//TODO Changed for bug fix
+		if(plateau.numAction==0) {
 			plateau.resetJetons();
 			plateau.annuleVerdict();
 		}
