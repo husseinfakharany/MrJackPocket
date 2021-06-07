@@ -40,7 +40,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     public CarteRue [][] grille;
 
-    ArrayList<JetonActions> jetonsActions;
+    public ArrayList<JetonActions> jetonsActions;
     ArrayList<CarteAlibi> cartesAlibis;
 
     private ArrayList<Suspect> suspects;
