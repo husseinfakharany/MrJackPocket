@@ -3,8 +3,8 @@ package Modele;
 import java.util.ArrayList;
 
 public class Historique<E extends Commande> {
-	ArrayList<E> passe, futur;
-
+	public ArrayList<E> passe;
+    ArrayList<E> futur;
 
 	Historique() {
 		passe = new ArrayList<>();

@@ -40,7 +40,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     public CarteRue [][] grille;
 
-    ArrayList<JetonActions> jetonsActions;
+    public ArrayList<JetonActions> jetonsActions;
     ArrayList<CarteAlibi> cartesAlibis;
 
     private ArrayList<Suspect> suspects;
@@ -564,6 +564,12 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         for(Enqueteur e : enqueteurs) {
             copy.enqueteurs.add(e.clone());
         }
+
+        //No need to copy content, array empty
+        copy.passe = new ArrayList<>();
+
+        copy.futur = new ArrayList<>();
+
         return copy;
     }
 

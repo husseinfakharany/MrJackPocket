@@ -67,4 +67,12 @@ public class JetonActions implements Cloneable {
 	public void setDejaJoue(boolean b) {
 		this.dejaJoue = b;
 	}
+
+	public Actions getActionJeton(){
+		if(estRecto()){
+			return getAction1();
+		} else {
+			return getAction2();
+		}
+	}
 }

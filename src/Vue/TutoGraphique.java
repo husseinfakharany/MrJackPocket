@@ -12,12 +12,13 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
     int tailleC;
     Image [] s;
     int i;
-    private int offsetX, offsetY;
+    private final int offsetX;
+    private final int offsetY;
     Image toDraw;
 
     TutoGraphique(){
         i=0;
-        s= new Image[6];
+        s= new Image[8];
         for (int j=0;j<s.length;j++) {
             s[j]= Configuration.chargeImage("tuto"+j);
         }
