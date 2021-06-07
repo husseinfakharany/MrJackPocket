@@ -24,7 +24,7 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
         }
         offsetX = 0;
         offsetY = 0;
-        toDraw = s[1];
+        toDraw = s[0];
     }
 
 

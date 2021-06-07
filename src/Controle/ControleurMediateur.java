@@ -15,6 +15,7 @@ import java.io.File;
 public class ControleurMediateur implements CollecteurEvenements {
     InterfaceGraphique ig;
     Jeu jeu;
+    Jeu jeuClone;
     IA ia;
     IAMeilleureProchain iaJ,iaS;
     boolean iaActive;
