@@ -450,4 +450,7 @@ public class Coup extends Commande implements Cloneable{
 		return res;
 	}
 
+	public void setPlateau(Plateau plateau) {
+		this.plateau = plateau;
+	}
 }

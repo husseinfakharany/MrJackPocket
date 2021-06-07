@@ -48,7 +48,8 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
             case "moyen":
                 try{
-                    ia = new IAMeilleureProchain(jeu.clone(),iaIsJack);
+                    jeuClone = jeu.clone();
+                    ia = new IAMeilleureProchain(jeuClone,iaIsJack);
                 }catch(Exception e){
                     Configuration.instance().logger().severe("Erreur de clonage du jeu");
                     System.exit(-1);
@@ -81,8 +82,14 @@ public class ControleurMediateur implements CollecteurEvenements {
             selectionne = cp.getAction().getNumAction();
             tempsIA.stop();
             iaJoue = false;
+            cp.setPlateau(jeu.plateau());
             jouerCoup();
         }
+    }
+
+
+    public void appliquerIA(){
+        jeuClone.plateau().finJeu(false,true);
     }
 
     public void appliquer(int i){
@@ -284,6 +291,14 @@ public class ControleurMediateur implements CollecteurEvenements {
         if (jeu.jouerCoup(cp)){
             Configuration.instance().logger().info("Coup joué");
             appliquer(1);
+            if (iaActive){
+                Action actionIA = jeu.plateau().passe.get(0).getAction();
+                Coup cpIA = new Coup(jeuClone.plateau(),actionIA);
+                if (jeuClone.jouerCoup(cpIA)){
+                    Configuration.instance().logger().info("Coup joué dans IA");
+                    appliquerIA();
+                }
+            }
         } else {
             Configuration.instance().logger().warning("Coup invalide");
         }
