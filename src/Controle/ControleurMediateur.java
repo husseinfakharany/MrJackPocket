@@ -11,6 +11,7 @@ import Vue.InterfaceGraphique;
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.NoSuchElementException;
 
 public class ControleurMediateur implements CollecteurEvenements {
     InterfaceGraphique ig;
@@ -70,7 +71,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 }
                 break;
             default:
-                //throw new NoSuchElementException();
+                throw new NoSuchElementException();
         }
 
     }
@@ -128,8 +129,6 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
-
-
     @Override
     public void annuler() {
         cp = jeu.annule();
@@ -181,7 +180,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
         if(jeu.plateau().tousJetonsJoues() ){
             boolean partiFini = jeu.plateau().prochainTour();
-            jeuClone.plateau().prochainTour();
+            jeuClone.plateau().prochainTourClone(jeu);
             if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack) && iaActive && iaIsJack && jeu.plateau().getNumAction()==0){
                 tempsIA.restart();
                 iaJoue = true;
@@ -310,6 +309,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             Configuration.instance().logger().info("Coup joué");
             appliquer(1);
             if (iaActive){
+                jeuClone.plateau().setJetonsActions(jeu.plateau().jetonsActions);
                 Action actionIA = jeu.plateau().passe.get(0).getAction();
                 Coup cpIA = new Coup(jeuClone.plateau(),actionIA);
                 if (jeuClone.jouerCoup(cpIA)){
@@ -468,12 +468,8 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
     private void demarrerIA() {
-        if(!iaIsJack && iaActive && jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur)){
-            tempsIA.restart();
-            iaJoue =true;
-            ig.dessinerInfo("Ia joue son coup");
-        }
-        if(iaIsJack && iaActive && jeu.plateau().joueurCourant.equals(jeu.plateau().jack)){
+        if((!iaIsJack && iaActive && jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur)) || (iaIsJack && iaActive && jeu.plateau().joueurCourant.equals(jeu.plateau().jack))){
+            jeuClone.plateau().setJetonsActions(jeu.plateau().jetonsActions);
             tempsIA.restart();
             iaJoue =true;
             ig.dessinerInfo("Ia joue son coup");

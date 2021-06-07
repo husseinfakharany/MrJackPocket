@@ -33,6 +33,8 @@ public class JetonActions implements Cloneable {
 		}
 		copy.action1 = action1;
 		copy.action2 = action2;
+		copy.estRecto = estRecto;
+		copy.dejaJoue = dejaJoue;
 		return copy;
 	}
 

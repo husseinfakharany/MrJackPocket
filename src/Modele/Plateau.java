@@ -309,6 +309,13 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return false;
     }
 
+    public void prochainTourClone(Jeu j){
+        if (!finJeu(true,false)){
+            jackVisible = false;
+            setJetonsActions(j.plateau.jetonsActions);
+        }
+    }
+
     //Mélange ou inverse les cartes actions (depend du numéro du tour)
     void melangeJetonsActions(){
         if (numTour%2 == 0) jetJetons();
@@ -668,5 +675,12 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     public void setAfficherVerdict(boolean afficherVerdict) {
         this.afficherVerdict = afficherVerdict;
         jeu.notifierObserveurs();
+    }
+
+    public void setJetonsActions(ArrayList<JetonActions> jetonsActions) {
+        for (int i=0; i<4; i++){
+            this.jetonsActions.get(i).setEstRecto(jetonsActions.get(i).estRecto());
+            this.jetonsActions.get(i).setDejaJoue(jetonsActions.get(i).getDejaJoue());
+        }
     }
 }
