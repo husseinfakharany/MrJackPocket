@@ -18,8 +18,8 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
 
     TutoGraphique(){
         i=0;
-        s= new Image[7];
-        for (int j=1;j<s.length;j++) {
+        s= new Image[8];
+        for (int j=0;j<s.length;j++) {
             s[j]= Configuration.chargeImage("tuto"+j);
         }
         offsetX = 0;
