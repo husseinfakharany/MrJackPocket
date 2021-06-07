@@ -76,24 +76,25 @@ public class IAMeilleureProchain extends IA{
             if(!jetonAct.getDejaJoue()) {
                 for (Action a : Action.listeAction(jetonAct.getActionJeton(), joueurCourant)) {
                     cp.setAction(a);
-                    j.jouerCoup(cp);
-                    //Appel récursif ici pour le minimax
-                    if (j.plateau().joueurCourant.isJack()) {
-                        int score = score(a);
-                        if (valeur <= score) {
-                            aJouer = a;
-                            aJouer.setNumAction(i);
-                            valeur = score;
+                    if (j.jouerCoup(cp)){
+                        //Appel récursif ici pour le minimax
+                        if (j.plateau().joueurCourant.isJack()) {
+                            int score = score(a);
+                            if (valeur <= score) {
+                                aJouer = a;
+                                aJouer.setNumAction(i);
+                                valeur = score;
+                            }
+                        } else {
+                            int score = ScoreConfig.scoreSuspectElimine(j);
+                            if (valeur <= score) {
+                                aJouer = a;
+                                aJouer.setNumAction(i);
+                                valeur = score;
+                            }
                         }
-                    } else {
-                        int score = ScoreConfig.scoreSuspectElimine(j);
-                        if (valeur <= score) {
-                            aJouer = a;
-                            aJouer.setNumAction(i);
-                            valeur = score;
-                        }
+                        j.annule();
                     }
-                    j.annule();
                 }
             }
         }

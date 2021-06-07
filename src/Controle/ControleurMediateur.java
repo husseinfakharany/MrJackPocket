@@ -287,7 +287,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     }
 
 
-    public void jouerCoup(){
+    public boolean jouerCoup(){
         if (jeu.jouerCoup(cp)){
             Configuration.instance().logger().info("Coup joué");
             appliquer(1);
@@ -299,8 +299,10 @@ public class ControleurMediateur implements CollecteurEvenements {
                     appliquerIA();
                 }
             }
+            return true;
         } else {
             Configuration.instance().logger().warning("Coup invalide");
+            return false;
         }
     }
 
