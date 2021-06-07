@@ -255,6 +255,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         if (numAction==1 || numAction==3){
             changerJoueur();
         }
+        jeu.notifierObserveurs();
         return res;
     }
 
@@ -279,6 +280,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         }
         System.out.println("Numéro Tour: " + numTour);
         System.out.println("Numéro Action: " + numAction);
+        jeu.notifierObserveurs();
         return res;
     }
 

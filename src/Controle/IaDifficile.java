@@ -64,37 +64,30 @@ public class IaDifficile extends IA{
 
     @Override
     public Coup coupIA() {
-                int score;
-                Joueur joueurCourant = j.plateau().joueurCourant;
-                Action action = new Action(joueurCourant);
-                Action aJouer = new Action(joueurCourant);
-                Coup cp = new Coup(j.plateau(), null);
-                //Jamais anticiper ou tirer des jetons car un regarde que le prochain coup
-                ArrayList<Actions> listeAction = new ArrayList<>();
-                listeAction.add(j.plateau().getActionJeton(0));
-                listeAction.add(j.plateau().getActionJeton(1));
-                listeAction.add(j.plateau().getActionJeton(2));
-                listeAction.add(j.plateau().getActionJeton(3));
+        Joueur joueurCourant = j.plateau().joueurCourant;
+        int valeur = Integer.MIN_VALUE;
+        Coup cp = new Coup(j.plateau(), null);
+        Action aJouer = new Action(joueurCourant);
+        aJouer.setNumAction(0);
+        //Jamais anticiper ou  tirer des jetons car un regarde que le prochain coup
+        ArrayList<JetonActions> listeJetons = new ArrayList<>();
+
+        for (JetonActions actJeton: j.plateau().jetonsActions){
+            listeJetons.add(actJeton);
+        };
+
+        //Appel récursif ici pour le minimax
+        /*
+        if(j.plateau().joueurCourant.isJack()) {
+           score= tourMinMaxJack(j,action,joueurCourant,listeAction,cp,aJouer);
+        }
+        else {
+          score= tourMinMaxNotJack(j,action,joueurCourant,listeAction,cp,aJouer);
+        }*/
 
 
-                //Appel récursif ici pour le minimax
-
-                if(j.plateau().joueurCourant.isJack()) {
-                   score= tourMinMaxJack(j,action,joueurCourant,listeAction,cp,aJouer);
-                }
-                else {
-                  score= tourMinMaxNotJack(j,action,joueurCourant,listeAction,cp,aJouer);
-                }
-
-               cp.setAction(aJouer);
-               int i = listeAction.indexOf(aJouer);
-               while(j.plateau().getJeton(i).getDejaJoue()){
-                   listeAction.remove(i);
-                   i = listeAction.indexOf(aJouer);
-               }
-               action.setNumAction(i);
-               cp.getAction().setNumAction(i);
-               return cp;
+        cp.setAction(aJouer);
+        return cp;
 
     }
 }
