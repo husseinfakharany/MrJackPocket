@@ -6,12 +6,12 @@ import java.awt.*;
 import java.util.Random;
 
 
-public class IaAleatoire extends IA{
+public class IAAleatoire extends IA{
     Random r;
     Jeu j;
     boolean isJack;
 
-    public IaAleatoire(Jeu j,boolean isJack) {
+    public IAAleatoire(Jeu j, boolean isJack) {
         r = new Random();
         this.j=j;
         this.isJack = isJack;

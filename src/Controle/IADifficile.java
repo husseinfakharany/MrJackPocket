@@ -4,12 +4,12 @@ import Modele.*;
 
 import java.util.ArrayList;
 
-public class IaDifficile extends IA{
+public class IADifficile extends IA{
     Jeu j;
     boolean isJack;
     int difficulte;
 
-    public IaDifficile(Jeu j, boolean isJack) {
+    public IADifficile(Jeu j, boolean isJack) {
         this.j=j;
         this.isJack = isJack;
         if(difficulte>3) difficulte=3;

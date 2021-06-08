@@ -6,7 +6,7 @@ import Vue.InterfaceGraphique;
 import java.util.ArrayList;
 
 
-public class IAMeilleureProchain extends IA{
+public class IAMoyen extends IA{
     Jeu j;
     boolean isJack;
     int difficulte;
@@ -14,7 +14,7 @@ public class IAMeilleureProchain extends IA{
             coefEloigneEnqueteurs, coefJackAvantTout, coefProtegeMain, coefMaxSabliers, coefPiocherSherlock,
             coefDiviserDeux, coefVoirPlus;
 
-    public IAMeilleureProchain(Jeu j, boolean isJack) {
+    public IAMoyen(Jeu j, boolean isJack) {
         this.j=j;
         this.isJack = isJack;
         if(difficulte>3) difficulte=3;
@@ -59,7 +59,12 @@ public class IAMeilleureProchain extends IA{
     @Override
     public Coup coupIA() {
         Joueur joueurCourant = j.plateau().joueurCourant;
-        int valeur = Integer.MIN_VALUE;
+        int valeur;
+        if (joueurCourant.isJack()){
+            valeur = Integer.MIN_VALUE;
+        } else {
+            valeur = Integer.MAX_VALUE;
+        }
         Coup cp = new Coup(j.plateau(), null);
         Action aJouer = new Action(joueurCourant);
         aJouer.setNumAction(0);
@@ -71,16 +76,21 @@ public class IAMeilleureProchain extends IA{
                 for (Action a : Action.listeAction(jetonAct.getActionJeton(), joueurCourant)) {
                     cp.setAction(a);
                     if (j.jouerCoup(cp)){
-                        //Appel récursif ici pour le minimax
+
                         if (j.plateau().joueurCourant.isJack()) {
                             score = ScoreConfig.scoreSablierJack(j, a.getAction());
+                            if (valeur <= score) {
+                                aJouer = a;
+                                aJouer.setNumAction(i);
+                                valeur = score;
+                            }
                         } else {
                             score = ScoreConfig.scoreSuspectElimine(j);
-                        }
-                        if (valeur <= score) {
-                            aJouer = a;
-                            aJouer.setNumAction(i);
-                            valeur = score;
+                            if (valeur >= score) {
+                                aJouer = a;
+                                aJouer.setNumAction(i);
+                                valeur = score;
+                            }
                         }
                         j.annule();
                     }
@@ -89,7 +99,6 @@ public class IAMeilleureProchain extends IA{
         }
 
         cp.setAction(aJouer);
-        //j.jouerCoup(cp);
 
         return cp;
     }
