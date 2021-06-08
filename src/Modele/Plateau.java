@@ -386,7 +386,11 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     }
 
     public CarteAlibi piocher(){
-        int index = rand.nextInt(cartesAlibis.size());
+        int size = cartesAlibis.size();
+        if (size<=0){
+            return null;
+        }
+        int index = rand.nextInt(size);
         CarteAlibi card = cartesAlibis.get(index);
         cartesAlibis.remove(index);
         card.getSuspect().setPioche(true);
