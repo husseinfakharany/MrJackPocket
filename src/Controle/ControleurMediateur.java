@@ -313,6 +313,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                 jeuClone.plateau().setJetonsActions(jeu.plateau().jetonsActions);
                 Action actionIA = jeu.plateau().passe.get(0).getAction();
                 Coup cpIA = new Coup(jeuClone.plateau(),actionIA);
+                if (actionIA.getAction()==Actions.INNOCENTER_CARD){
+                    actionIA.setIa(true);
+                }
                 if (jeuClone.jouerCoup(cpIA)){
                     Configuration.instance().logger().info("Coup joué dans IA");
                     appliquerIA();

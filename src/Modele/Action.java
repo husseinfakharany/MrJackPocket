@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Action{
 
+
     Actions action;
     Joueur joueur;
     Point position1;
@@ -16,6 +17,7 @@ public class Action{
     private int deplacement;
     CarteAlibi cartePioche;
     int orientationSuspect;
+    boolean ia;
 
     public Action(Joueur joueur){
         this.action = null;
@@ -28,6 +30,7 @@ public class Action{
         this.joueur = joueur;
         this.cartePioche = null;
         this.orientationSuspect = -1;
+        this.ia = false;
     }
 
     public static Iterable<Action> listeAction(Actions actionJeton, Joueur joueur) {
@@ -169,6 +172,7 @@ public class Action{
         this.numEnqueteur = -1;
         this.joueur = null;
         this.cartePioche = null;
+        this.ia = false;
     }
 
     public Joueur getJoueur(){
@@ -249,5 +253,13 @@ public class Action{
 
     public void setNumAction(int numAction) {
         this.numAction = numAction;
+    }
+
+    public boolean getIa() {
+        return ia;
+    }
+
+    public void setIa(boolean ia){
+        this.ia = ia;
     }
 }
