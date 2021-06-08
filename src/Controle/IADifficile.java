@@ -9,7 +9,7 @@ public class IADifficile extends IA{
 
     public IADifficile(Jeu j, boolean isJack) {
         super(j,isJack);
-        profondeur = 2;
+        profondeur = 3;
     }
 
     public void setCoeff(InterfaceGraphique ig){
