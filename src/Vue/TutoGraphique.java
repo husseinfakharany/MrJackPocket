@@ -11,14 +11,14 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
     Graphics2D drawable;
     int tailleC;
     Image [] s;
-    int i;
+    public int i;
     private final int offsetX;
     private final int offsetY;
     Image toDraw;
 
     TutoGraphique(){
         i=0;
-        s= new Image[8];
+        s= new Image[9];
         for (int j=0;j<s.length;j++) {
             s[j]= Configuration.chargeImage("tuto"+j);
         }
@@ -64,14 +64,17 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
         largeur = getSize().width;
         hauteur = getSize().height;
         // On efface tout
-        drawable.clearRect(0, 0, largeur, hauteur);
+        //drawable.clearRect(0, 0, largeur, hauteur);
+        drawable.setBackground(new Color(255,255,255,0));
+        g.setColor(new Color(255,255,255,0));
+        g.fillRect(0, 0, getWidth(),getHeight());
 
         //Calcul de la taille d'une case
-        int hCase=hauteur/5; //3 rues + 2 inspecteurs qui l'entourent possiblement
-        int lCase=largeur/5; //3 rues + 2 inspecteurs qui l'entourent possiblement
+        int hCase=hauteur/9;
+        int lCase=largeur/16;
         tailleC=Math.min(hCase,lCase);
 
-        drawable.drawImage(toDraw, offsetX,offsetY,null);
+        drawable.drawImage(toDraw, offsetX,offsetY,tailleC*16, tailleC*9,null);
 
     }
 

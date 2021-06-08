@@ -29,6 +29,8 @@ public class InterfaceGraphique implements Observer, Runnable {
     private JButton voirJack;
     private JButton undo;
     private JButton redo;
+    public JButton tutoMoins;
+    public JButton tutoPlus;
     private JList saveList;
     JButton menu;
     JButton lancerPartie;
@@ -49,19 +51,6 @@ public class InterfaceGraphique implements Observer, Runnable {
             coefDiviserDeux, coefVoirPlus;
 
     InterfaceGraphique(Jeu j, CollecteurEvenements c) {
-        jeu = j;
-        jeu.addObserver(this);
-        controle = c;
-        controle.fixerInterfaceUtilisateur(this);
-        setDistrict(new DistrictGraphique(jeu));
-        pioche = new PiocheGraphique(jeu);
-        setJetons(new JetonsGraphique(jeu));
-        identite = new IdentiteGraphique(jeu);
-        setTuto(new TutoGraphique());
-        main = new MainGraphique(jeu);
-    }
-
-    public void setIG(Jeu j, CollecteurEvenements c){
         jeu = j;
         jeu.addObserver(this);
         controle = c;
@@ -771,37 +760,44 @@ public class InterfaceGraphique implements Observer, Runnable {
         return boiteCharger;
     }
 
-
-    //Boite tuto
     public Box getBoiteTuto(){
         if (boiteTuto == null){
 
             boiteTuto = Box.createVerticalBox();
             boiteTuto = BackgroundBox.createVerticalBackgroundBox();
-            /*
 
-             */
             Box boitePreviousNext = Box.createHorizontalBox();
-            boitePreviousNext.add(getTuto());
-            JButton b1=new JButton("<<");
-            boitePreviousNext.add(b1);
-            b1.addActionListener(new AdaptateurCommande(controle,"previousTuto"));
 
-            JButton b2=new JButton(">>");
-            boitePreviousNext.add(b2);
-            b2.addActionListener(new AdaptateurCommande(controle,"nextTuto"));
+
+            tutoMoins=new JButton("<<");
+            tutoMoins.addActionListener(new AdaptateurCommande(controle,"previousTuto"));
+            tutoMoins.setAlignmentX(Component.CENTER_ALIGNMENT);
+            tutoMoins.setEnabled(false);
+
+            tutoPlus=new JButton(">>");
+            tutoPlus.addActionListener(new AdaptateurCommande(controle,"nextTuto"));
+            tutoPlus.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            boitePreviousNext.add(Box.createHorizontalGlue());
+            boitePreviousNext.add(tutoMoins);
+            boitePreviousNext.add(tutoPlus);
+            boitePreviousNext.add(Box.createHorizontalGlue());
 
             JButton retourMenu = new JButton("Retour au menu");
             retourMenu.setFont(new Font("default", Font.PLAIN, 20));
             retourMenu.addActionListener(new AdaptateurCommande(controle,"retourMenuTuto"));
-            retourMenu.setAlignmentX(Component.RIGHT_ALIGNMENT);
-            boiteTuto.add(retourMenu);
+
+            Box boiteRetourMenu = Box.createHorizontalBox();
+
+            boiteRetourMenu.add(Box.createHorizontalGlue());
+            boiteRetourMenu.add(retourMenu);
+
+            boiteTuto.add(boiteRetourMenu);
+            boiteTuto.add(getTuto());
             boiteTuto.add(boitePreviousNext);
-
-
-
         }
-
+        getTuto().i = 0;
+        getTuto().repaint();
         return boiteTuto;
     }
 
