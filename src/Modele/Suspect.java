@@ -21,14 +21,14 @@ public class Suspect implements Cloneable {
 	private int orientation; //orientation sur la grille
 	private int orientationRecto; //orientation sur la grille
     private Boolean innocente;
-    private Boolean pioche;
+    private Boolean innocenteParPioche;
     private Boolean isJack;
 
     public Suspect(SuspectNom nomPerso, Point position){
         nomPersonnage = nomPerso;
         this.setPosition(position);
         this.innocente = false;
-        this.pioche = false;
+        this.innocenteParPioche = false;
 		switch (nomPersonnage){
 			case MADAME:
 				couleur = ROSE;
@@ -78,7 +78,7 @@ public class Suspect implements Cloneable {
 		copy.position = position;
 		copy.orientation = orientation; //orientation sur la grille
 		copy.innocente = innocente;
-		copy.pioche = pioche;
+		copy.innocenteParPioche = innocenteParPioche;
 		copy.isJack = isJack;
 		return copy;
 	}
@@ -115,12 +115,12 @@ public class Suspect implements Cloneable {
 		this.innocente = innocente;
 	}
 	
-	public Boolean getPioche() {
-		return pioche;
+	public Boolean getInnocenteParPioche() {
+		return innocenteParPioche;
 	}
 	
-	public void setPioche(Boolean pioche) {
-		this.pioche = pioche;
+	public void setInnocenteParPioche(Boolean pioche) {
+		this.innocenteParPioche = pioche;
 	}
 
 	public SuspectCouleur getCouleur(){
@@ -135,7 +135,7 @@ public class Suspect implements Cloneable {
     	return isJack;
 	}
 
-	public void retournerCarteRue(CarteRue[][] grille, int type, int orientation) {
+	public void retournerCarteRue(CarteRue[][] grille, int type) {
 		if(grille[position.y][position.x].getSuspect().getCouleur() == GRIS && type==1){
 			orientationRecto = grille[position.y][position.x].getOrientation();
 			grille[position.y][position.x].setOrientation(Plateau.NSEO);
@@ -144,26 +144,44 @@ public class Suspect implements Cloneable {
 		if(grille[position.y][position.x].getSuspect().getCouleur() == GRIS && type==-1) grille[position.y][position.x].setOrientation(orientationRecto);
 	}
 
-	public void innoceter(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocete){
-		setInnocente(true);
-		retournerCarteRue(grille,1,this.orientation);
-		if (!suspectsInnocete.contains(this)){
-			suspectsInnocete.add(this);
-		}
-	}
-	public void suspecter(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocete){
-		setInnocente(false);
-		retournerCarteRue(grille,-1,this.orientation);
-		suspectsInnocete.remove(this);
-	}
-
-
-	public void rendreSuspect(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocete, int orientation){
-    	setInnocente(false);
-    	retournerCarteRue(grille,-1,orientation);
-		while(suspectsInnocete.contains(this)){
-			suspectsInnocete.remove(this);
+	public void innocenterVerdict(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocente){
+		if(!innocente && !suspectsInnocente.contains(this)){
+			setInnocente(true);
+			suspectsInnocente.add(this);
+			retournerCarteRue(grille,1);
 		}
 	}
 
+	public void innocenterPioche(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocente){
+    	if(!innocente && !suspectsInnocente.contains(this)){
+			setInnocente(true);
+			setInnocenteParPioche(true);
+			suspectsInnocente.add(this);
+			retournerCarteRue(grille,1);
+		}
+	}
+
+	//Utilisé pour annuler verdict
+	public void suspecterVerdict(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocente){
+    	if(innocente && !innocenteParPioche){
+			setInnocente(false);
+			retournerCarteRue(grille,-1);
+			while(suspectsInnocente.contains(this)){
+				suspectsInnocente.remove(this);
+			}
+		}
+	}
+
+	//Utilisé pour annuler pioche
+	public void suspecterPioche(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocente){
+    	if(innocente && innocenteParPioche){
+    		setInnocente(false);
+    		setInnocenteParPioche(false);
+    		retournerCarteRue(grille,-1);
+			while(suspectsInnocente.contains(this)){
+				suspectsInnocente.remove(this);
+			}
+		}
+
+	}
 }

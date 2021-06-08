@@ -39,7 +39,7 @@ public class Coup extends Commande implements Cloneable{
 		}
 		if (!j.isJack()) {
 			action.setOrientationSuspect(card.getSuspect().getOrientation());
-			card.getSuspect().innoceter(plateau.grille,plateau.getSuspectsInnocete());
+			card.getSuspect().innocenterPioche(plateau.grille,plateau.getSuspectsInnocete());
 			j.setSablierVisibles(j.getSablierVisibles()+sabliersCarte);
 		} else {
 			j.setSablierCaches(j.getSablierCaches()+sabliersCarte);
@@ -77,7 +77,7 @@ public class Coup extends Commande implements Cloneable{
 			}
 			if (!j.isJack()) {
 				action.setOrientationSuspect(card.getSuspect().getOrientation());
-				card.getSuspect().innoceter(plateau.grille,plateau.getSuspectsInnocete());
+				card.getSuspect().innocenterPioche(plateau.grille,plateau.getSuspectsInnocete());
 				j.setSablierVisibles(j.getSablierVisibles()+sabliersCarte);
 			} else {
 				j.setSablierCaches(j.getSablierCaches()+sabliersCarte);
@@ -89,7 +89,7 @@ public class Coup extends Commande implements Cloneable{
 			plateau.addToPioche(card);
 			sabliersCarte = card.getSablier();
 			if (!j.isJack()) {
-				card.getSuspect().rendreSuspect(plateau.grille,plateau.getSuspectsInnocete(),action.getOrientationSuspect());
+				card.getSuspect().suspecterPioche(plateau.grille,plateau.getSuspectsInnocete());
 				j.setSablierVisibles(j.getSablierVisibles()-sabliersCarte);
 			} else {
 				j.setSablierCaches(j.getSablierCaches()-sabliersCarte);
