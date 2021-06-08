@@ -41,12 +41,12 @@ public class Joueur implements Cloneable{
 	}
 
 	public void ajouterCarte(CarteAlibi card) {
-		System.out.println(" ajout carte : " + card);
+		//System.out.println(" ajout carte : " + card);
 		cardList.add(card);
 	}
 
 	public void supprimerCarte(CarteAlibi card) {
-		System.out.println(" suppression carte : " + card);
+		//System.out.println(" suppression carte : " + card);
 		cardList.remove(card);
 	}
 

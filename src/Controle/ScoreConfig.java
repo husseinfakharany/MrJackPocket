@@ -89,9 +89,10 @@ public class ScoreConfig {
                 listCarte.add(j.plateau().piocher());
             }
             //Rajouter celle qu'on vient de piocher
-            listCarte.add(0,j.plateau().jack.getCardList().get(j.plateau().jack.getCardList().size()-1));
+            //listCarte.add(0,j.plateau().jack.getCardList().get(j.plateau().jack.getCardList().size()-1));
             int alea;
             //Tirer 3 cartes au hasard pour ne pas tenir compte que de la carte au dessu de la pioche
+            if(listCarte.size()==0)return scoreSuspectElimine(j);
             for(int i = 0; i<3; i++){
                 alea = r.nextInt(listCarte.size());
                 if(listCarte.get(alea).getSablier()>0) res = 10;
@@ -111,7 +112,7 @@ public class ScoreConfig {
     }
 
     //[Sherlock] Piocher dès que possible en fonction de la **proba d'innoncenter en fonction du nombre à innocenter** un suspect
-    static int scoreSuspectCaches(Jeu j, Actions action){
+    static int scorePiocheSuspectCaches(Jeu j, Actions action){
         if(action == Actions.INNOCENTER_CARD){
             return j.plateau().getTaillePioche() - j.plateau().getSuspectsInnocete().size();
         } else {

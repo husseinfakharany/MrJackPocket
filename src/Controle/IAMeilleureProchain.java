@@ -3,38 +3,58 @@ package Controle;
 import Modele.*;
 import Vue.InterfaceGraphique;
 
-import java.util.ArrayList;
-
 
 public class IAMeilleureProchain extends IA{
     Jeu j;
     boolean isJack;
-    int difficulte;
-    private int profondeurIA, coefDispersionJack, coefTempoJack, coefProtegeSuspect,
-            coefEloigneEnqueteurs, coefJackAvantTout, coefProtegeMain, coefMaxSabliers, coefPiocherSherlock,
-            coefDiviserDeux, coefVoirPlus;
+    private int coefDispersionJack;
+    private int coefTempoJack;
+    private int coefProtegeSuspect;
+    private int coefEloigneEnqueteurs;
+    private int coefJackAvantTout;
+    private int coefProtegeMain;
+    private int coefMaxSabliers;
+    private int coefPiocherSherlock;
+    private int coefDiviserDeux;
+    private int coefVoirPlus;
+
 
     public IAMeilleureProchain(Jeu j, boolean isJack) {
         this.j=j;
         this.isJack = isJack;
-        if(difficulte>3) difficulte=3;
-        if(difficulte<0) difficulte=0;
+        if(isJack){
+            setCoefDispersionJack(0);
+            setCoefTempoJack(0);
+            setCoefProtegeSuspect(1);
+            setCoefEloigneEnqueteurs(0);
+            setCoefJackAvantTout(0);
+            setCoefProtegeMain(0);
+            setCoefMaxSabliers(3);
+        } else {
+            setCoefPiocherSherlock(0);
+            setCoefDiviserDeux(1);
+            setCoefVoirPlus(0);
+        }
     }
 
     public void setCoeff(InterfaceGraphique ig){
         if(isJack){
-            coefDispersionJack =ig.getCoefDispersionJack();
-            coefTempoJack=ig.getCoefTempoJack();
-            coefProtegeSuspect = ig.getCoefProtegeSuspect();
-            coefEloigneEnqueteurs = ig.getCoefEloigneEnqueteurs();
-            coefJackAvantTout = ig.getCoefJackAvantTout();
-            coefProtegeMain = ig.getCoefProtegeMain();
-            coefMaxSabliers = ig.getCoefMaxSabliers();
+            setCoefDispersionJack(ig.getCoefDispersionJack());
+            setCoefTempoJack(ig.getCoefTempoJack());
+            setCoefProtegeSuspect(ig.getCoefProtegeSuspect());
+            setCoefEloigneEnqueteurs(ig.getCoefEloigneEnqueteurs());
+            setCoefJackAvantTout(ig.getCoefJackAvantTout());
+            setCoefProtegeMain(ig.getCoefProtegeMain());
+            setCoefMaxSabliers(ig.getCoefMaxSabliers());
         } else {
-            coefPiocherSherlock = ig.getCoefPiocherSherlock();
-            coefDiviserDeux = ig.getCoefDiviserDeux();
-            coefVoirPlus = ig.getCoefVoirPlus();
+            setCoefPiocherSherlock(ig.getCoefPiocherSherlock());
+            setCoefDiviserDeux(ig.getCoefDiviserDeux());
+            setCoefVoirPlus(ig.getCoefVoirPlus());
         }
+    }
+
+    public void prochainTour(){
+        j.plateau().prochainTour();
     }
 
     public int score(Action a){
@@ -47,9 +67,8 @@ public class IAMeilleureProchain extends IA{
             coefJackAvantTout * ScoreConfig.scoreSuspectVisiblesJackCache(j) +
             coefProtegeMain * ScoreConfig.scoreSuspectMainCache(j) +
             coefMaxSabliers * ScoreConfig.scoreSablierJack(j,a.getAction());
-            return res;
         } else {
-            res = coefPiocherSherlock * ScoreConfig.scoreSuspectCaches(j,a.getAction()) +
+            res = coefPiocherSherlock * ScoreConfig.scorePiocheSuspectCaches(j,a.getAction()) +
             coefDiviserDeux* ScoreConfig.scoreSuspectElimine(j) +
             coefVoirPlus * ScoreConfig.scoreSuspectVisibles(j);
         }
@@ -73,9 +92,9 @@ public class IAMeilleureProchain extends IA{
                     if (j.jouerCoup(cp)){
                         //Appel récursif ici pour le minimax
                         if (j.plateau().joueurCourant.isJack()) {
-                            score = ScoreConfig.scoreSablierJack(j, a.getAction());
+                            score = score(a);
                         } else {
-                            score = ScoreConfig.scoreSuspectElimine(j);
+                            score = score(a);
                         }
                         if (valeur <= score) {
                             aJouer = a;
@@ -89,8 +108,47 @@ public class IAMeilleureProchain extends IA{
         }
 
         cp.setAction(aJouer);
-        //j.jouerCoup(cp);
 
         return cp;
+    }
+
+    public void setCoefDispersionJack(int coefDispersionJack) {
+        this.coefDispersionJack = coefDispersionJack;
+    }
+
+    public void setCoefTempoJack(int coefTempoJack) {
+        this.coefTempoJack = coefTempoJack;
+    }
+
+    public void setCoefProtegeSuspect(int coefProtegeSuspect) {
+        this.coefProtegeSuspect = coefProtegeSuspect;
+    }
+
+    public void setCoefEloigneEnqueteurs(int coefEloigneEnqueteurs) {
+        this.coefEloigneEnqueteurs = coefEloigneEnqueteurs;
+    }
+
+    public void setCoefJackAvantTout(int coefJackAvantTout) {
+        this.coefJackAvantTout = coefJackAvantTout;
+    }
+
+    public void setCoefProtegeMain(int coefProtegeMain) {
+        this.coefProtegeMain = coefProtegeMain;
+    }
+
+    public void setCoefMaxSabliers(int coefMaxSabliers) {
+        this.coefMaxSabliers = coefMaxSabliers;
+    }
+
+    public void setCoefPiocherSherlock(int coefPiocherSherlock) {
+        this.coefPiocherSherlock = coefPiocherSherlock;
+    }
+
+    public void setCoefDiviserDeux(int coefDiviserDeux) {
+        this.coefDiviserDeux = coefDiviserDeux;
+    }
+
+    public void setCoefVoirPlus(int coefVoirPlus) {
+        this.coefVoirPlus = coefVoirPlus;
     }
 }

@@ -172,17 +172,17 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         grille[0][0].setOrientation(NSE);
         enqueteurs.get(SHERLOCK).setPositionSurCarte(O);
         grille[0][0].setEnqueteur(enqueteurs.get(SHERLOCK)); //Modified for test (original = [0][0],E)
-        System.out.println("Expected 1: " + grille[0][0].getPosEnqueteur(enqueteurs.get(SHERLOCK)));
-        System.out.println("Expected 1: " + enqueteurs.get(SHERLOCK).getPositionSurCarte());
-        System.out.println("Expected 0,0: " + enqueteurs.get(SHERLOCK).getPosition());
+        //System.out.println("Expected 1: " + grille[0][0].getPosEnqueteur(enqueteurs.get(SHERLOCK)));
+        //System.out.println("Expected 1: " + enqueteurs.get(SHERLOCK).getPositionSurCarte());
+        //System.out.println("Expected 0,0: " + enqueteurs.get(SHERLOCK).getPosition());
 
 
         grille[0][2].setOrientation(NSO);
         grille[0][2].setEnqueteur(enqueteurs.get(WATSON)); //Modified for test (original = [0][2])
         enqueteurs.get(WATSON).setPositionSurCarte(E);
-        System.out.println("Expected 2: " + grille[0][2].getPosEnqueteur(enqueteurs.get(WATSON)));
-        System.out.println("Expected 2: " + enqueteurs.get(WATSON).getPositionSurCarte());
-        System.out.println("Expected 2,0: " + enqueteurs.get(WATSON).getPosition());
+        //System.out.println("Expected 2: " + grille[0][2].getPosEnqueteur(enqueteurs.get(WATSON)));
+        //System.out.println("Expected 2: " + enqueteurs.get(WATSON).getPositionSurCarte());
+        //System.out.println("Expected 2,0: " + enqueteurs.get(WATSON).getPosition());
 
         grille[2][1].setOrientation(NEO);
         enqueteurs.get(TOBBY).setPositionSurCarte(S);
@@ -254,8 +254,6 @@ public class Plateau extends Historique<Coup> implements Cloneable {
             }
             res =true;
         }
-        System.out.println("Numéro Tour: " + numTour);
-        System.out.println("Numéro Action: " + numAction);
         if (numAction==1 || numAction==3){
             changerJoueur();
         }
@@ -282,8 +280,6 @@ public class Plateau extends Historique<Coup> implements Cloneable {
                 numTour--;
             }
         }
-        System.out.println("Numéro Tour: " + numTour);
-        System.out.println("Numéro Action: " + numAction);
         jeu.notifierObserveurs();
         return res;
     }
@@ -488,6 +484,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         jack = new Joueur(true, "Hussein", 0,0,false,false);
         enqueteur = new Joueur(false, "Fabien", 0,0, false, true);
 
+        clear();
         jack.setSablier(0,0);
         jack.setTurn(false);
         jack.setWinner(false);
@@ -503,7 +500,6 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         piocherJack();
         jetJetons();
         initialiseTour();
-        afficherConfig();
     }
 
     public void afficherConfig(){
@@ -628,6 +624,10 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     public ArrayList<CarteAlibi> getCartesAlibis() {
         return cartesAlibis;
+    }
+
+    public void setCartesAlibis(ArrayList<CarteAlibi> pioche) {
+        cartesAlibis = pioche;
     }
 
     public Actions getActionJeton(int num){

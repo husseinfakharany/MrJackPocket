@@ -377,7 +377,7 @@ public class InterfaceGraphique implements Observer, Runnable {
         getPioche().repaint();
         getMain().repaint();
         getJetons().repaint();
-        redo.setEnabled(jeu.plateau().peutRefaire());
+        redo.setEnabled(jeu.plateau().peutRefaire() && (jeu.plateau().getNumAction() != 0 || jeu.plateau().getNumTour()==0) );
         undo.setEnabled(jeu.plateau().peutAnnuler());
         tour.setText("  Tour n°"+ (jeu.plateau().getNumTour()+1) );
 
@@ -895,7 +895,12 @@ public class InterfaceGraphique implements Observer, Runnable {
     }
 
     public int getNbParties() {
-        return Integer.parseInt(nbParties.getText());
+        String value = nbParties.getText();
+        String res= new String();
+        for(int i=0;i<value.length();i++){
+            if(value.charAt(i)>='0'&&value.charAt(i)<='9') res = res + value.charAt(i);
+        }
+        return Integer.parseInt(res);
     }
 
     public int getProfondeurIA() {

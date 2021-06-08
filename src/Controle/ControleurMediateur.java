@@ -1,16 +1,15 @@
 package Controle;
 
 import Global.Configuration;
+import Modele.*;
 import Modele.Action;
-import Modele.Actions;
-import Modele.Coup;
-import Modele.Jeu;
 import Vue.AdaptateurTemps;
 import Vue.InterfaceGraphique;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class ControleurMediateur implements CollecteurEvenements {
@@ -455,6 +454,7 @@ public class ControleurMediateur implements CollecteurEvenements {
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
+                iaActive = false;
                 iaJ.setCoeff(ig);
                 iaS.setCoeff(ig);
                 jeu.plateau().reinitialiser();
@@ -480,35 +480,66 @@ public class ControleurMediateur implements CollecteurEvenements {
     private void jouerIAvsIA(int nbPartie){
         int victoireJack =0, victoireSherlock =0;
 
-        cp = null;
-        action.setNumEnqueteur(-1);
-        jeu.plateau().reinitialiser();
+
 
         for(int i=0; i < nbPartie; i++){
-            while(jeu.plateau().finJeu(false,false)){
+            cp = null;
+            action.setNumEnqueteur(-1);
+            jeu.plateau().reinitialiser();
+            iaJ.j.plateau().reinitialiser();
+            iaS.j.plateau().reinitialiser();
+            while(!jeu.plateau().finJeu(false,false)){
                 if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack)){
                     coupIAJack();
                 } else if(jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur)){
                     coupIASherlock();
                 }
             }
-            if(jeu.plateau().jack.getWinner()) victoireJack++;
-            if(jeu.plateau().enqueteur.getWinner()) victoireSherlock++;
+            if(jeu.plateau().jack.getWinner()) {
+                victoireJack++;
+                Configuration.instance().logger().info("Fin de la partie n°"+i+" : Vainqueur : JACK");
+            }
+            if(jeu.plateau().enqueteur.getWinner()){
+                victoireSherlock++;
+                Configuration.instance().logger().info("Fin de la partie n°"+i+" : Vainqueur : SHERLOCK");
+            }
         }
-        Configuration.instance().logger().info("Jack a gagné " + victoireJack + " parties sur " + (victoireJack+victoireSherlock) );
-        Configuration.instance().logger().info("Sherlock a gagné " + victoireSherlock + " parties sur " + (victoireJack+victoireSherlock) );
+        int nbEgalité = victoireJack + victoireSherlock -100;
+        Configuration.instance().logger().info("Jack a gagné " + (victoireJack-nbEgalité) + " parties sur " + (victoireJack+victoireSherlock-nbEgalité) );
+        Configuration.instance().logger().info("Sherlock a gagné " + (victoireSherlock-nbEgalité) + " parties sur " + (victoireJack+victoireSherlock-nbEgalité) );
+        Configuration.instance().logger().info("Nombre d'égalité " + nbEgalité );
     }
 
     private void coupIASherlock(){
         cp = iaS.coupIA();
+        iaS.j.jouerCoup(cp);
+        cp.setPlateau(iaJ.j.plateau());
+        iaJ.j.jouerCoup(cp);
+        cp.setPlateau(jeu.plateau());
         jouerCoup();
-        if(jeu.plateau().tousJetonsJoues()) jeu.plateau().prochainTour();
+        if(jeu.plateau().tousJetonsJoues()){
+            jeu.plateau().prochainTour();
+            iaJ.prochainTour();
+            iaS.prochainTour();
+        }
+        iaJ.j.plateau().setJetonsActions((ArrayList<JetonActions>) jeu.plateau().jetonsActions.clone());
+        iaS.j.plateau().setJetonsActions((ArrayList<JetonActions>) jeu.plateau().jetonsActions.clone());
     }
 
     private void coupIAJack(){
         cp = iaJ.coupIA();
+        iaJ.j.jouerCoup(cp);
+        cp.setPlateau(iaS.j.plateau());
+        iaS.j.jouerCoup(cp);
+        cp.setPlateau(jeu.plateau());
         jouerCoup();
-        if(jeu.plateau().tousJetonsJoues()) jeu.plateau().prochainTour();
+        if(jeu.plateau().tousJetonsJoues()){
+            jeu.plateau().prochainTour();
+            iaJ.prochainTour();
+            iaS.prochainTour();
+        }
+        iaJ.j.plateau().setJetonsActions((ArrayList<JetonActions>) jeu.plateau().jetonsActions.clone());
+        iaS.j.plateau().setJetonsActions((ArrayList<JetonActions>) jeu.plateau().jetonsActions.clone());
     }
 
     @Override

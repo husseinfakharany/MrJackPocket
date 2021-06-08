@@ -11,6 +11,11 @@ public class Historique<E extends Commande> {
 		futur = new ArrayList<>();
 	}
 
+	public void clear(){
+		passe.clear();
+		futur.clear();
+	}
+
 	public boolean nouveau(E c) {
 		if(c.execute()){
 			passe.add(0,c);
