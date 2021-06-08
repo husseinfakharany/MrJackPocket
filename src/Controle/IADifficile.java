@@ -97,14 +97,14 @@ public class IADifficile extends IA{
                     if (j.jouerCoup(cp)){
                         //Appel récursif ici pour le minimax
                         if (j.plateau().joueurCourant.isJack()) {
-                            score = minMax(2, a);
+                            score = minMax(profondeur, a);
                             if (valeur <= score) {
                                 aJouer = a;
                                 aJouer.setNumAction(i);
                                 valeur = score;
                             }
                         } else {
-                            score = minMax(2, a);
+                            score = minMax(profondeur, a);
                             if (valeur >= score) {
                                 aJouer = a;
                                 aJouer.setNumAction(i);

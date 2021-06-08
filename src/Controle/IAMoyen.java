@@ -5,9 +5,6 @@ import Vue.InterfaceGraphique;
 
 
 public class IAMoyen extends IA{
-    Jeu j;
-    boolean isJack;
-
 
     public IAMoyen(Jeu j, boolean isJack) {
         super(j,isJack);
