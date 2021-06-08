@@ -457,7 +457,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "LancerIAvsIA":
                 try {
                     iaJ = new IAMoyen(jeu.clone(), true);
-                    iaS = new IAMoyen(jeu.clone(),false);
+                    iaS = new IAMoyen(jeu.clone(), false);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }
@@ -486,8 +486,6 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     private void jouerIAvsIA(int nbPartie){
         int victoireJack =0, victoireSherlock =0;
-
-
 
         for(int i=0; i < nbPartie; i++){
             cp = null;

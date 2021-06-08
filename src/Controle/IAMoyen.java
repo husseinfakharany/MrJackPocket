@@ -1,7 +1,6 @@
 package Controle;
 
 import Modele.*;
-import Vue.InterfaceGraphique;
 
 
 public class IAMoyen extends IA{
@@ -47,8 +46,7 @@ public class IAMoyen extends IA{
                 for (Action a : Action.listeAction(jetonAct.getActionJeton(), joueurCourant)) {
                     cp.setAction(a);
                     if (j.jouerCoup(cp)){
-
-                        if (j.plateau().joueurCourant.isJack()) {
+                        if (joueurCourant.isJack()) {
                             score = score(a);
                             if (valeur <= score) {
                                 aJouer = a;

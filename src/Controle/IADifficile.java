@@ -11,6 +11,10 @@ public class IADifficile extends IA{
         super(j,isJack);
         profondeur = 3;
     }
+    public IADifficile(Jeu j,int profondeur, boolean isJack) {
+        super(j,isJack);
+        this.profondeur = profondeur;
+    }
 
     public void setCoeff(InterfaceGraphique ig){
         setProfondeur(ig.getProfondeurIA());
@@ -50,7 +54,7 @@ public class IADifficile extends IA{
                     cp.setAction(a);
                     if (j.jouerCoup(cp)){
                         //Appel récursif pour le minimax
-                        if (j.plateau().joueurCourant.isJack()) {
+                        if (joueurCourant.isJack()) {
                             score = minMax(d-1, a);
                             if (valeur <= score) {
                                 aJouer = a;
@@ -87,7 +91,6 @@ public class IADifficile extends IA{
         Action aJouer = new Action(joueurCourant);
         aJouer.setNumAction(0);
         int score;
-
 
         for(int i=0; i<4; i++) {
             JetonActions jetonAct = j.plateau().jetonsActions.get(i);
