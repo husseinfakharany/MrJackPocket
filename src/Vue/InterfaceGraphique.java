@@ -447,7 +447,7 @@ public class InterfaceGraphique implements Observer, Runnable {
             moyenB.setEnabled(true);
             moyenB.addActionListener(new AdaptateurCommande(controle,"moyen"));
             difficileB.setText("Difficile");
-            difficileB.setEnabled(false);
+            difficileB.setEnabled(true);
             difficileB.addActionListener(new AdaptateurCommande(controle,"difficile"));
             facileB.setFont(new Font("default", Font.PLAIN, 20));
             moyenB.setFont(new Font("default", Font.PLAIN, 20));

@@ -63,6 +63,7 @@ public class IAMeilleureProchain extends IA{
         Coup cp = new Coup(j.plateau(), null);
         Action aJouer = new Action(joueurCourant);
         aJouer.setNumAction(0);
+        int score;
 
         for(int i=0; i<4; i++){
             JetonActions jetonAct = j.plateau().jetonsActions.get(i);
@@ -72,19 +73,14 @@ public class IAMeilleureProchain extends IA{
                     if (j.jouerCoup(cp)){
                         //Appel récursif ici pour le minimax
                         if (j.plateau().joueurCourant.isJack()) {
-                            int score = ScoreConfig.scoreSablierJack(j,a.getAction());
-                            if (valeur <= score) {
-                                aJouer = a;
-                                aJouer.setNumAction(i);
-                                valeur = score;
-                            }
+                            score = ScoreConfig.scoreSablierJack(j, a.getAction());
                         } else {
-                            int score = ScoreConfig.scoreSuspectElimine(j);
-                            if (valeur <= score) {
-                                aJouer = a;
-                                aJouer.setNumAction(i);
-                                valeur = score;
-                            }
+                            score = ScoreConfig.scoreSuspectElimine(j);
+                        }
+                        if (valeur <= score) {
+                            aJouer = a;
+                            aJouer.setNumAction(i);
+                            valeur = score;
                         }
                         j.annule();
                     }

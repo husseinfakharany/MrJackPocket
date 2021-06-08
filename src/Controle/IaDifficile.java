@@ -16,47 +16,39 @@ public class IaDifficile extends IA{
         if(difficulte<0) difficulte=0;
     }
 
-    public  int tourMinMaxJack(Jeu j,Action action,Joueur joueurCourant,ArrayList<Actions> listeAction,Coup cp,Action aJouer){
 
-        int valeur = Integer.MIN_VALUE;
-
-        action.setAction( j.plateau().getActionJeton(0));
-        cp = new Coup(j.plateau(), null);
-        aJouer = new Action(joueurCourant);
-
-        for(Actions actions : listeAction){
-            for(Action a : Action.listeAction(actions,joueurCourant)){
-                cp.setAction(a);
-                j.jouerCoup(cp);
-                //Appel récursif ici pour le minimax
-
-                int score = ScoreConfig.scoreSuspectVisiblesJackCache(j);
-                if(tourMinMaxNotJack(j,action,joueurCourant,listeAction,cp,aJouer) > valeur){
-                    aJouer = a;
-                    valeur = score;
-                }
-            }
-            j.annule();
+    public int minMax(int d){
+        if (d==0){
+            return 0;
         }
-        return valeur;
-    }
+        Joueur joueurCourant = j.plateau().joueurCourant;
+        int valeur = Integer.MIN_VALUE;
+        Coup cp = new Coup(j.plateau(), null);
+        Action aJouer = new Action(joueurCourant);
+        aJouer.setNumAction(0);
+        int score;
 
-    public  int tourMinMaxNotJack(Jeu j,Action action,Joueur joueurCourant,ArrayList<Actions> listeAction, Coup cp,Action aJouer){
-
-        int valeur = Integer.MAX_VALUE;
-        action.setAction( j.plateau().getActionJeton(0));
-
-        for(Actions actions : listeAction){
-            for(Action a : Action.listeAction(actions,joueurCourant)){
-                cp.setAction(a);
-                j.jouerCoup(cp);
-                int score = ScoreConfig.scoreSuspectVisiblesJackCache(j);
-                if(tourMinMaxJack(j,action,joueurCourant,listeAction,cp,aJouer) < valeur ){
-                    aJouer = a;
-                    valeur = score;
+        for(int i=0; i<4; i++) {
+            JetonActions jetonAct = j.plateau().jetonsActions.get(i);
+            if (!jetonAct.getDejaJoue()) {
+                for (Action a : Action.listeAction(jetonAct.getActionJeton(), joueurCourant)) {
+                    cp.setAction(a);
+                    if (j.jouerCoup(cp)){
+                        //Appel récursif ici pour le minimax
+                        if (j.plateau().joueurCourant.isJack()) {
+                            score = minMax(d-1) + ScoreConfig.scoreSablierJack(j, a.getAction());
+                        } else {
+                            score = minMax(d-1) + ScoreConfig.scoreSuspectElimine(j);
+                        }
+                        if (valeur <= score) {
+                            aJouer = a;
+                            aJouer.setNumAction(i);
+                            valeur = score;
+                        }
+                        j.annule();
+                    }
                 }
             }
-            j.annule();
         }
         return valeur;
     }
@@ -69,22 +61,31 @@ public class IaDifficile extends IA{
         Coup cp = new Coup(j.plateau(), null);
         Action aJouer = new Action(joueurCourant);
         aJouer.setNumAction(0);
-        //Jamais anticiper ou  tirer des jetons car un regarde que le prochain coup
-        ArrayList<JetonActions> listeJetons = new ArrayList<>();
+        int score;
 
-        for (JetonActions actJeton: j.plateau().jetonsActions){
-            listeJetons.add(actJeton);
-        };
 
-        //Appel récursif ici pour le minimax
-        /*
-        if(j.plateau().joueurCourant.isJack()) {
-           score= tourMinMaxJack(j,action,joueurCourant,listeAction,cp,aJouer);
+        for(int i=0; i<4; i++) {
+            JetonActions jetonAct = j.plateau().jetonsActions.get(i);
+            if (!jetonAct.getDejaJoue()) {
+                for (Action a : Action.listeAction(jetonAct.getActionJeton(), joueurCourant)) {
+                    cp.setAction(a);
+                    if (j.jouerCoup(cp)){
+                        //Appel récursif ici pour le minimax
+                        if (j.plateau().joueurCourant.isJack()) {
+                            score = minMax(2) + ScoreConfig.scoreSablierJack(j, a.getAction());
+                        } else {
+                            score = minMax(2) + ScoreConfig.scoreSuspectElimine(j);
+                        }
+                        if (valeur <= score) {
+                            aJouer = a;
+                            aJouer.setNumAction(i);
+                            valeur = score;
+                        }
+                        j.annule();
+                    }
+                }
+            }
         }
-        else {
-          score= tourMinMaxNotJack(j,action,joueurCourant,listeAction,cp,aJouer);
-        }*/
-
 
         cp.setAction(aJouer);
         return cp;

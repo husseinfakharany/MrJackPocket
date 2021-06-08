@@ -62,8 +62,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
             case "difficile":
                 try{
-                    ia = new IaDifficile(jeu.clone(),iaIsJack);
-                    tempsIA = new Timer(0,new AdaptateurTemps(ia,this));
+                    jeuClone = jeu.clone();
+                    ia = new IaDifficile(jeuClone,iaIsJack);
+                    tempsIA = new Timer(1000,new AdaptateurTemps(ia,this));
                     tempsIA.setRepeats(false);
                 }catch(Exception e){
                     Configuration.instance().logger().severe("Erreur de clonage du jeu");
