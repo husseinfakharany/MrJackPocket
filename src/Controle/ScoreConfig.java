@@ -29,7 +29,7 @@ public class ScoreConfig {
         return sens*resultat;
     }
 
-    //[Jack]Se montre si ça permet d'innoncenter 3 personne de plus
+    //[Jack]Se montre si ça permet d'innocenter 3 personne de plus
     static int scoreJackVisiblePourSauver(Jeu j){
         int jackVisibles = 0;
         for(Suspect s : j.plateau().visibles()){
@@ -111,7 +111,7 @@ public class ScoreConfig {
         }
     }
 
-    //[Sherlock] Piocher dès que possible en fonction de la **proba d'innoncenter en fonction du nombre à innocenter** un suspect
+    //[Sherlock] Piocher dès que possible en fonction de la **proba d'innocenter en fonction du nombre à innocenter** un suspect
     static int scorePiocheSuspectCaches(Jeu j, Actions action){
         if(action == Actions.INNOCENTER_CARD){
             return j.plateau().getTaillePioche() - j.plateau().getSuspectsInnocete().size();

@@ -367,7 +367,6 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         CarteAlibi JackCard = cartesAlibis.get(index);
         cartesAlibis.remove(index);
         JackCard.getSuspect().setIsJack(true);
-        JackCard.getSuspect().setPioche(true);
         idJack = JackCard.getCouleur();
     }
 
@@ -381,7 +380,6 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         CarteAlibi JackCard = cartesAlibis.get(index);
         cartesAlibis.remove(index);
         JackCard.getSuspect().setIsJack(true);
-        JackCard.getSuspect().setPioche(true);
         idJack = JackCard.getCouleur();
     }
 
@@ -393,13 +391,11 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         int index = rand.nextInt(size);
         CarteAlibi card = cartesAlibis.get(index);
         cartesAlibis.remove(index);
-        card.getSuspect().setPioche(true);
         return card;
     }
 
     public void addToPioche(CarteAlibi card){
         cartesAlibis.add(card);
-        card.getSuspect().setPioche(false);
     }
 
     public ArrayList<Suspect> visibles(){
@@ -417,7 +413,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return res;
     }
 
-    //Cette fonction retourne vrai s'il reste qu'une seule carte non innonctée (Jack)
+    //Cette fonction retourne vrai s'il reste qu'une seule carte non innocentée (Jack)
     public boolean verdictTour(boolean updatePlateau){
         ArrayList<Suspect> res = visibles();
         //Si jack est visible par un des trois enqueteurs
@@ -425,16 +421,14 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         if (jackVisible) {
             for (Suspect s : getSuspects()) {
                 if (!res.contains(s)) {
-                    //Innonceter retourne la carte rue du suspect
-                    if(updatePlateau) s.innoceter(grille, suspectsInnocete);
+                    //Innoceter retourne la carte rue du suspect
+                    if(updatePlateau) s.innocenterVerdict(grille, suspectsInnocete);
                 }
             }
         } else {
             if(updatePlateau) jack.setSablierVisibles(jack.getSablierVisibles() + 1);
             for (Suspect s : res) {
-                if(updatePlateau){
-                    s.innoceter(grille, suspectsInnocete);
-                }
+                if(updatePlateau) s.innocenterVerdict(grille, suspectsInnocete);
 
             }
         }
@@ -453,13 +447,13 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         if (jackVisible) {
             for (Suspect s : getSuspects()) {
                 if (!res.contains(s)) {
-                    s.suspecter(grille, suspectsInnocete);
+                    s.suspecterVerdict(grille, suspectsInnocete);
                 }
             }
         } else {
             jack.setSablierVisibles(jack.getSablierVisibles() - 1);
             for (Suspect s : res) {
-                s.suspecter(grille, suspectsInnocete);
+                s.suspecterVerdict(grille, suspectsInnocete);
             }
         }
         return false;
@@ -516,7 +510,6 @@ public class Plateau extends Historique<Coup> implements Cloneable {
                 System.out.print(" - Position personnage: " + grille[i][j].getSuspect().getPosition());
                 System.out.print(" - Nom Personnage: " + grille[i][j].getSuspect().getNomPersonnage());
                 System.out.print(" - Carte Cachée: " + grille[i][j].getSuspect().getInnocente());
-                System.out.print(" - Personnage pioché: " + grille[i][j].getSuspect().getPioche());
                 if(!grille[i][j].getEnqueteurs().isEmpty()){
                     System.out.print(" - Enqueteur: " + grille[i][j].getEnqueteurs().get(0).getNomPersonnage().toString());
                     System.out.print(" - Enqueteur: " + grille[i][j].getEnqueteurs().get(0).getPositionSurCarte());
