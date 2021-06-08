@@ -180,7 +180,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
         if(jeu.plateau().tousJetonsJoues() ){
             boolean partiFini = jeu.plateau().prochainTour();
-            jeuClone.plateau().prochainTourClone(jeu);
+            if(iaActive) jeuClone.plateau().prochainTourClone(jeu);
             if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack) && iaActive && iaIsJack && jeu.plateau().getNumAction()==0){
                 tempsIA.restart();
                 iaJoue = true;

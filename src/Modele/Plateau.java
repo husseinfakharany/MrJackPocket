@@ -190,13 +190,17 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     }
 
-    void initialiseTour(){
-        jackVisible = false;
+    void setDejaTourne(boolean dejaTourne){
         for(CarteRue[] ligne:grille){
             for(CarteRue carte: ligne){
-                carte.setDejaTourne(false);
+                carte.setDejaTourne(dejaTourne);
             }
         }
+    }
+
+    void initialiseTour(){
+        jackVisible = false;
+        setDejaTourne(false);
         melangeJetonsActions();
     }
 
@@ -302,8 +306,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
             Configuration.instance().logger().info("Fin du Jeu");
             return true;
         } else {
-            jackVisible = false;
-            melangeJetonsActions();
+            initialiseTour();
             jeu.notifierObserveurs();
         }
         return false;
@@ -312,6 +315,7 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     public void prochainTourClone(Jeu j){
         if (!finJeu(true,false)){
             jackVisible = false;
+            setDejaTourne(false);
             setJetonsActions(j.plateau.jetonsActions);
         }
     }
@@ -417,25 +421,26 @@ public class Plateau extends Historique<Coup> implements Cloneable {
     public boolean verdictTour(boolean updatePlateau){
         ArrayList<Suspect> res = visibles();
         //Si jack est visible par un des trois enqueteurs
-        int nbInnocent = suspectsInnocete.size();
+
         if (jackVisible) {
             for (Suspect s : getSuspects()) {
                 if (!res.contains(s)) {
                     //Innonceter retourne la carte rue du suspect
                     if(updatePlateau) s.innoceter(grille, suspectsInnocete);
-                    else if (!suspectsInnocete.contains(s)) nbInnocent++;
                 }
             }
         } else {
             if(updatePlateau) jack.setSablierVisibles(jack.getSablierVisibles() + 1);
             for (Suspect s : res) {
-                if(updatePlateau) s.innoceter(grille, suspectsInnocete);
-                else if (!suspectsInnocete.contains(s)) nbInnocent++;
+                if(updatePlateau){
+                    s.innoceter(grille, suspectsInnocete);
+                }
+
             }
         }
-        if (suspectsInnocete.size()==8 || nbInnocent >= 8){
+        if (suspectsInnocete.size()>=8){
             enqueteur.setWinner(true);
-            return numAction==4;
+            return numAction==0;
         }
         return false;
     }

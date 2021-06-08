@@ -54,7 +54,7 @@ public class Coup extends Commande implements Cloneable{
 			}
 			j.ajouterCarte(card);
 			return true;
-		} else if (i==-1){ //Under development
+		} else if (i==-1){
 			card = action.getCartePioche();
 			plateau.addToPioche(card);
 			sabliersCarte = card.getSablier();
