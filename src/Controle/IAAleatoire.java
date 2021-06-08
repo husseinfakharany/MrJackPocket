@@ -12,9 +12,8 @@ public class IAAleatoire extends IA{
     boolean isJack;
 
     public IAAleatoire(Jeu j, boolean isJack) {
+        super(j,isJack);
         r = new Random();
-        this.j=j;
-        this.isJack = isJack;
     }
 
     @Override
