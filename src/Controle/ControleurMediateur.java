@@ -17,7 +17,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     Jeu jeu;
     Jeu jeuClone;
     IA ia;
-    IAMeilleureProchain iaJ,iaS;
+    IAMoyen iaJ,iaS;
     boolean iaActive;
     boolean iaIsJack;
     boolean iaJoue;
@@ -44,14 +44,14 @@ public class ControleurMediateur implements CollecteurEvenements {
         iaActive = true;
         switch (com){
             case "facile":
-                ia = new IaAleatoire(jeu,iaIsJack);
+                ia = new IAAleatoire(jeu,iaIsJack);
                 tempsIA = new Timer(3000,new AdaptateurTemps(ia,this));
                 tempsIA.setRepeats(false);
                 break;
             case "moyen":
                 try{
                     jeuClone = jeu.clone();
-                    ia = new IAMeilleureProchain(jeuClone,iaIsJack);
+                    ia = new IAMoyen(jeuClone,iaIsJack);
                     tempsIA = new Timer(1000,new AdaptateurTemps(ia,this));
                     tempsIA.setRepeats(false);
                 }catch(Exception e){
@@ -62,7 +62,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "difficile":
                 try{
                     jeuClone = jeu.clone();
-                    ia = new IaDifficile(jeuClone,iaIsJack);
+                    ia = new IADifficile(jeuClone,iaIsJack);
                     tempsIA = new Timer(1000,new AdaptateurTemps(ia,this));
                     tempsIA.setRepeats(false);
                 }catch(Exception e){
@@ -312,6 +312,9 @@ public class ControleurMediateur implements CollecteurEvenements {
                 jeuClone.plateau().setJetonsActions(jeu.plateau().jetonsActions);
                 Action actionIA = jeu.plateau().passe.get(0).getAction();
                 Coup cpIA = new Coup(jeuClone.plateau(),actionIA);
+                if (actionIA.getAction()==Actions.INNOCENTER_CARD){
+                    actionIA.setIa(true);
+                }
                 if (jeuClone.jouerCoup(cpIA)){
                     Configuration.instance().logger().info("Coup joué dans IA");
                     appliquerIA();
@@ -449,8 +452,8 @@ public class ControleurMediateur implements CollecteurEvenements {
                 break;
             case "LancerIAvsIA":
                 try {
-                    iaJ = new IAMeilleureProchain(jeu.clone(), true);
-                    iaS = new IAMeilleureProchain(jeu.clone(),false);
+                    iaJ = new IAMoyen(jeu.clone(), true);
+                    iaS = new IAMoyen(jeu.clone(),false);
                 } catch (CloneNotSupportedException e) {
                     e.printStackTrace();
                 }

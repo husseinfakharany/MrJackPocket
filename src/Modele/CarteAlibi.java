@@ -1,11 +1,13 @@
 package Modele;
 
+import Global.Configuration;
+
 /*
 **Carte Alibi**:
 Nombre de sabliers (0, 1, 2)
 Nom du Personnage suspect
  */
-public class CarteAlibi {
+public class CarteAlibi implements Cloneable {
 	
 		private Suspect suspect;
 		private int sablier;
@@ -25,7 +27,22 @@ public class CarteAlibi {
 				default -> throw new IllegalStateException("Unexpected value: " + suspect.getNomPersonnage());
 			}
 		}
-		
+
+		@Override
+		public CarteAlibi clone() throws CloneNotSupportedException {
+			CarteAlibi copy;
+			try {
+				copy = (CarteAlibi) super.clone();
+
+			} catch (CloneNotSupportedException e) {
+				Configuration.instance().logger().severe("Bug interne : Carte Alibi non clonable");
+				return null;
+			}
+			copy.suspect = suspect.clone();
+			copy.sablier = this.sablier;
+			return copy;
+		}
+
 		public SuspectCouleur getCouleur(){
 			return suspect.getCouleur();
 		}
@@ -46,5 +63,4 @@ public class CarteAlibi {
 		public void setSablier(int sablier) {
 			this.sablier = sablier;
 		}
-	
 }

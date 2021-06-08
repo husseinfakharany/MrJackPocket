@@ -20,6 +20,33 @@ public class Coup extends Commande implements Cloneable{
 		this.action = action;
 	}
 
+	//Appelé seulement après un coup sur le Jeu pour le jouer sur JeuClone
+	public boolean innocenter(CarteAlibi card){
+		Joueur j = action.getJoueur();
+		int sabliersCarte;
+
+		CarteAlibi toRemove = null;
+		for(CarteAlibi carte:plateau.getCartesAlibis()){
+			if(carte.getSuspect().equals(card.getSuspect()))
+				toRemove =  carte;
+		}
+		if(toRemove!=null){
+			action.setCartePioche(toRemove);
+			sabliersCarte = toRemove.getSablier();
+			plateau.cartesAlibis.remove(toRemove);
+		} else {
+			return false;
+		}
+		if (!j.isJack()) {
+			action.setOrientationSuspect(card.getSuspect().getOrientation());
+			card.getSuspect().innoceter(plateau.grille,plateau.getSuspectsInnocete());
+			j.setSablierVisibles(j.getSablierVisibles()+sabliersCarte);
+		} else {
+			j.setSablierCaches(j.getSablierCaches()+sabliersCarte);
+		}
+		j.ajouterCarte(card);
+		return true;
+	}
 
 	public boolean innocenter(int i){
 		CarteAlibi card;
@@ -390,7 +417,11 @@ public class Coup extends Commande implements Cloneable{
 				res = deplacer(action.getNumEnqueteur(),action.getDeplacement(),1);
 				break;
 			case INNOCENTER_CARD:
-				res = innocenter(1);
+				if (action.ia){
+					res = innocenter(action.getCartePioche());
+				} else {
+					res = innocenter(1);
+				}
 				break;
 			case ECHANGER_DISTRICT:
 				//L'ordre des parametres est purement esthetique

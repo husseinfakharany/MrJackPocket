@@ -561,7 +561,10 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         for(JetonActions j : jetonsActions) {
             copy.jetonsActions.add(j.clone());
         }
-        copy.cartesAlibis = (ArrayList<CarteAlibi>) cartesAlibis.clone();
+        copy.cartesAlibis = new ArrayList<>();
+            for(CarteAlibi c: cartesAlibis){
+                copy.cartesAlibis.add(c.clone());
+        };
         copy.suspects = new ArrayList<>();
         for(Suspect s : getSuspects()) {
             copy.getSuspects().add(s.clone());

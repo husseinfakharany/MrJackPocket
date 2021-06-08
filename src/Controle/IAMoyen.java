@@ -4,7 +4,7 @@ import Modele.*;
 import Vue.InterfaceGraphique;
 
 
-public class IAMeilleureProchain extends IA{
+public class IAMoyen extends IA{
     Jeu j;
     boolean isJack;
     private int coefDispersionJack;
@@ -19,7 +19,7 @@ public class IAMeilleureProchain extends IA{
     private int coefVoirPlus;
 
 
-    public IAMeilleureProchain(Jeu j, boolean isJack) {
+    public IAMoyen(Jeu j, boolean isJack) {
         this.j=j;
         this.isJack = isJack;
         if(isJack){
@@ -78,7 +78,12 @@ public class IAMeilleureProchain extends IA{
     @Override
     public Coup coupIA() {
         Joueur joueurCourant = j.plateau().joueurCourant;
-        int valeur = Integer.MIN_VALUE;
+        int valeur;
+        if (joueurCourant.isJack()){
+            valeur = Integer.MIN_VALUE;
+        } else {
+            valeur = Integer.MAX_VALUE;
+        }
         Coup cp = new Coup(j.plateau(), null);
         Action aJouer = new Action(joueurCourant);
         aJouer.setNumAction(0);
@@ -90,16 +95,21 @@ public class IAMeilleureProchain extends IA{
                 for (Action a : Action.listeAction(jetonAct.getActionJeton(), joueurCourant)) {
                     cp.setAction(a);
                     if (j.jouerCoup(cp)){
-                        //Appel récursif ici pour le minimax
+
                         if (j.plateau().joueurCourant.isJack()) {
                             score = score(a);
+                            if (valeur <= score) {
+                                aJouer = a;
+                                aJouer.setNumAction(i);
+                                valeur = score;
+                            }
                         } else {
                             score = score(a);
-                        }
-                        if (valeur <= score) {
-                            aJouer = a;
-                            aJouer.setNumAction(i);
-                            valeur = score;
+                            if (valeur >= score) {
+                                aJouer = a;
+                                aJouer.setNumAction(i);
+                                valeur = score;
+                            }
                         }
                         j.annule();
                     }
