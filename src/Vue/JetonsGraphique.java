@@ -59,8 +59,10 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         drawable.setFont(new Font("default", Font.PLAIN, 12));
 
         if (jeu.plateau().tousJetonsJoues()){
-            int taille = Math.min(largeur,hauteur);
-            drawable.drawImage(tourSuivant, offsetX, offsetX+20, taille-offsetX-20 , taille-offsetX-20, null);
+            if(!jeu.plateau().finJeu(false,false)){
+                int taille = Math.min(largeur,hauteur);
+                drawable.drawImage(tourSuivant, offsetX, offsetX+20, taille-offsetX-20 , taille-offsetX-20, null);
+            }
             return;
         }
 
