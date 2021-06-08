@@ -4,12 +4,12 @@ import Modele.*;
 
 import java.util.ArrayList;
 
-public class IaDifficile extends IA{
+public class IADifficile extends IA{
     Jeu j;
     boolean isJack;
     int difficulte;
 
-    public IaDifficile(Jeu j, boolean isJack) {
+    public IADifficile(Jeu j, boolean isJack) {
         this.j=j;
         this.isJack = isJack;
         if(difficulte>3) difficulte=3;
@@ -17,12 +17,23 @@ public class IaDifficile extends IA{
     }
 
 
-    public int minMax(int d){
-        if (d==0){
-            return 0;
-        }
+    public int minMax(int d, Action act){
+
         Joueur joueurCourant = j.plateau().joueurCourant;
-        int valeur = Integer.MIN_VALUE;
+        int valeur;
+        if (joueurCourant.isJack()){
+            if (d==0){
+                return ScoreConfig.scoreSablierJack(j, act.getAction());
+            } else {
+                valeur = Integer.MIN_VALUE;
+            }
+        } else {
+            if (d==0){
+                return ScoreConfig.scoreSuspectElimine(j);
+            } else {
+                valeur = Integer.MAX_VALUE;
+            }
+        }
         Coup cp = new Coup(j.plateau(), null);
         Action aJouer = new Action(joueurCourant);
         aJouer.setNumAction(0);
@@ -34,16 +45,21 @@ public class IaDifficile extends IA{
                 for (Action a : Action.listeAction(jetonAct.getActionJeton(), joueurCourant)) {
                     cp.setAction(a);
                     if (j.jouerCoup(cp)){
-                        //Appel récursif ici pour le minimax
+                        //Appel récursif pour le minimax
                         if (j.plateau().joueurCourant.isJack()) {
-                            score = minMax(d-1) + ScoreConfig.scoreSablierJack(j, a.getAction());
+                            score = minMax(d-1, a);
+                            if (valeur <= score) {
+                                aJouer = a;
+                                aJouer.setNumAction(i);
+                                valeur = score;
+                            }
                         } else {
-                            score = minMax(d-1) + ScoreConfig.scoreSuspectElimine(j);
-                        }
-                        if (valeur <= score) {
-                            aJouer = a;
-                            aJouer.setNumAction(i);
-                            valeur = score;
+                            score = minMax(d-1, a);
+                            if (valeur >= score) {
+                                aJouer = a;
+                                aJouer.setNumAction(i);
+                                valeur = score;
+                            }
                         }
                         j.annule();
                     }
@@ -57,7 +73,12 @@ public class IaDifficile extends IA{
     @Override
     public Coup coupIA() {
         Joueur joueurCourant = j.plateau().joueurCourant;
-        int valeur = Integer.MIN_VALUE;
+        int valeur;
+        if (joueurCourant.isJack()){
+            valeur = Integer.MIN_VALUE;
+        } else {
+            valeur = Integer.MAX_VALUE;
+        }
         Coup cp = new Coup(j.plateau(), null);
         Action aJouer = new Action(joueurCourant);
         aJouer.setNumAction(0);
@@ -72,14 +93,19 @@ public class IaDifficile extends IA{
                     if (j.jouerCoup(cp)){
                         //Appel récursif ici pour le minimax
                         if (j.plateau().joueurCourant.isJack()) {
-                            score = minMax(2) + ScoreConfig.scoreSablierJack(j, a.getAction());
+                            score = minMax(2, a);
+                            if (valeur <= score) {
+                                aJouer = a;
+                                aJouer.setNumAction(i);
+                                valeur = score;
+                            }
                         } else {
-                            score = minMax(2) + ScoreConfig.scoreSuspectElimine(j);
-                        }
-                        if (valeur <= score) {
-                            aJouer = a;
-                            aJouer.setNumAction(i);
-                            valeur = score;
+                            score = minMax(2, a);
+                            if (valeur >= score) {
+                                aJouer = a;
+                                aJouer.setNumAction(i);
+                                valeur = score;
+                            }
                         }
                         j.annule();
                     }
