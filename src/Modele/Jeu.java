@@ -26,7 +26,8 @@ public class Jeu extends Observable implements Cloneable{
     //Rotation:
     //public static final long seed = 1622905984056L;
     //Double rotation:
-    public static final long seed = 1622998682792L;
+    //public static final long seed = 1622998682792L;
+    public static final long seed = 1623180621852L;
 
     Plateau plateau;
 

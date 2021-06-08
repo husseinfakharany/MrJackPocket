@@ -406,7 +406,9 @@ public class Plateau extends Historique<Coup> implements Cloneable {
                 if (s.getIsJack()){
                     jackSeen = true;
                 }
-                res.add(s);
+                if (!res.contains(s)){
+                    res.add(s);
+                }
             }
         }
         jackVisible = jackSeen;

@@ -49,7 +49,7 @@ public class CarteRue implements Cloneable {
 		for(Enqueteur e : enqueteurs) {
 			copy.enqueteurs.add(e.clone());
 		}
-		copy.suspect = suspect;
+		copy.suspect = suspect.clone();
 		copy.dejaTourne = dejaTourne;
 		return copy;
 	}

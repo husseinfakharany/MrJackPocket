@@ -9,7 +9,7 @@ public class IADifficile extends IA{
 
     public IADifficile(Jeu j, boolean isJack) {
         super(j,isJack);
-        profondeur = 3;
+        profondeur = 2;
     }
     public IADifficile(Jeu j,int profondeur, boolean isJack) {
         super(j,isJack);
