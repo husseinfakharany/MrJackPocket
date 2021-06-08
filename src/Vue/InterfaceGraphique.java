@@ -777,9 +777,12 @@ public class InterfaceGraphique implements Observer, Runnable {
         if (boiteTuto == null){
 
             boiteTuto = Box.createVerticalBox();
+            boiteTuto = BackgroundBox.createVerticalBackgroundBox();
+            /*
+
+             */
             Box boitePreviousNext = Box.createHorizontalBox();
             boitePreviousNext.add(getTuto());
-
             JButton b1=new JButton("<<");
             boitePreviousNext.add(b1);
             b1.addActionListener(new AdaptateurCommande(controle,"previousTuto"));
@@ -794,6 +797,8 @@ public class InterfaceGraphique implements Observer, Runnable {
             retourMenu.setAlignmentX(Component.RIGHT_ALIGNMENT);
             boiteTuto.add(retourMenu);
             boiteTuto.add(boitePreviousNext);
+
+
 
         }
 
