@@ -77,6 +77,12 @@ public class ScoreConfig {
         return suspectMainsVisibles;
     }
 
+    //[Jack]Protéger les suspects de notre main
+    static int scoreSauverPlus(Jeu j){
+        if(j.plateau().jackVisible) return j.plateau().visibles().size();
+        else return 9 - j.plateau().getSuspectsInnocete().size() - j.plateau().visibles().size();
+    }
+
     //[Jack]Gagner le plus de sabliers possible
     static int scoreSablierJack(Jeu j, Actions action){
         if(action == Actions.INNOCENTER_CARD){
@@ -99,6 +105,7 @@ public class ScoreConfig {
     static int scoreSuspectElimine(Jeu j){
         return Math.min( 9 - j.plateau().getSuspectsInnocete().size() - j.plateau().visibles().size(), j.plateau().visibles().size());
     }
+
 
     //[Sherlock]Qui essaye de voir un maximum de suspect possible
     static int scoreSuspectVisibles(Jeu j){

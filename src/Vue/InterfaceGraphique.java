@@ -48,7 +48,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     Box boiteCentreG, boiteUnReDoCartes, boiteInfo, boiteUnReDo, boiteCentreD, boiteCentre, boiteTuto, courant;
     private JFormattedTextField nbParties, coefDispersionJack, coefTempoJack, coefProtegeSuspect,
             coefEloigneEnqueteurs, coefJackAvantTout, coefProtegeMain, coefMaxSabliers, coefPiocherSherlock,
-            coefDiviserDeux, coefVoirPlus;
+            coefDiviserDeux, coefVoirPlus, coefSauverPlus;
 
     InterfaceGraphique(Jeu j, CollecteurEvenements c) {
         jeu = j;
@@ -508,7 +508,7 @@ public class InterfaceGraphique implements Observer, Runnable {
 
             NumberFormat intFormat = NumberFormat.getIntegerInstance();
             nbParties = new JFormattedTextField(intFormat);
-            nbParties.setValue(100);
+            nbParties.setValue(10000);
             nbParties.setMaximumSize(new Dimension(200,70));
 
             JLabel paramG = new JLabel("Paramètres généraux : ");
@@ -583,6 +583,13 @@ public class InterfaceGraphique implements Observer, Runnable {
             coefMaxSabliers.setValue(1);
             coefMaxSabliers.setMaximumSize(new Dimension(200,70));
 
+            JLabel labelSauverPlus = new JLabel("Coefficient sauver le plus de suspect : ");
+            labelSauverPlus.setFont(new Font("default", Font.ITALIC, 12));
+
+            coefSauverPlus = new JFormattedTextField(intFormat);
+            coefSauverPlus.setValue(1);
+            coefSauverPlus.setMaximumSize(new Dimension(200,70));
+
 
             boiteParamJack.add(Box.createVerticalGlue());
             boiteParamJack.add(paramGJack);
@@ -606,6 +613,9 @@ public class InterfaceGraphique implements Observer, Runnable {
 
             boiteParamJack.add(labelMaxSabliers);
             boiteParamJack.add(coefMaxSabliers);
+
+            boiteParamJack.add(labelSauverPlus);
+            boiteParamJack.add(coefSauverPlus);
 
             boiteParamJack.add(Box.createVerticalGlue());
 
@@ -931,5 +941,9 @@ public class InterfaceGraphique implements Observer, Runnable {
 
     public int getCoefVoirPlus() {
         return Integer.parseInt(coefVoirPlus.getText());
+    }
+
+    public int getCoefSauverPlus() {
+        return Integer.parseInt(coefSauverPlus.getText());
     }
 }

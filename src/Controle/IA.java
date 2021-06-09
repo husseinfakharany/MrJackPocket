@@ -14,6 +14,20 @@ public abstract class IA {
     public IA(Jeu j, boolean isJack){
         this.j=j;
         this.isJack = isJack;
+        if(isJack){
+            setCoefDispersionJack(0);
+            setCoefTempoJack(1);
+            setCoefProtegeSuspect(2);
+            setCoefEloigneEnqueteurs(0);
+            setCoefJackAvantTout(2);
+            setCoefProtegeMain(1);
+            setCoefMaxSabliers(2);
+            setCoefSauverPlus(1);
+        } else {
+            setCoefPiocherSherlock(1);
+            setCoefDiviserDeux(2);
+            setCoefVoirPlus(0);
+        }
     }
 
     public abstract Coup coupIA();
@@ -28,6 +42,7 @@ public abstract class IA {
     private int coefPiocherSherlock;
     private int coefDiviserDeux;
     private int coefVoirPlus;
+    private int coefSauverPlus;
 
     public int score(Action a){
         int res;
@@ -38,7 +53,8 @@ public abstract class IA {
                     coefEloigneEnqueteurs * ScoreConfig.scoreEloignement(j) +
                     coefJackAvantTout * ScoreConfig.scoreSuspectVisiblesJackCache(j) +
                     coefProtegeMain * ScoreConfig.scoreSuspectMainCache(j) +
-                    coefMaxSabliers * ScoreConfig.scoreSablierJack(j,a.getAction());
+                    coefMaxSabliers * ScoreConfig.scoreSablierJack(j,a.getAction()) +
+                    coefSauverPlus * ScoreConfig.scoreSauverPlus(j);
         } else {
             res = coefPiocherSherlock * ScoreConfig.scorePiocheSuspectCaches(j,a.getAction()) +
                     coefDiviserDeux* ScoreConfig.scoreSuspectElimine(j) +
@@ -56,6 +72,7 @@ public abstract class IA {
             setCoefJackAvantTout(ig.getCoefJackAvantTout());
             setCoefProtegeMain(ig.getCoefProtegeMain());
             setCoefMaxSabliers(ig.getCoefMaxSabliers());
+            setCoefSauverPlus(ig.getCoefSauverPlus());
         } else {
             setCoefPiocherSherlock(ig.getCoefPiocherSherlock());
             setCoefDiviserDeux(ig.getCoefDiviserDeux());
@@ -101,5 +118,13 @@ public abstract class IA {
 
     public void setCoefVoirPlus(int coefVoirPlus) {
         this.coefVoirPlus = coefVoirPlus;
+    }
+
+    public int getCoefSauverPlus() {
+        return coefSauverPlus;
+    }
+
+    public void setCoefSauverPlus(int coefSauverPlus) {
+        this.coefSauverPlus = coefSauverPlus;
     }
 }

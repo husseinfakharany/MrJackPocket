@@ -7,19 +7,6 @@ public class IAMoyen extends IA{
 
     public IAMoyen(Jeu j, boolean isJack) {
         super(j,isJack);
-        if(isJack){
-            setCoefDispersionJack(0);
-            setCoefTempoJack(0);
-            setCoefProtegeSuspect(1);
-            setCoefEloigneEnqueteurs(0);
-            setCoefJackAvantTout(0);
-            setCoefProtegeMain(0);
-            setCoefMaxSabliers(3);
-        } else {
-            setCoefPiocherSherlock(0);
-            setCoefDiviserDeux(1);
-            setCoefVoirPlus(0);
-        }
     }
 
     //Pre-Condition : iaS et iaJ initialisé
