@@ -27,7 +27,8 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
         toDraw = s[0];
     }
 
-
+    //Pre-Condition : s initialisé
+    //Post-Condition : affiche le prochain tuto
     public void tutorielNext(){
 
         if (i < s.length - 1){
@@ -41,6 +42,8 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
 
     }
 
+    //Pre-Condition : s initialisé
+    //Post-Condition : affiche le précédent tuto
     public void tutorielPrevious(){
         if (i > 0){
             i--;
@@ -52,7 +55,8 @@ public class TutoGraphique extends JComponent implements  ElementPlateauG{
         }
     }
 
-
+    //Pre-Condition : s initialisé
+    //Post-Condition : affiche le tuto actuel
     @Override
     public void paintComponent(Graphics g) {
         int largeur, hauteur;

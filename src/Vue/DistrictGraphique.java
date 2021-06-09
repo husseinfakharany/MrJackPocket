@@ -60,6 +60,8 @@ public class DistrictGraphique extends JComponent implements ElementPlateauG{
         setAfficherVisible(false);
     }
 
+    //Pre-Condition : Jeu initialisé
+    //Post-Condition : Dessine la carte donnés en argument
     public void dessinerCarte(int l, int c, CarteRue rue,boolean isSelectionne, int orientation){
         Image quartier,suspect,enqueteur;
         int tailleE = (int) (0.7*tailleC);
@@ -192,6 +194,8 @@ public class DistrictGraphique extends JComponent implements ElementPlateauG{
         }
     }
 
+    //Pre-Condition : Jeu initialisé
+    //Post-Condition : dessine les feedback qui vont avec action qui est en train d'etre construit par le joueur
     public void dessinerFeedback(){
         Point pos1 = actionTemp.getPosition1();
         Point pos2 = actionTemp.getPosition2();
@@ -257,9 +261,8 @@ public class DistrictGraphique extends JComponent implements ElementPlateauG{
         }
     }
 
-
-
-
+    //Pre-Condition : Jeu initialisé
+    //Post-Condition : dessine jeu.plateau.grille sur l'écran
     @Override
     public void paintComponent(Graphics g) {
         int largeur, hauteur;

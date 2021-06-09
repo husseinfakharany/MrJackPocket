@@ -36,10 +36,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         cp = new Coup(jeu.plateau(),action);
     }
 
-    public boolean iaActive(){
-        return iaActive;
-    }
 
+    //Pre-condition : L'argument doit etre "facile", "moyen" ou "difficile"
+    //Post-condition : La variable ia est initialisee a la difficulté souhaité
     public void fixerIA(String com){
         iaActive = true;
         switch (com){
@@ -76,10 +75,8 @@ public class ControleurMediateur implements CollecteurEvenements {
 
     }
 
-    public void activeIA(int state){
-
-    }
-
+    //Pre-condition : L'argument doit etre "facile", "moyen" ou "difficile"
+    //Post-condition : La variable ia est initialisee a la difficulté souhaité et le timer de temporisation
     @Override
     public void jouerCoupIA(Coup cp){
         if(iaActive){
@@ -93,11 +90,15 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
-
+    //Pre-condition : jeuClone non nul
+    //Post-condition : Applique le coup sur la copie du jeu
     public void appliquerIA(){
         jeuClone.plateau().finJeu(false,true);
     }
 
+    //Pre-condition : Jeu et ig non nul. Ia et TempsIA initialisés par fixerIA
+    //Post-condition : Reinitialisation des feedback et feedforward de l'IHM, affiche les personnages éliminés en fin de tour
+    //lance le timer de l'IA pour demander un coup à l'IA
     public void appliquer(int i){
 
         //Reinitialisation
@@ -129,6 +130,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+    //Pre-condition : Vide
+    //Post-condition : Verifie l'existence d'un coup dans l'historique et l'annule si il existe
     @Override
     public void annuler() {
         cp = jeu.annule();
@@ -142,6 +145,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+    //Pre-condition : Vide
+    //Post-condition : Verifie l'existence d'un coup dans l'historique et le rejoue si il existe
     @Override
     public void refaire() {
         cp = jeu.refaire();
@@ -154,6 +159,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+    //Pre-condition : l>=0 et l <= 4 ET c >= 0 et c <= 4
+    //Post-condition : Ajouter les arguments des coups à jouer en fonction des actions et des clics sur le district.
+    //Appeler par AdaptateurSouris
     @Override
     public void commandeDistrict(int l, int c){
         if(iaJoue || cp==null)return;
@@ -170,9 +178,11 @@ public class ControleurMediateur implements CollecteurEvenements {
         ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
     }
 
+    //Pre-condition : Argument "jetonA", "jetonB", "jetonC" et "jetonD"
+    //Post-condition : Initialise le coup en fonction du jeton sur lequel on a cliqué
+    //Appeler par AdaptateurSouris
     @Override
     public boolean commandeJeu(String c){
-
         if (cp==null){
             action = new Action(jeu.plateau().joueurCourant);
             cp = new Coup(jeu.plateau(),action);
@@ -303,7 +313,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         return true;
     }
 
-
+    //Pre-Condition : cp non nul
+    //Post-Condition : Joue le coup sur le jeu lié au controlleur, met à jour les jetons de la copie de jeu de l'IA si active
     public boolean jouerCoup(){
         if (jeu.jouerCoup(cp)){
             Configuration.instance().logger().info("Coup joué");
@@ -327,6 +338,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+    //Pre-Condition : cp,jeu et ig non nul
+    //Post-Condition : Reinitialise les affichages feedback
     void reinitialiser(){
         ig.getJetons().dessinerSelection(-1);
         ig.getJetons().dessinerValide(false);
@@ -334,19 +347,22 @@ public class ControleurMediateur implements CollecteurEvenements {
         ig.getDistrict().setAfficherVisible(false);
         selectionne = -1;
         cp = null;
-        //action.setNumEnqueteur(-1);
         ig.getPioche().setPiocheActive(false);
         if(!jeu.plateau().tousJetonsJoues()) ig.dessinerInfo(InterfaceGraphique.texteIndicatif(action));
         ig.getMain().setAfficherEnqueteur(true);
         ig.getIdentite().resetIdJack();
     }
 
+    //Pre-Condition : vide
+    //Post-Condition : désactive l'IA (Doit etre reinitialise pour être utilisé)
     void reinitialiserIA(){
         ia = null;
         iaActive = false;
         if(tempsIA != null)tempsIA.stop();
     }
 
+    //Pre-Condition : c non nul
+    //Post-Condition : Permet d'executer des actions souhaité en fonction du bouton qui l'appelle
     @Override
     public boolean commandeMenu(String c) {
         switch (c) {
@@ -475,6 +491,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         return true;
     }
 
+    //Pre-Condition : IA initialisé
+    //Post-Condition : Permet d'appeler l'IA en début de partie si initialisé
     private void demarrerIA() {
         if((!iaIsJack && iaActive && jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur)) || (iaIsJack && iaActive && jeu.plateau().joueurCourant.equals(jeu.plateau().jack))){
             jeuClone.plateau().setJetonsActions(jeu.plateau().jetonsActions);
@@ -484,6 +502,9 @@ public class ControleurMediateur implements CollecteurEvenements {
         }
     }
 
+    //Pre-Condition : vide
+    //Post-Condition : Permet à deux IA de s'affronter (iaJ et iaS doivent être initialisé)
+    //Appeler après l'initialisations des IAs dans commandeMenu
     private void jouerIAvsIA(int nbPartie){
         int victoireJack =0, victoireSherlock =0;
 
@@ -515,6 +536,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         Configuration.instance().logger().info("Nombre d'égalité " + nbEgalité );
     }
 
+    //Pre-Condition : iaS et iaJ initialisé
+    //Post-Condition : Joue un coup de l'IA sherlock sur le jeu du controlleur et les copies des deux ia
     private void coupIASherlock(){
         cp = iaS.coupIA();
         iaS.j.jouerCoup(cp);
@@ -531,6 +554,8 @@ public class ControleurMediateur implements CollecteurEvenements {
         iaS.j.plateau().setJetonsActions((ArrayList<JetonActions>) jeu.plateau().jetonsActions.clone());
     }
 
+    //Pre-Condition : iaS et iaJ initialisé
+    //Post-Condition : Joue un coup de l'IA jack sur le jeu du controlleur et les copies des deux ia
     private void coupIAJack(){
         cp = iaJ.coupIA();
         iaJ.j.jouerCoup(cp);
@@ -547,8 +572,13 @@ public class ControleurMediateur implements CollecteurEvenements {
         iaS.j.plateau().setJetonsActions((ArrayList<JetonActions>) jeu.plateau().jetonsActions.clone());
     }
 
+
     @Override
     public void fixerInterfaceUtilisateur(InterfaceGraphique i) {
         ig=i;
+    }
+
+    public boolean iaActive(){
+        return iaActive;
     }
 }

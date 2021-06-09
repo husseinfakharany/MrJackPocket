@@ -135,6 +135,8 @@ public class Suspect implements Cloneable {
     	return isJack;
 	}
 
+	//Pre-Condition : Vide
+	//Post-Condition : Innocente le personnage present sur la carte suite à l'appel à témoin
 	public void retournerCarteRue(CarteRue[][] grille, int type) {
 		if(grille[position.y][position.x].getSuspect().getCouleur() == GRIS && type==1){
 			orientationRecto = grille[position.y][position.x].getOrientation();
@@ -144,6 +146,8 @@ public class Suspect implements Cloneable {
 		if(grille[position.y][position.x].getSuspect().getCouleur() == GRIS && type==-1) grille[position.y][position.x].setOrientation(orientationRecto);
 	}
 
+	//Pre-Condition : Vide
+	//Post-Condition : Innocente le personnage present sur la carte suite à l'appel à témoin
 	public void innocenterVerdict(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocente){
 		if(!innocente && !suspectsInnocente.contains(this)){
 			setInnocente(true);
@@ -152,6 +156,8 @@ public class Suspect implements Cloneable {
 		}
 	}
 
+	//Pre-Condition : Vide
+	//Post-Condition : Innocente le personnage present sur la carte suite à la pioche d'une carte alibi
 	public void innocenterPioche(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocente){
     	if(!innocente && !suspectsInnocente.contains(this)){
 			setInnocente(true);
@@ -161,7 +167,8 @@ public class Suspect implements Cloneable {
 		}
 	}
 
-	//Utilisé pour annuler verdict
+	//Pre-Condition : Vide
+	//Post-Condition : Utilisé pour annuler verdict
 	public void suspecterVerdict(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocente){
     	if(innocente && !innocenteParPioche){
 			setInnocente(false);
@@ -172,7 +179,8 @@ public class Suspect implements Cloneable {
 		}
 	}
 
-	//Utilisé pour annuler pioche
+	//Pre-Condition : Vide
+	//Post-Condition : Utilisé pour annuler pioche
 	public void suspecterPioche(CarteRue[][] grille, ArrayList<Suspect> suspectsInnocente){
     	if(innocente && innocenteParPioche){
     		setInnocente(false);

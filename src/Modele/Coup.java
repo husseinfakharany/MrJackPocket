@@ -48,6 +48,8 @@ public class Coup extends Commande implements Cloneable{
 		return true;
 	}
 
+	//Pre-Condition : Plateau Cartes Alibi non nul
+	//Post-Condition : Ajoute une carte de la pioche dans la main du jouer qui joue l'action et la supprime de la pioche
 	public boolean innocenter(int i){
 		CarteAlibi card;
 		Joueur j = action.getJoueur();
@@ -101,6 +103,8 @@ public class Coup extends Commande implements Cloneable{
 		}
 	}
 
+	//Pre-Condition : Plateau initialisé
+	//Post-Condition : Change l'orientation d'une carte rue
 	public boolean rotation(Point position1, int orientation, int type) {
 		if(plateau.grille[position1.y][position1.x].getOrientation() == orientation) return false;
 		if (plateau.grille[position1.y][position1.x].getDejaTourne() && type==1){
@@ -117,6 +121,8 @@ public class Coup extends Commande implements Cloneable{
 		return true;
 	}
 
+	//Pre-Condition : Plateau initialisé
+	//Post-Condition : Echange les arguments des carte rues au coordonnées Point 1 et Point 2
 	public boolean echanger(Point position1, Point position2) {
 
 		CarteRue carteRue1 = plateau.grille[position1.y][position1.x];
@@ -149,6 +155,8 @@ public class Coup extends Commande implements Cloneable{
 		return true;
 	}
 
+	//Pre-Condition : Plateau initialisé
+	//Post-Condition : Déplace l'enqueteur du nombre indiqué par déplacement dans le sens des aiguilles d'une montre
 	public boolean deplacer(int numEnqueteur, int deplacement, int sens){
 		boolean res = true;
 		for(int i=0; i<deplacement;i++){
@@ -157,6 +165,8 @@ public class Coup extends Commande implements Cloneable{
 		return res;
 	}
 
+	//Pre-Condition : Plateau initialisé
+	//Post-Condition : Déplace l'enqueteur d'une case dans le sens des aiguilles d'une montre
 	private boolean avancer(int numEnqueteur, int sens) {
 		Enqueteur enqueteur = plateau.enqueteurs.get(numEnqueteur);
 		int positionX = enqueteur.getPosition().x;
@@ -226,6 +236,8 @@ public class Coup extends Commande implements Cloneable{
 		this.action = action;
 	}
 
+	//Pre-Condition : Coup(this) initialisé + l>=0 et l<=4 ET c>=0 et c<=4
+	//Post-Condition : Mets les variables aux valeurs cohérentes avec un clic au coordonnées (c,l) sur le district
 	public void ajouterArguments(int l, int c){
 		if(action == null || action.getAction() == null) {
 			Configuration.instance().logger().warning("Impossible d'ajouter un argument à une action pas initialisé");
@@ -303,6 +315,8 @@ public class Coup extends Commande implements Cloneable{
 		}
 	}
 
+	//Pre-Condition : l>=0 et l<=4 ET c>=0 et c<=4
+	//Post-Condition : Calcul la distance entre l'enqueteur du coup actuel et la case (c,l)
 	public int calculDepl(int numEnqueteur,int l,int c){
 		Enqueteur enqueteur = plateau.enqueteurs.get(numEnqueteur);
 		Point positionE = Plateau.calculPosition(enqueteur.position,enqueteur.getPositionSurCarte());
@@ -314,6 +328,9 @@ public class Coup extends Commande implements Cloneable{
 		return -1;
 	}
 
+
+	//Pre-Condition : l>=0 et l<=4 ET c>=0 et c<=4
+	//Post-Condition : Trouve l'enquêteur dans la case précedente où un autre enqueteur que celui qui est contenu dans action.numEnqueteur
 	public int calculEnqueteur(int l, int c){
 		ArrayList<Enqueteur> enqueteurs;
 
@@ -405,10 +422,15 @@ public class Coup extends Commande implements Cloneable{
 		return -1;
 	}
 
+	//Pre-Condition :action non nul
+	//Post-Condition : Remet les valeurs par défauts de l'action
 	public void reinitialiser(){
 		action.reinitialiser();
 	}
 
+
+	//Pre-Condition :action non nul
+	//Post-Condition : Modifie le plateau en cohérence avec les information du coup
 	@Override
 	boolean execute() {
 		boolean res =false;
@@ -446,6 +468,8 @@ public class Coup extends Commande implements Cloneable{
 		return res;
 	}
 
+	//Pre-Condition :action non nul
+	//Post-Condition : Modifie le plateau en cohérence avec les information du coup
 	@Override
 	boolean desexecute() {
 		boolean res=false;

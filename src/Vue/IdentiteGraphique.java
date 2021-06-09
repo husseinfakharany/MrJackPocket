@@ -23,6 +23,8 @@ public class IdentiteGraphique extends JComponent {
         estCache = true;
     }
 
+    //Pre-Condition : Jeu initialisé
+    //Post-Condition : dessine la zone donnant les informations sur les joueurs
     public void dessinerIdentite(){
         Image personnage;
         Joueur personnageCourant = jeu.plateau().joueurCourant;
@@ -123,11 +125,15 @@ public class IdentiteGraphique extends JComponent {
 
     }
 
+    //Pre-Condition : Jeu initialisé
+    //Post-Condition : change l'etat de estCache(identité de jack) et refraichit l'affichage
     public void swapImageJack() {
         estCache = !estCache;
         repaint();
     }
 
+    //Pre-Condition : Jeu initialisé
+    //Post-Condition : cache l'identité de jack et refraichit l'affichage
     public void resetIdJack() {
         estCache = true;
         repaint();

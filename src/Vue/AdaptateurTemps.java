@@ -16,6 +16,8 @@ public class AdaptateurTemps implements ActionListener {
 		control=c;
 	}
 
+	//Pre-Condition : Vide
+	//Post-Condition : Joue le coupde l'IA une fois le temps écoulés
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		control.jouerCoupIA(ia.coupIA());

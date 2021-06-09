@@ -40,11 +40,15 @@ public class Joueur implements Cloneable{
 		setSablier(sabliersCaches,sabliersVisibles);
 	}
 
+	//Pre-Condition : Vide
+	//Post-Condition : Ajoute une carte dans la main du joueur
 	public void ajouterCarte(CarteAlibi card) {
 		//System.out.println(" ajout carte : " + card);
 		cardList.add(card);
 	}
 
+	//Pre-Condition : cardList non vide
+	//Post-Condition : Supprime une carte dans la main du joueur
 	public void supprimerCarte(CarteAlibi card) {
 		//System.out.println(" suppression carte : " + card);
 		cardList.remove(card);

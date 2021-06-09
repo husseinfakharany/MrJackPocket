@@ -33,6 +33,8 @@ public class Action{
         this.ia = false;
     }
 
+    //Pre-Condition : actionJeton non vide
+    //Post-Condition : Renvoie une liste non vide est exhaustif des différents coups jouables
     public static Iterable<Action> listeAction(Actions actionJeton, Joueur joueur) {
         ArrayList<Point> positions = new ArrayList<>();
         ArrayList<Action> res = new ArrayList<>();
@@ -119,6 +121,9 @@ public class Action{
         return res;
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Indique si un coup est dans le domaine des coups valides. Ne vérifie pas la jouabilité mais
+    //le domaine des différents arguments du coup
     public boolean estValide(){
         if(action == null) return false;
         switch (action){
@@ -145,6 +150,8 @@ public class Action{
         return false;
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Remet les valeurs par défaut d'un coup
     public void reinitialiser(){
         this.action = null;
         this.position1 = null;

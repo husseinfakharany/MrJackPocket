@@ -32,6 +32,8 @@ public class BackgroundBox extends Box {
         return lineBox;
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Renvoie une box avec l'image res/fond.png en fond
     @Override
     public void paintComponent(Graphics g) {
         drawable = (Graphics2D) g;

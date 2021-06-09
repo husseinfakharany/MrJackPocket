@@ -30,6 +30,8 @@ public class Enqueteur implements Cloneable{
         this.positionSurCarte = positionSurCarte;
     }
 
+    //Pre-Condition : Enqueteur initialisé
+    //Post-Condition : Modifie le plateau en cohérence avec les information du coup pour annuler le coup
     ArrayList<Suspect> visible(CarteRue [][] grille){
         ArrayList<Suspect> resultat = new ArrayList<>();
         int i = position.y;

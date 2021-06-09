@@ -22,10 +22,14 @@ public class IAMoyen extends IA{
         }
     }
 
+    //Pre-Condition : iaS et iaJ initialisé
+    //Post-Condition : Joue un coup de l'IA sherlock sur le jeu du controlleur et les copies des deux ia
     public void prochainTour(){
         j.plateau().prochainTour();
     }
 
+    //Pre-Condition : la variable j est une copie du jeu principal et les informations sont égales
+    //Post-Condition : Renvoie un Coup calculé par l'IA
     @Override
     public Coup coupIA() {
         Joueur joueurCourant = j.plateau().joueurCourant;

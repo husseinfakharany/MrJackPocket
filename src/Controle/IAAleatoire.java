@@ -16,6 +16,8 @@ public class IAAleatoire extends IA{
         r = new Random();
     }
 
+    //Pre-Condition : la variable j est une copie du jeu principal et les informations sont égales
+    //Post-Condition : Renvoie un Coup aléatoire parmis ceux possibles
     @Override
     public Coup coupIA() {
 

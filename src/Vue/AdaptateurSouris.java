@@ -18,6 +18,8 @@ public class AdaptateurSouris extends MouseAdapter {
 		elementG =e;
 	}
 
+	//Pre-Condition : Vide
+	//Post-Condition : Execute les actions associés aux boutons associés
 	@Override
 	public void mousePressed(MouseEvent e) {
 		int c = e.getX() / (elementG.getTailleCase()+ elementG.getOffsetX());

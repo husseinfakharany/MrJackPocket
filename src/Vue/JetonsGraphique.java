@@ -50,6 +50,8 @@ public class JetonsGraphique extends JComponent implements ElementPlateauG {
         dessinerValide(false);
     }
 
+    //Pre-Condition : Jeu initialisé
+    //Post-Condition : dessine les jetons
     public void dessinerJetons(){
         Image jeton1, jeton2, jeton3, jeton4, jeton1Tra, jeton2Tra, jeton3Tra, jeton4Tra;
 

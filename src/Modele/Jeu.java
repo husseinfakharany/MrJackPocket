@@ -35,6 +35,8 @@ public class Jeu extends Observable implements Cloneable{
         Configuration.instance().logger().info("Seed used: " + seed);
     }
 
+    //Pre-Condition : file non nul
+    //Post-Condition : Charge en mémoire tous les coups décrit dans le fichier de sauvegarde et les execute
     public void charger(File file){
         Scanner sc = null;
         try {
@@ -146,8 +148,11 @@ public class Jeu extends Observable implements Cloneable{
         sc.close();
     }
 
+
     public Plateau plateau(){return plateau;}
 
+    //Pre-Condition : cp et cp.getAction() non nul
+    //Post-Condition : Exécute le coup et met à jour la vue
     public boolean jouerCoup(Coup cp) {
         boolean res;
         if (cp == null) {
@@ -158,6 +163,7 @@ public class Jeu extends Observable implements Cloneable{
         }
         return res;
     }
+
 
     @Override
     public Jeu clone() throws CloneNotSupportedException {
@@ -173,6 +179,8 @@ public class Jeu extends Observable implements Cloneable{
         return copy;
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Met à jour la vue
     public void notifierObserveurs(){
         setChanged();
         notifyObservers();
@@ -190,6 +198,8 @@ public class Jeu extends Observable implements Cloneable{
         return cp;
     }
 
+    //Pre-Condition : nomFichier est un chemin accessible et non protégé
+    //Post-Condition : Décrit l'ensemble des coups joués depuis le debut de la partie
     public void sauvegarder(String nomFichier){
         Coup cp;
         Action ac;

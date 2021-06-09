@@ -16,15 +16,21 @@ public class IADifficile extends IA{
         this.profondeur = profondeur;
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Initialise les coeeficients pour la fonction de score
     public void setCoeff(InterfaceGraphique ig){
         setProfondeur(ig.getProfondeurIA());
         super.setCoeff(ig);
     }
 
+    //Pre-Condition : iaS et iaJ initialisé
+    //Post-Condition : Joue un coup de l'IA sherlock sur le jeu du controlleur et les copies des deux ia
     public void prochainTour(){
         j.plateau().prochainTour();
     }
 
+    //Pre-Condition : la variable j est une copie du jeu principal et les informations sont égales
+    //Post-Condition : Implémentation du minimax seuillé avec fonctions de scoring dans ScoreConfig
     public int minMax(int d, Action act){
 
         Joueur joueurCourant = j.plateau().joueurCourant;
@@ -77,7 +83,8 @@ public class IADifficile extends IA{
         return valeur;
     }
 
-
+    //Pre-Condition : la variable j est une copie du jeu principal et les informations sont égales
+    //Post-Condition : Renvoie un Coup calculé par l'IA
     @Override
     public Coup coupIA() {
         Joueur joueurCourant = j.plateau().joueurCourant;

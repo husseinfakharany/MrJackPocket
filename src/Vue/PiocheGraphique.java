@@ -21,6 +21,8 @@ public class PiocheGraphique extends JComponent implements ElementPlateauG{
         piocheActive = false;
     }
 
+    //Pre-Condition : Jeu initialisé
+    //Post-Condition : dessine une image qui dans son état actif permet de piocher une carte
     @Override
     public void paintComponent(Graphics g) {
         int largeur, hauteur;

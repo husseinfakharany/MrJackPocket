@@ -14,6 +14,8 @@ public class AdaptateurCommande implements ActionListener {
 		commande = com;
 	}
 
+	//Pre-Condition : Vide
+	//Post-Condition : Execute les actions associés aux boutons associés
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		controle.commandeMenu(commande);

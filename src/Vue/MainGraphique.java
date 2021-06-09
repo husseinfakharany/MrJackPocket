@@ -39,6 +39,8 @@ public class MainGraphique extends JComponent {
         mainFictif.add( new CarteAlibi( new Suspect( SuspectNom.MISS_STEALTHY,null ) ) );*/
     }
 
+    //Pre-Condition : Jeu initialisé
+    //Post-Condition : dessine une carte suspect
     public void dessinerCarte(SuspectCouleur couleur, int x, int y){
         switch (couleur){
             case BLEU:
@@ -72,6 +74,9 @@ public class MainGraphique extends JComponent {
                 throw new IllegalStateException("Unexpected value: " + jeu.plateau().idJack);
         }
     }
+
+    //Pre-Condition : Jeu initialisé
+    //Post-Condition : dessine toutes les cartes d'une main
     public void dessinerMain(){
         Iterator<CarteAlibi> main;
         //jeu.plateau().enqueteur.setCardList(mainFictif);

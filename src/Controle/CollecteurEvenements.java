@@ -10,8 +10,6 @@ public interface CollecteurEvenements {
 		boolean commandeJeu(String c);
 		void fixerInterfaceUtilisateur(InterfaceGraphique i);
 		void fixerIA(String com);
-		boolean iaActive();
-		void activeIA(int state);
 		void annuler();
 		void refaire();
 		void jouerCoupIA(Coup cp);

@@ -104,11 +104,15 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         initialiseTour();
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Indique si tous les jetons ont été joués
     public boolean tousJetonsJoues(){
         return jeu.plateau().getJeton(0).getDejaJoue() && jeu.plateau().getJeton(1).getDejaJoue() &&
                 jeu.plateau().getJeton(2).getDejaJoue() && jeu.plateau().getJeton(3).getDejaJoue();
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Créer une liste des orientations possibles
     private void initialiseOrientationsRues(){
         orientationsRues = new ArrayList<>();
         orientationsRues.add(NSO);
@@ -117,6 +121,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         orientationsRues.add(SEO);
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Initialise la liste des suspects
     private void initialiseSuspects(){
         suspects = new ArrayList<>();
         suspectsInnocete = new ArrayList<>();
@@ -125,6 +131,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         }
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Initialise les enqueteurs avec des valeurs par défaut/pas valides pour l'IHM
     private void initialiseEnqueteurs() {
         enqueteurs = new ArrayList<>();
         enqueteurs.add(SHERLOCK,new Enqueteur(EnqueteurNom.SHERLOCK,null,Enqueteur.ABSENT));
@@ -133,6 +141,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Initialise les jetons actions
     private void initialiseJetonsActions(){
         jetonsActions = new ArrayList<>();
         //Création des 4 jetons actions en dûr
@@ -142,13 +152,18 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         jetonsActions.add(3,new JetonActions(Actions.DEPLACER_SHERLOCK,Actions.INNOCENTER_CARD));
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Initialise la pioche
     private void initialiseCarteAlibis(){
         cartesAlibis = new ArrayList<>();
         for(Suspect s: getSuspects()){
             cartesAlibis.add(new CarteAlibi(s));
         }
     }
-    
+
+    //Pre-Condition : Vide
+    //Post-Condition : Initialise les enqueteurs avec leurs positions de base et l'orientation des rues auxquels
+    // ils font face. Place de manière aléatoire les suspect et l'orientations des autres rues.
     private void initialiseGrille(){
 
         int i,j;
@@ -198,12 +213,16 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         }
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Initialise les valeurs pour le prochain tour (une fois que tous les jetons sont joués)
     void initialiseTour(){
         jackVisible = false;
         setDejaTourne(false);
         melangeJetonsActions();
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Initialise la grille avec des valeurs données
     private void forceGrille(ArrayList<SuspectNom> suspectIndicesSauv, ArrayList<Integer> orientationSauv){
         int j;
         j=0;
@@ -240,7 +259,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         grille[2][1].setEnqueteur(enqueteurs.get(TOBBY)); //Modified for test (original = [2][1])
     }
 
-    //retourne vrai si c'est la fin du tour
+    //Pre-Condition : Vide
+    //Post-Condition : Retourne vrai si c'est la fin du tour
     public boolean actionPlus(){
         boolean res=false;
         if(numTour<=7 && numAction<4){
@@ -261,7 +281,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return res;
     }
 
-    //true si un retour en arrière est mathématiquement possible
+    //Pre-Condition : Vide
+    //Post-Condition : True si un retour en arrière est mathématiquement possible
     public boolean actionMoins(){
         boolean res=true;
         if (numAction==1 || numAction==3){
@@ -284,6 +305,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return res;
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Remet les jetons du tour précédents
     void resetJetons(){
         for(Coup cp: passe.subList(passe.size()-4, passe.size()) ) {
             if (getJeton(cp.getAction().getNumAction()).getAction1().equals(cp.getAction().getAction())) {
@@ -297,6 +320,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         }
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Verifie si il y a un gagnant et prépare le plateau pour le prochain tour sinon
     public boolean prochainTour(){
         if (finJeu()){
             Configuration.instance().logger().info("Fin du Jeu");
@@ -308,6 +333,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return false;
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Verifie si il y a un gagnant et prépare le plateau pour le prochain tour sinon sur le jeu donné en paramètre
     public void prochainTourClone(Jeu j){
         if (!finJeu(true,false)){
             jackVisible = false;
@@ -316,12 +343,15 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         }
     }
 
-    //Mélange ou inverse les cartes actions (depend du numéro du tour)
+    //Pre-Condition : Vide
+    //Post-Condition : Mélange ou inverse les jetons actions (depend du numéro du tour)
     void melangeJetonsActions(){
         if (numTour%2 == 0) jetJetons();
         else inverserJetons();
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Mélange les jetons actions (depend du numéro du tour)
     void jetJetons() {
         for(JetonActions act:jetonsActions){
             act.setEstRecto(rand.nextBoolean()); //Lancement de chaque jeton
@@ -329,6 +359,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         }
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Initialise les jetons sur les valeurs données par la liste
     void forceJetons(ArrayList<Boolean> jetonsActionsSauv) {
         int i = 0;
         for(JetonActions act:jetonsActions){
@@ -338,6 +370,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         }
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Inverse les cartes actions (depend du numéro du tour)
     void inverserJetons() {
         for(JetonActions act:jetonsActions){
             boolean estRecto = !act.estRecto();
@@ -346,6 +380,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         }
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Change le joueur qui est en train de jouer
     public void changerJoueur() {
 		if(joueurCourant.isJack() ) {
             enqueteur.setTurn(true);
@@ -357,11 +393,14 @@ public class Plateau extends Historique<Coup> implements Cloneable {
 		
 	}
 
+    //Pre-Condition : Vide
+    //Post-Condition : jouer un coup sur le plateau données dans les variable de cp
     public boolean jouerCoup(Coup cp) {
         return nouveau(cp);
     }
 
-
+    //Pre-Condition : Vide
+    //Post-Condition : Pioche une carte qui détermine l'identité de Jack
     public void piocherJack(){
         int index = rand.nextInt(cartesAlibis.size());
         CarteAlibi JackCard = cartesAlibis.get(index);
@@ -370,6 +409,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         idJack = JackCard.getCouleur();
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Force l'identite de jack sur le nom donné et le supprime de la pioche
     public void forceJack(SuspectNom nomJackSauv){
         int index=-1;
         for(int i=0; i<cartesAlibis.size(); i++){
@@ -383,6 +424,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         idJack = JackCard.getCouleur();
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Pioche une carte de la pioche la supprime et la renvoie
     public CarteAlibi piocher(){
         int size = cartesAlibis.size();
         if (size<=0){
@@ -394,6 +437,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return card;
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Ajoute une carte à la pioche
     public void addToPioche(CarteAlibi card){
         cartesAlibis.add(card);
     }
@@ -413,8 +458,9 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return res;
     }
 
-    //Cette fonction retourne vrai s'il reste qu'une seule carte non innocentée (Jack)
-    public boolean verdictTour(boolean updatePlateau){
+    //Pre-Condition : Vide
+    //Post-Condition : Cette fonction retourne vrai s'il reste qu'une seule carte non innocentée (Jack)
+    public boolean verdictTour(boolean updatePlateau) {
         ArrayList<Suspect> res = visibles();
         //Si jack est visible par un des trois enqueteurs
 
@@ -422,24 +468,25 @@ public class Plateau extends Historique<Coup> implements Cloneable {
             for (Suspect s : getSuspects()) {
                 if (!res.contains(s)) {
                     //Innoceter retourne la carte rue du suspect
-                    if(updatePlateau) s.innocenterVerdict(grille, suspectsInnocete);
+                    if (updatePlateau) s.innocenterVerdict(grille, suspectsInnocete);
                 }
             }
         } else {
-            if(updatePlateau) jack.setSablierVisibles(jack.getSablierVisibles() + 1);
+            if (updatePlateau) jack.setSablierVisibles(jack.getSablierVisibles() + 1);
             for (Suspect s : res) {
-                if(updatePlateau) s.innocenterVerdict(grille, suspectsInnocete);
+                if (updatePlateau) s.innocenterVerdict(grille, suspectsInnocete);
 
             }
         }
-        if (suspectsInnocete.size()>=8){
+        if (suspectsInnocete.size() >= 8) {
             enqueteur.setWinner(true);
-            return numAction==0;
+            return numAction == 0;
         }
         return false;
     }
 
-    //Cette fonction retourne vrai s'il reste qu'une seule carte non innonctée (Jack)
+    //Pre-Condition : Vide
+    //Post-Condition : Cette fonction retourne vrai s'il reste qu'une seule carte non innonctée (Jack)
     public boolean annuleVerdict(){
         ArrayList<Suspect> res = visibles();
         //Si jack est visible par un des trois enqueteurs
@@ -459,7 +506,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return false;
     }
 
-    //Fonction appelée apres la fin du tour
+    //Pre-Condition : Vide
+    //Post-Condition : Fonction appelée apres la fin du tour
     public boolean finJeu(boolean updatePlateau, boolean notifierInterface){
         boolean res = verdictTour(updatePlateau);
         if (numTour>=7) {
@@ -473,10 +521,14 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return res;
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Fonction appelée apres la fin du tour et met a jour l'interface
     public boolean finJeu(){
         return finJeu(true,true);
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Reinitialise le plateau dans un état de début de partie
     public void reinitialiser(){
 
         jack = new Joueur(true, "Hussein", 0,0,false,false);
@@ -500,6 +552,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         initialiseTour();
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Affiche les informations du plateau pour debuguer
     public void afficherConfig(){
         int compteurCarte = 1;
         for (int i = 0; i < 3; i++) {
@@ -583,6 +637,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return copy;
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Calcul le porochain point vers lequel un enqueteur peut se déplacer.
     public static Point suivant(Point p){
         if(p.y==0) p.x = p.x+1;
         if(p.x==4) p.y = p.y+1;
@@ -594,6 +650,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return p;
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Calcul le porochain point vers lequel un enqueteur peut se déplacer.
     public static Point suivant(int c, int l){
         if(l==0) c = c+1;
         if(c==4) l = l+1;
@@ -605,6 +663,8 @@ public class Plateau extends Historique<Coup> implements Cloneable {
         return new Point(c,l);
     }
 
+    //Pre-Condition : Vide
+    //Post-Condition : Transforme une coordonnées du quarter et un orientation où se trouve l'enqueteur en coordonnées du plan
     public static Point calculPosition(Point pos, int orientation){
         Point res = (Point) pos.clone();
         res.x = res.x+1;
