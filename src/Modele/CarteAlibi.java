@@ -15,16 +15,26 @@ public class CarteAlibi implements Cloneable {
 		public CarteAlibi(Suspect suspect){
 			this.suspect = suspect;
 			switch (suspect.getNomPersonnage()) {
-				case JOHN_PIZER -> sablier = 1;
-				case SERGENT_GOODLEY -> sablier = 0;
-				case WILLIAM_GULL -> sablier = 1;
-				case MISS_STEALTHY -> sablier = 1;
-				case JEREMY_BERT -> sablier = 1;
-				case INSPECTOR_LESTRADE -> sablier = 0;
-				case JOSEPH_LANE -> sablier = 1;
-				case MADAME -> sablier = 2;
-				case JOHN_SMITH -> sablier = 1;
-				default -> throw new IllegalStateException("Unexpected value: " + suspect.getNomPersonnage());
+				case JOHN_PIZER:
+					sablier = 1;
+				case SERGENT_GOODLEY:
+					sablier = 0;
+				case WILLIAM_GULL:
+					sablier = 1;
+				case MISS_STEALTHY:
+					sablier = 1;
+				case JEREMY_BERT:
+					sablier = 1;
+				case INSPECTOR_LESTRADE:
+					sablier = 0;
+				case JOSEPH_LANE:
+					sablier = 1;
+				case MADAME:
+					sablier = 2;
+				case JOHN_SMITH:
+					sablier = 1;
+				default:
+					throw new IllegalStateException("Unexpected value: " + suspect.getNomPersonnage());
 			}
 		}
 
