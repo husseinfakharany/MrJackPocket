@@ -506,7 +506,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     //Post-Condition : Permet à deux IA de s'affronter (iaJ et iaS doivent être initialisé)
     //Appeler après l'initialisations des IAs dans commandeMenu
     private void jouerIAvsIA(int nbPartie){
-        int victoireJack =0, victoireSherlock =0;
+        int victoireJack =0, victoireSherlock =0, nbEgalité=0;
 
         for(int i=0; i < nbPartie; i++){
             cp = null;
@@ -521,18 +521,19 @@ public class ControleurMediateur implements CollecteurEvenements {
                     coupIASherlock();
                 }
             }
-            if(jeu.plateau().jack.getWinner()) {
+            if(jeu.plateau().jack.getWinner() && !jeu.plateau().enqueteur.getWinner()) {
                 victoireJack++;
                 Configuration.instance().logger().info("Fin de la partie n°"+i+" : Vainqueur : JACK");
-            }
-            if(jeu.plateau().enqueteur.getWinner()){
+            } else if(jeu.plateau().enqueteur.getWinner() && !jeu.plateau().jack.getWinner()){
                 victoireSherlock++;
                 Configuration.instance().logger().info("Fin de la partie n°"+i+" : Vainqueur : SHERLOCK");
+            } else {
+                nbEgalité++;
+                Configuration.instance().logger().info("Fin de la partie n°"+i+" : Vainqueur : EGALITE");
             }
         }
-        int nbEgalité = victoireJack + victoireSherlock -100;
-        Configuration.instance().logger().info("Jack a gagné " + (victoireJack-nbEgalité) + " parties sur " + (victoireJack+victoireSherlock-nbEgalité) );
-        Configuration.instance().logger().info("Sherlock a gagné " + (victoireSherlock-nbEgalité) + " parties sur " + (victoireJack+victoireSherlock-nbEgalité) );
+        Configuration.instance().logger().info("Jack a gagné " + victoireJack + " parties sur " + (victoireJack+victoireSherlock+nbEgalité) );
+        Configuration.instance().logger().info("Sherlock a gagné " + victoireSherlock + " parties sur " + (victoireJack+victoireSherlock+nbEgalité) );
         Configuration.instance().logger().info("Nombre d'égalité " + nbEgalité );
     }
 

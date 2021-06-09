@@ -27,7 +27,7 @@ public class Coup extends Commande implements Cloneable{
 
 		CarteAlibi toRemove = null;
 		for(CarteAlibi carte:plateau.getCartesAlibis()){
-			if(carte.getSuspect().equals(card.getSuspect()))
+			if(carte.getSuspect().getNomPersonnage().equals(card.getSuspect().getNomPersonnage()))
 				toRemove =  carte;
 		}
 		if(toRemove!=null){
@@ -60,7 +60,7 @@ public class Coup extends Commande implements Cloneable{
 				card = action.cartePioche;
 				CarteAlibi toRemove = null;
 				for(CarteAlibi carte:plateau.getCartesAlibis()){
-					if(carte.getSuspect().equals(card.getSuspect()))
+					if(carte.getSuspect().getNomPersonnage().equals(card.getSuspect().getNomPersonnage()))
 						toRemove =  carte;
 				}
 				if(toRemove!=null){

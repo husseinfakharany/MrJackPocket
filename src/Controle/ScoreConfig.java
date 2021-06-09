@@ -3,8 +3,6 @@ package Controle;
 import Modele.*;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Random;
 
 /*
 //TODO [Sherlock] Essayer de continuer de voir les personnage sur lesquels on vient de perdre la vision
@@ -81,31 +79,8 @@ public class ScoreConfig {
 
     //[Jack]Gagner le plus de sabliers possible
     static int scoreSablierJack(Jeu j, Actions action){
-        Random r = new Random();
-        int res = 0;
         if(action == Actions.INNOCENTER_CARD){
-            ArrayList<CarteAlibi> listCarte = new ArrayList<>();
-            while(j.plateau().getTaillePioche() != 0){
-                listCarte.add(j.plateau().piocher());
-            }
-            //Rajouter celle qu'on vient de piocher
-            //listCarte.add(0,j.plateau().jack.getCardList().get(j.plateau().jack.getCardList().size()-1));
-            int alea;
-            //Tirer 3 cartes au hasard pour ne pas tenir compte que de la carte au dessu de la pioche
-            if(listCarte.size()==0)return scoreSuspectElimine(j);
-            for(int i = 0; i<3; i++){
-                alea = r.nextInt(listCarte.size());
-                if(listCarte.get(alea).getSablier()>0) res = 10;
-            }
-            //Enlever la carte qu'on recupère dans notre main
-            listCarte.remove(0);
-            //Restaurer la pioche dans l'état initial du debut de la fonction
-            while(!listCarte.isEmpty()){
-                CarteAlibi carte = listCarte.get(0);
-                j.plateau().addToPioche(carte);
-                listCarte.remove(0);
-            }
-            return res;
+            return 1; //En moyenne 1 sablier
         } else {
             return scoreSuspectElimine(j);
         }

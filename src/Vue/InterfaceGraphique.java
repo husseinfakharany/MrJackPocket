@@ -46,7 +46,7 @@ public class InterfaceGraphique implements Observer, Runnable {
     private MainGraphique main;
     private TutoGraphique tuto;
     Box boiteCentreG, boiteUnReDoCartes, boiteInfo, boiteUnReDo, boiteCentreD, boiteCentre, boiteTuto, courant;
-    private JFormattedTextField nbParties, profondeurIA, coefDispersionJack, coefTempoJack, coefProtegeSuspect,
+    private JFormattedTextField nbParties, coefDispersionJack, coefTempoJack, coefProtegeSuspect,
             coefEloigneEnqueteurs, coefJackAvantTout, coefProtegeMain, coefMaxSabliers, coefPiocherSherlock,
             coefDiviserDeux, coefVoirPlus;
 
@@ -511,10 +511,6 @@ public class InterfaceGraphique implements Observer, Runnable {
             nbParties.setValue(100);
             nbParties.setMaximumSize(new Dimension(200,70));
 
-            profondeurIA = new JFormattedTextField(intFormat);
-            profondeurIA.setValue(4);
-            profondeurIA.setMaximumSize(new Dimension(200,70));
-
             JLabel paramG = new JLabel("Paramètres généraux : ");
             paramG.setFont(new Font("default", Font.PLAIN, 20));
 
@@ -528,8 +524,6 @@ public class InterfaceGraphique implements Observer, Runnable {
             boiteParamGlobal.add(paramG);
             boiteParamGlobal.add(labelNbPartie);
             boiteParamGlobal.add(nbParties);
-            boiteParamGlobal.add(labelProfondeur);
-            boiteParamGlobal.add(profondeurIA);
             boiteParamGlobal.add(Box.createVerticalGlue());
             boiteParamGlobal.setPreferredSize(new Dimension(400, 200));
 
@@ -897,10 +891,6 @@ public class InterfaceGraphique implements Observer, Runnable {
             if(value.charAt(i)>='0'&&value.charAt(i)<='9') res = res + value.charAt(i);
         }
         return Integer.parseInt(res);
-    }
-
-    public int getProfondeurIA() {
-        return Integer.parseInt(profondeurIA.getText());
     }
 
     public int getCoefDispersionJack() {

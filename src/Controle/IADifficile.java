@@ -11,15 +11,10 @@ public class IADifficile extends IA{
         super(j,isJack);
         profondeur = 2;
     }
-    public IADifficile(Jeu j,int profondeur, boolean isJack) {
-        super(j,isJack);
-        this.profondeur = profondeur;
-    }
 
     //Pre-Condition : Vide
     //Post-Condition : Initialise les coeeficients pour la fonction de score
     public void setCoeff(InterfaceGraphique ig){
-        setProfondeur(ig.getProfondeurIA());
         super.setCoeff(ig);
     }
 
