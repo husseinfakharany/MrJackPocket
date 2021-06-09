@@ -41,7 +41,9 @@ public class Enqueteur implements Cloneable{
         switch (positionSurCarte){
             case NORD:
                 while (bool && (grille[i][j].getOrientation() & Plateau.N)==Plateau.N){
-                    resultat.add(grille[i][j].getSuspect());
+                    if (!grille[i][j].getSuspect().getInnocente()){
+                        resultat.add(grille[i][j].getSuspect());
+                    }
                     //Si pas fin de la grille et le sud de la carte est ouvert
                     if (i<2 && ((grille[i][j].getOrientation() & Plateau.S)==Plateau.S)){
                           i++;
@@ -52,7 +54,9 @@ public class Enqueteur implements Cloneable{
                 break;
             case SUD:
                 while (bool && (grille[i][j].getOrientation() & Plateau.S)==Plateau.S){
-                    resultat.add(grille[i][j].getSuspect());
+                    if (!grille[i][j].getSuspect().getInnocente()){
+                        resultat.add(grille[i][j].getSuspect());
+                    }
                     //Si pas fin de la grille et le nord de la carte est ouvert
                     if (i>0 && ((grille[i][j].getOrientation() & Plateau.N)==Plateau.N)){
                         i--;
@@ -63,7 +67,9 @@ public class Enqueteur implements Cloneable{
                 break;
             case EST:
                 while (bool && (grille[i][j].getOrientation() & Plateau.E)==Plateau.E){
-                    resultat.add(grille[i][j].getSuspect());
+                    if (!grille[i][j].getSuspect().getInnocente()){
+                        resultat.add(grille[i][j].getSuspect());
+                    }
                     //Si pas fin de la grille et l'ouest de la carte est ouvert
                     if (j>0 && ((grille[i][j].getOrientation() & Plateau.O)==Plateau.O)){
                         j--;
@@ -74,7 +80,9 @@ public class Enqueteur implements Cloneable{
                 break;
             case OUEST:
                 while (bool && (grille[i][j].getOrientation() & Plateau.O)==Plateau.O){
-                    resultat.add(grille[i][j].getSuspect());
+                    if (!grille[i][j].getSuspect().getInnocente()){
+                        resultat.add(grille[i][j].getSuspect());
+                    }
                     //Si pas fin de la grille et l'ouest de la carte est ouvert
                     if (j<2 && ((grille[i][j].getOrientation() & Plateau.E)==Plateau.E)){
                         j++;
