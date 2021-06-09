@@ -1,6 +1,5 @@
 package Vue;
 
-import Controle.CollecteurEvenements;
 import Modele.Action;
 import Modele.Jeu;
 

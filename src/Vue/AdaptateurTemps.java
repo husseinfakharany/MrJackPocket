@@ -1,7 +1,6 @@
 package Vue;
 
 
-import Controle.CollecteurEvenements;
 import Controle.IA;
 
 import java.awt.event.ActionEvent;

@@ -1,7 +1,5 @@
 package Vue;
 
-import Controle.CollecteurEvenements;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 

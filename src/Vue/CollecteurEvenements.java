@@ -1,4 +1,4 @@
-package Controle;
+package Vue;
 
 import Modele.Coup;
 import Vue.InterfaceGraphique;

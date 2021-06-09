@@ -4,6 +4,7 @@ import Global.Configuration;
 import Modele.*;
 import Modele.Action;
 import Vue.AdaptateurTemps;
+import Vue.CollecteurEvenements;
 import Vue.InterfaceGraphique;
 
 import javax.swing.*;
