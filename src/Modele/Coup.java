@@ -106,7 +106,7 @@ public class Coup extends Commande implements Cloneable{
 	//Pre-Condition : Plateau initialisé
 	//Post-Condition : Change l'orientation d'une carte rue
 	public boolean rotation(Point position1, int orientation, int type) {
-		if(plateau.grille[position1.y][position1.x].getOrientation() == orientation) return false;
+		if(plateau.grille[position1.y][position1.x].getOrientation() == orientation && !(plateau.grille[position1.y][position1.x].getOrientation() == Plateau.NSEO)) return false;
 		if (plateau.grille[position1.y][position1.x].getDejaTourne() && type==1){
 			Configuration.instance().logger().warning("Carte déjà tournée");
 			return false;
@@ -126,7 +126,6 @@ public class Coup extends Commande implements Cloneable{
 	public boolean echanger(Point position1, Point position2) {
 
 		CarteRue carteRue1 = plateau.grille[position1.y][position1.x];
-
 		int orientation1 = carteRue1.getOrientation();
 		Suspect suspect1 = carteRue1.getSuspect();
 
@@ -134,23 +133,17 @@ public class Coup extends Commande implements Cloneable{
 		int orientation2 = carteRue2.getOrientation();
 		Suspect suspect2 = carteRue2.getSuspect();
 
-		int tmpOrientation = orientation1;
-		Suspect tmpSuspect = null;
-		try {
-			tmpSuspect = suspect1.clone();
-		} catch (CloneNotSupportedException e) {
-			e.printStackTrace();
-		}
+		Point tmpPosition = suspect1.getPosition();
 
 		suspect1.setPosition(suspect2.getPosition());
-		suspect2.setPosition(tmpSuspect.getPosition());
+		suspect2.setPosition(tmpPosition);
 
 		//On échange que l'orientation et le suspect
 		carteRue1.setOrientation(orientation2);
 		carteRue1.setSuspect(suspect2);
 
-		carteRue2.setOrientation(tmpOrientation);
-		carteRue2.setSuspect(tmpSuspect);
+		carteRue2.setOrientation(orientation1);
+		carteRue2.setSuspect(suspect1);
 
 		return true;
 	}
