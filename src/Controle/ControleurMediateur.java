@@ -20,6 +20,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     IA ia;
     IAMoyen iaJ,iaS;
     boolean iaActive;
+    boolean iaFacile;
     boolean iaIsJack;
     boolean iaJoue;
     int selectionne = -1;
@@ -45,6 +46,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         switch (com){
             case "facile":
                 ia = new IAAleatoire(jeu,iaIsJack);
+                iaFacile = true;
                 tempsIA = new Timer(3000,new AdaptateurTemps(ia,this));
                 tempsIA.setRepeats(false);
                 break;
@@ -191,7 +193,7 @@ public class ControleurMediateur implements CollecteurEvenements {
 
         if(jeu.plateau().tousJetonsJoues() ){
             boolean partiFini = jeu.plateau().prochainTour();
-            if(iaActive) jeuClone.plateau().prochainTourClone(jeu);
+            if(iaActive && !iaFacile) jeuClone.plateau().prochainTourClone(jeu);
             if(jeu.plateau().joueurCourant.equals(jeu.plateau().jack) && iaActive && iaIsJack && jeu.plateau().getNumAction()==0){
                 tempsIA.restart();
                 iaJoue = true;
@@ -320,7 +322,7 @@ public class ControleurMediateur implements CollecteurEvenements {
         if (jeu.jouerCoup(cp)){
             Configuration.instance().logger().info("Coup joué");
             appliquer(1);
-            if (iaActive){
+            if (iaActive && !iaFacile){
                 jeuClone.plateau().setJetonsActions(jeu.plateau().jetonsActions);
                 Action actionIA = jeu.plateau().passe.get(0).getAction();
                 Coup cpIA = new Coup(jeuClone.plateau(),actionIA);
@@ -389,6 +391,7 @@ public class ControleurMediateur implements CollecteurEvenements {
             case "facile":
                 fixerIA(c);
                 iaActive = true;
+                iaFacile = true;
                 ig.refreshBoiteAvantPartieIA();
                 break;
             case "moyen":
@@ -496,7 +499,7 @@ public class ControleurMediateur implements CollecteurEvenements {
     //Post-Condition : Permet d'appeler l'IA en début de partie si initialisé
     private void demarrerIA() {
         if((!iaIsJack && iaActive && jeu.plateau().joueurCourant.equals(jeu.plateau().enqueteur)) || (iaIsJack && iaActive && jeu.plateau().joueurCourant.equals(jeu.plateau().jack))){
-            jeuClone.plateau().setJetonsActions(jeu.plateau().jetonsActions);
+            if (!iaFacile) jeuClone.plateau().setJetonsActions(jeu.plateau().jetonsActions);
             tempsIA.restart();
             iaJoue =true;
             ig.dessinerInfo("Ia joue son coup");
