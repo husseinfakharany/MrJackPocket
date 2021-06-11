@@ -8,8 +8,6 @@ import java.util.Random;
 
 public class IAAleatoire extends IA{
     Random r;
-    Jeu j;
-    boolean isJack;
 
     public IAAleatoire(Jeu j, boolean isJack) {
         super(j,isJack);
