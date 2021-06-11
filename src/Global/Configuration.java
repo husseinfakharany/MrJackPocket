@@ -32,7 +32,7 @@ public class Configuration {
 
     public Logger logger() {
         Logger log = Logger.getLogger("MrJackPocket.Logger");
-        log.setLevel(Level.SEVERE);
+        log.setLevel(Level.INFO);
         return log;
     }
 }
